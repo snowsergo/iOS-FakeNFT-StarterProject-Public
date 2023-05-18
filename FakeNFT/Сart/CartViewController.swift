@@ -82,7 +82,7 @@ final class CartViewController: UIViewController {
             sortByButton.heightAnchor.constraint(equalToConstant: 42),
 
             // constraints for collection view
-            collectionView.topAnchor.constraint(equalTo: filterButton.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: sortByButton.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
