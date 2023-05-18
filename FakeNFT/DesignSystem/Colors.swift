@@ -20,20 +20,20 @@ extension UIColor {
         self.init(red: CGFloat(red) / 255, green: CGFloat(green) / 255, blue: CGFloat(blue) / 255, alpha: CGFloat(alpha) / 255)
     }
 
-    // Ниже приведены примеры цветов, настоящие цвета надо взять из фигмы
+    // Creates color from BrandColor
+    convenience init(color: BrandColors) {
+        self.init(hexString: color.rawValue)
+    }
 
-    // Primary Colors
-    static let primary = UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0)
+    // MARK: - Colors
 
-    // Secondary Colors
-    static let secondary = UIColor(red: 255 / 255, green: 193 / 255, blue: 7 / 255, alpha: 1.0)
-
-    // Background Colors
-    static let background = UIColor.white
-
-    // Text Colors
-    static let textPrimary = UIColor.black
-    static let textSecondary = UIColor.gray
-    static let textOnPrimary = UIColor.white
-    static let textOnSecondary = UIColor.black
+    static let primary = UIColor(color: .dark)
+    static let secondary = UIColor(color: .secondaryGray)
+    static let background = UIColor(color: .white)
+    static let textPrimary = UIColor(color: .dark)
+    static let textSecondary = UIColor(color: .secondaryGray)
+    static let textOnPrimary = UIColor(color: .lightGray)
+    static let textOnSecondary = UIColor(color: .lightGray)
+    static let success = UIColor(color: .green)
+    static let failure = UIColor(color: .red)
 }
