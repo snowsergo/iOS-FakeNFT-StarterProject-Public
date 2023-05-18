@@ -5,7 +5,7 @@
 import UIKit
 
 enum ButtonStyle {
-    case defaultStyle
+    case standard
     case primary
     case secondary
 
@@ -19,7 +19,7 @@ enum ButtonStyle {
 
     var backgroundColor: UIColor? {
         switch self {
-        case .defaultStyle:
+        case .standard:
             return UIColor.textOnPrimary
         case .primary:
             return UIColor.primary
@@ -30,7 +30,7 @@ enum ButtonStyle {
 
     var textColor: UIColor {
         switch self {
-        case .defaultStyle:
+        case .standard:
             return UIColor.primary
         case .primary:
             return UIColor.textOnPrimary
