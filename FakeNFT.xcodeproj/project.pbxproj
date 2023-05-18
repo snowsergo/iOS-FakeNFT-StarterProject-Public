@@ -31,6 +31,8 @@
 		FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */; };
 		FB30EA1906C7DED21C59757F /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */; };
 		FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED46738712A87A25488C /* ButtonSize.swift */; };
+		FB30EB7BA4AA65823C4EF8BD /* ProductCartTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E3989ED5F6135CD4FBA1 /* ProductCartTableViewController.swift */; };
+		FB30EDA6632F8360499821C0 /* ProductCartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EE6D134536FE273B4E20 /* ProductCartTableViewCell.swift */; };
 		FB30EFF9F8C5E826439E3D73 /* BrandColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EC467E012866BCFC7116 /* BrandColors.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,9 +77,11 @@
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
 		FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		FB30E3989ED5F6135CD4FBA1 /* ProductCartTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCartTableViewController.swift; sourceTree = "<group>"; };
 		FB30E4804E2F86FF4449CCD8 /* CartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		FB30EC467E012866BCFC7116 /* BrandColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrandColors.swift; sourceTree = "<group>"; };
 		FB30ED46738712A87A25488C /* ButtonSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonSize.swift; sourceTree = "<group>"; };
+		FB30EE6D134536FE273B4E20 /* ProductCartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCartTableViewCell.swift; sourceTree = "<group>"; };
 		FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 		FB30EF377D74B33D67C1E13E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,6 +201,8 @@
 			children = (
 				3F68069A29CBBAF100B4F915 /* ProductDetailsTableViewController.swift */,
 				3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */,
+				FB30EE6D134536FE273B4E20 /* ProductCartTableViewCell.swift */,
+				FB30E3989ED5F6135CD4FBA1 /* ProductCartTableViewController.swift */,
 			);
 			path = ProductDetails;
 			sourceTree = "<group>";
@@ -428,6 +434,8 @@
 				FB30EA1906C7DED21C59757F /* ButtonComponent.swift in Sources */,
 				FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */,
 				FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */,
+				FB30EDA6632F8360499821C0 /* ProductCartTableViewCell.swift in Sources */,
+				FB30EB7BA4AA65823C4EF8BD /* ProductCartTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
