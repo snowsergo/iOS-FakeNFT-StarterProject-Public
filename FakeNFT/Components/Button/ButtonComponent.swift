@@ -27,7 +27,7 @@ final class ButtonComponent: UIButton {
         }
     }
 
-    init(_ style: ButtonStyle = .primary, size: ButtonSize = .normal) {
+    init(_ style: ButtonStyle = .standard, size: ButtonSize = .normal) {
         super.init(frame: .zero)
 
         self.style = style
