@@ -9,7 +9,7 @@ import UIKit
  */
 final class CartViewController: UIViewController {
 
-    let filterButton: UIButton = {
+    let sortByButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Фильтр", for: .normal)
@@ -37,18 +37,18 @@ final class CartViewController: UIViewController {
 
         view.backgroundColor = .systemGray6
 
-        view.addSubview(filterButton)
+        view.addSubview(sortByButton)
         view.addSubview(collectionView)
         view.addSubview(footerView)
 
-        filterButton.addTarget(self, action: #selector(sortByTouch), for: .touchUpInside)
+        sortByButton.addTarget(self, action: #selector(sortByButtonTouchAction), for: .touchUpInside)
 
         setupConstraints()
     }
 
     // MARK: - @IBActions
 
-    @objc func sortByTouch(sender: Any) {
+    @objc func sortByButtonTouchAction(sender: Any) {
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
 
         let actions: [UIAlertAction] = [
@@ -76,10 +76,10 @@ final class CartViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             // constraints for filter button
-            filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            filterButton.widthAnchor.constraint(equalToConstant: 42),
-            filterButton.heightAnchor.constraint(equalToConstant: 42),
+            sortByButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            sortByButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            sortByButton.widthAnchor.constraint(equalToConstant: 42),
+            sortByButton.heightAnchor.constraint(equalToConstant: 42),
 
             // constraints for collection view
             collectionView.topAnchor.constraint(equalTo: filterButton.bottomAnchor),
