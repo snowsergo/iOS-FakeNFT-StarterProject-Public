@@ -52,6 +52,8 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         view.subviews.forEach({ $0.removeFromSuperview() })
 
+        overrideUserInterfaceStyle = .light // temporarily
+
         view.addSubview(sortByButton)
         view.addSubview(tableViewController.tableView)
         view.addSubview(footerView)
@@ -74,6 +76,8 @@ final class CartViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func didTapSortByButton(sender: Any) {
+        UISelectionFeedbackGenerator().selectionChanged()
+
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
 
         let actions: [UIAlertAction] = [
@@ -97,13 +101,20 @@ final class CartViewController: UIViewController {
     }
 
     @objc private func didTapPayButton(sender: Any) {
+        UISelectionFeedbackGenerator().selectionChanged()
+
         let navigationController = UINavigationController(
                 rootViewController: CartPaySwitcherController())
 
-        navigationController.hidesBarsOnSwipe = true
+        navigationController.overrideUserInterfaceStyle = .light // temporarily
         navigationController.modalPresentationStyle = .fullScreen
+        navigationController.hidesBarsOnSwipe = false
 
         present(navigationController, animated: true)
+    }
+
+    @objc private func test(sender: Any) {
+        print(sender)
     }
 
     // MARK: - Private methods

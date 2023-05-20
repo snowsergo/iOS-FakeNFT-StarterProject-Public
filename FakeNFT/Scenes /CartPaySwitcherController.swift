@@ -65,12 +65,18 @@ final class CartPaySwitcherController: UIViewController {
     // MARK: - Private methods
 
     private func setup() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(didTapDismiss))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+
         view.addSubview(collectionView)
 
         footerView.addSubview(footerTextLabel)
         footerView.addSubview(userAgreementLabel)
         footerView.addSubview(payButton)
         view.addSubview(footerView)
+
+        payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             footerTextLabel.topAnchor.constraint(equalTo: footerView.topAnchor),
@@ -95,6 +101,10 @@ final class CartPaySwitcherController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+
+    @objc private func didTapPayButton() {
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
     @objc private func didTapDismiss() {
