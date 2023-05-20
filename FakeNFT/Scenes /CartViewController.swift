@@ -10,7 +10,7 @@ import UIKit
 final class CartViewController: UIViewController {
     // MARK: - Initial default variables
 
-    let sortByButton: UIButton = {
+    private let sortByButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("...", for: .normal)
@@ -19,8 +19,16 @@ final class CartViewController: UIViewController {
         return button
     }()
 
-    let tableViewController: ProductCartTableViewController = {
-        let tableViewController = ProductCartTableViewController()
+    private let payButton: ButtonComponent = {
+        let button = ButtonComponent(.primary)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("К оплате", for: .normal)
+
+        return button
+    }()
+
+    private let tableViewController: OrderDetailsTableViewController = {
+        let tableViewController = OrderDetailsTableViewController()
         let tableView = tableViewController.tableView!
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +36,7 @@ final class CartViewController: UIViewController {
         return tableViewController
     }()
 
-    let footerView: UIView = {
+    private let footerView: UIView = {
         let footerView = UIView()
 
         footerView.backgroundColor = .systemBackground
@@ -36,17 +44,6 @@ final class CartViewController: UIViewController {
 
         footerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         footerView.layer.cornerRadius = 16
-
-        let button = ButtonComponent(.primary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("К оплате", for: .normal)
-        footerView.addSubview(button)
-
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
-            button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
-            button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16)
-        ])
 
         return footerView
     }()
@@ -60,14 +57,23 @@ final class CartViewController: UIViewController {
         view.addSubview(footerView)
 
         // setup
-        sortByButton.addTarget(self, action: #selector(sortByButtonTouchAction), for: .touchUpInside)
+        sortByButton.addTarget(self, action: #selector(didTapSortByButton), for: .touchUpInside)
+
+        // pay button
+        payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
+        footerView.addSubview(payButton)
+        NSLayoutConstraint.activate([
+            payButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
+            payButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
+            payButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16)
+        ])
 
         setupConstraints()
     }
 
     // MARK: - Actions
 
-    @objc func sortByButtonTouchAction(sender: Any) {
+    @objc private func didTapSortByButton(sender: Any) {
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
 
         let actions: [UIAlertAction] = [
@@ -88,6 +94,16 @@ final class CartViewController: UIViewController {
         }
 
         present(alertController, animated: true)
+    }
+
+    @objc private func didTapPayButton(sender: Any) {
+        let navigationController = UINavigationController(
+                rootViewController: CartPaySwitcherController())
+
+        navigationController.hidesBarsOnSwipe = true
+        navigationController.modalPresentationStyle = .fullScreen
+
+        present(navigationController, animated: true)
     }
 
     // MARK: - Private methods

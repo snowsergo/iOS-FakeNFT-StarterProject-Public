@@ -1,10 +1,10 @@
 import UIKit
 
-final class ProductCartTableViewController: UITableViewController {
+final class OrderDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(ProductCartTableViewCell.self)
+        tableView.register(OrderDetailsTableViewCell.self)
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
@@ -12,7 +12,7 @@ final class ProductCartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ProductCartTableViewCell = tableView.dequeueReusableCell()
+        let cell: OrderDetailsTableViewCell = tableView.dequeueReusableCell()
 
         cell.textLabel?.text = "Ячейка номер \(indexPath.row)"
 
