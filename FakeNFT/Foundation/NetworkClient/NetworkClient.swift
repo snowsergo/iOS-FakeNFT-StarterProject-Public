@@ -64,8 +64,10 @@ struct DefaultNetworkClient: NetworkClient {
         return send(request: request) { result in
             switch result {
             case let .success(data):
+                print("1___ready to parse")
                 self.parse(data: data, type: type, onResponse: onResponse)
             case let .failure(error):
+                print("2___failure")
                 onResponse(.failure(error))
             }
         }

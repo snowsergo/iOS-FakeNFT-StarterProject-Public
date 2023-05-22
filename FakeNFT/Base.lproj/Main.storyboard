@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x8A-Mu-ndU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x8A-Mu-ndU">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -118,23 +118,23 @@
                         <segue destination="6i5-Qt-ukh" kind="relationship" relationship="viewControllers" id="T9j-PL-Yhv"/>
                         <segue destination="lvU-bz-Vrw" kind="relationship" relationship="viewControllers" id="UQk-8s-8v2"/>
                         <segue destination="ZuB-kp-v3h" kind="relationship" relationship="viewControllers" id="z6Y-lX-f3f"/>
-                        <segue destination="qg2-Az-O78" kind="relationship" relationship="viewControllers" id="HDa-tO-gwF"/>
+                        <segue destination="V9C-JK-0Ae" kind="relationship" relationship="viewControllers" id="n4P-1g-yQq"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RxO-nu-FuZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-350" y="-784"/>
         </scene>
-        <!--Корзина-->
+        <!--Статистика-->
         <scene sceneID="3mo-mi-MIz">
             <objects>
-                <viewController id="qg2-Az-O78" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="F9g-gd-wrv">
+                <viewController id="qg2-Az-O78" customClass="StatisticsPageViewController" customModule="FakeNFT" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="Statistics" id="F9g-gd-wrv">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Статистика" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLD-QU-GF5">
-                                <rect key="frame" x="16" y="159" width="361" height="64"/>
+                                <rect key="frame" x="16" y="203" width="361" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="I1N-69-hsd"/>
                                 </constraints>
@@ -151,11 +151,30 @@
                             <constraint firstItem="5Kp-Ha-3xc" firstAttribute="trailing" secondItem="YLD-QU-GF5" secondAttribute="trailing" constant="16" id="nRx-wH-Ra1"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Корзина" image="flag.2.crossed.fill" catalog="system" id="xgD-9Y-EGT"/>
+                    <tabBarItem key="tabBarItem" title="Статистика" image="flag.2.crossed.fill" catalog="system" id="xgD-9Y-EGT"/>
+                    <navigationItem key="navigationItem" id="ea4-Ww-lAX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2lQ-it-xtI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="941" y="50"/>
+            <point key="canvasLocation" x="1676" y="50"/>
+        </scene>
+        <!--Статистика-->
+        <scene sceneID="ReB-zB-MVP">
+            <objects>
+                <navigationController id="V9C-JK-0Ae" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Статистика" image="flag.2.crossed.fill" catalog="system" id="ZX5-If-u1v"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SVY-wI-lTj">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="qg2-Az-O78" kind="relationship" relationship="rootViewController" id="WNv-Rq-StY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bt7-Wu-BA3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="873" y="50"/>
         </scene>
     </scenes>
     <resources>
