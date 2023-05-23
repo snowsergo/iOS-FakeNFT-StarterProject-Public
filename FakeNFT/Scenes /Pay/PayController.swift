@@ -97,6 +97,9 @@ final class CartPayOfferController: UIViewController {
 
     @objc private func didTapPayButton() {
         UISelectionFeedbackGenerator().selectionChanged()
+        let payStatusController = PayStatusController(isSuccessful: Bool.random())
+        payStatusController.modalPresentationStyle = .fullScreen
+        present(payStatusController, animated: true)
     }
 
     @objc private func didTapAgreement(sender: UITapGestureRecognizer) {
