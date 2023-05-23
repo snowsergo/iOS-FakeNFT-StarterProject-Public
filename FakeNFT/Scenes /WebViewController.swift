@@ -59,7 +59,7 @@ final class WebViewController: UIViewController {
         webView.addSubview(progressView)
         view.addSubview(webView)
 
-        setup()
+        setupView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -90,7 +90,7 @@ final class WebViewController: UIViewController {
         ProgressHUD.show()
     }
 
-    private func setup() {
+    private func setupView() {
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),

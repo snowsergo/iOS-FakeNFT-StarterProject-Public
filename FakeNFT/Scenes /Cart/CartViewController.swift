@@ -59,7 +59,7 @@ final class CartViewController: UIViewController {
 
         navigationItem.backButtonTitle = ""
 
-        setup()
+        setupView()
     }
 
     // MARK: - Actions
@@ -96,7 +96,7 @@ final class CartViewController: UIViewController {
 
     // MARK: - Private methods
 
-    private func setup() {
+    private func setupView() {
         sortByButton.addTarget(self, action: #selector(didTapSortByButton), for: .touchUpInside)
         payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
 

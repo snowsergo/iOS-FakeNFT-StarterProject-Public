@@ -64,9 +64,7 @@ final class PayStatusController: UIViewController {
         view.addSubview(messageLabel)
         view.addSubview(backButton)
 
-        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-
-        setup()
+        setupView()
     }
 
     @objc func didTapBackButton(sender: Any) {
@@ -96,7 +94,9 @@ final class PayStatusController: UIViewController {
 
     // MARK: - Private methods
 
-    private func setup() {
+    private func setupView() {
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -56),

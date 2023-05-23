@@ -63,12 +63,12 @@ final class PayController: UIViewController {
         view.backgroundColor = ColorScheme.white
         navigationItem.backButtonTitle = ""
 
-        setup()
+        setupView()
     }
 
     // MARK: - Private methods
 
-    private func setup() {
+    private func setupView() {
         // Targets
         payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
 
