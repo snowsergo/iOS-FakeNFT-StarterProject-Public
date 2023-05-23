@@ -92,7 +92,7 @@ final class CartViewController: UIViewController {
 
     @objc private func didTapPayButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
-        navigationController?.pushViewController(CartPaySwitcherController(), animated: true)
+        navigationController?.pushViewController(CartPayOfferController(), animated: true)
     }
 
     // MARK: - Private methods

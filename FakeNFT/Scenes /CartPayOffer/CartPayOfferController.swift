@@ -4,7 +4,7 @@
 
 import UIKit
 
-final class CartPaySwitcherController: UIViewController {
+final class CartPayOfferController: UIViewController {
     // TODO: - Заменить на коллекцию
     private let collectionView: UIView = {
         let collection = UIView()
