@@ -10,24 +10,15 @@ import UIKit
 final class CartViewController: UIViewController {
     // MARK: - Initial default variables
 
-    private let sortByButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("...", for: .normal)
-        button.setTitleColor(ColorScheme.black, for: .normal)
-        button.backgroundColor = ColorScheme.grey
-        return button
-    }()
-
-    private let payButton: ButtonComponent = {
-        let button = ButtonComponent(.primary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("К оплате", for: .normal)
+    lazy private var sortByButton: UIBarButtonItem = { [self] in
+        guard let icon = UIImage(named: "filter-icon") else { return UIBarButtonItem() }
+        let button = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(didTapSortByButton))
+        button.tintColor = ColorScheme.black
 
         return button
     }()
 
-    private let tableViewController: OrderDetailsTableViewController = {
+    lazy private var tableViewController: OrderDetailsTableViewController = {
         let tableViewController = OrderDetailsTableViewController()
         let tableView = tableViewController.tableView!
 
@@ -36,35 +27,77 @@ final class CartViewController: UIViewController {
         return tableViewController
     }()
 
-    private let footerView: UIView = {
-        let footerView = UIView()
+    lazy private var totalLabel: UILabel = {
+        let totalLabel = UILabel()
+        totalLabel.translatesAutoresizingMaskIntoConstraints = false
+        totalLabel.textColor = ColorScheme.black
+        totalLabel.font = .systemFont(ofSize: 15)
 
-        footerView.backgroundColor = ColorScheme.lightGrey
-        footerView.translatesAutoresizingMaskIntoConstraints = false
+        return totalLabel
+    }()
 
-        footerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        footerView.layer.cornerRadius = 16
-        footerView.layer.masksToBounds = true
+    lazy private var totalCostLabel: UILabel = {
+        let totalCostLabel = UILabel()
+        totalCostLabel.translatesAutoresizingMaskIntoConstraints = false
+        totalCostLabel.textColor = ColorScheme.green
+        totalCostLabel.font = .boldSystemFont(ofSize: 17)
 
-        return footerView
+        return totalCostLabel
+    }()
+
+    lazy private var payButton: ButtonComponent = {
+        let button = ButtonComponent(.primary)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("К оплате", for: .normal)
+
+        return button
+    }()
+
+    lazy private var totalInfoView: UIStackView = {
+        let totalInfoStackView = UIStackView(arrangedSubviews: [totalLabel, totalCostLabel])
+        totalInfoStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        totalInfoStackView.axis = .vertical
+        totalInfoStackView.distribution = .fillEqually
+
+        return totalInfoStackView
+    }()
+
+    lazy private var totalView: UIStackView = {
+        let totalStackView = UIStackView(arrangedSubviews: [totalInfoView, payButton])
+        totalStackView.translatesAutoresizingMaskIntoConstraints = false
+        totalStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        totalStackView.isLayoutMarginsRelativeArrangement = true
+
+        totalStackView.backgroundColor = ColorScheme.lightGrey
+        totalStackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        totalStackView.layer.masksToBounds = true
+        totalStackView.layer.cornerRadius = 16
+        totalStackView.spacing = 24
+        totalStackView.alignment = .top
+
+        return totalStackView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(sortByButton)
-        view.addSubview(tableViewController.tableView)
-        view.addSubview(footerView)
-        footerView.addSubview(payButton)
-
         navigationItem.backButtonTitle = ""
+        navigationItem.rightBarButtonItem = sortByButton
+
+        view.addSubview(tableViewController.tableView)
+        view.addSubview(totalView)
+
+        totalLabel.text = "3 NFT"
+        totalCostLabel.text = "5,34 ETH"
 
         setupView()
     }
 
     // MARK: - Actions
 
-    @objc private func didTapSortByButton(sender: Any) {
+    @objc
+    private func didTapSortByButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
 
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
@@ -89,7 +122,8 @@ final class CartViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    @objc private func didTapPayButton(sender: Any) {
+    @objc
+    private func didTapPayButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
         navigationController?.pushViewController(PayController(), animated: true)
     }
@@ -97,32 +131,19 @@ final class CartViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupView() {
-        sortByButton.addTarget(self, action: #selector(didTapSortByButton), for: .touchUpInside)
         payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            // constraints for filter button
-            sortByButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            sortByButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            sortByButton.widthAnchor.constraint(equalToConstant: 42),
-            sortByButton.heightAnchor.constraint(equalToConstant: 42),
-
             // constraints for collection view
-            tableViewController.tableView.topAnchor.constraint(equalTo: sortByButton.bottomAnchor),
+            tableViewController.tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableViewController.tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableViewController.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableViewController.tableView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            tableViewController.tableView.bottomAnchor.constraint(equalTo: totalView.topAnchor),
 
             // constraints for footer
-            footerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            footerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 100),
-
-            //
-            payButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
-            payButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
-            payButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16)
+            totalView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            totalView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            totalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 }

@@ -5,7 +5,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         let pictureView = UIImageView()
         pictureView.translatesAutoresizingMaskIntoConstraints = false
 
-        pictureView.backgroundColor = .systemGray4
+//        pictureView.backgroundColor = .systemGray4
         pictureView.clipsToBounds = true
         pictureView.layer.cornerRadius = 12
 
