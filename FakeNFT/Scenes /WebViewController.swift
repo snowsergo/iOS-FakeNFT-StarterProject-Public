@@ -4,9 +4,12 @@
 
 import UIKit
 import WebKit
+import ProgressHUD
 
 final class WebViewController: UIViewController {
     // MARK: - Variables
+
+    private let timeoutInterval = 5
 
     private var urlRequest: URLRequest
 
@@ -15,7 +18,6 @@ final class WebViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = ColorScheme.white
         return webView
     }()
 
@@ -63,11 +65,14 @@ final class WebViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        webView.load(urlRequest)
-
         webViewObserve = webView.observe(\WKWebView.estimatedProgress, options: .new) { [self] (_: WKWebView, change:NSKeyValueObservedChange<Double>) in
-            progressView.setProgress(Float(change.newValue!), animated: true)
+            progressView.setProgress(Float(change.newValue!), animated: false)
+            if change.newValue! > 0 {
+                ProgressHUD.dismiss()
+            }
         }
+
+        didLoadPage()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,6 +83,12 @@ final class WebViewController: UIViewController {
     }
 
     // MARK: - Private methods
+
+    private func didLoadPage() {
+        urlRequest.timeoutInterval = TimeInterval(timeoutInterval)
+        webView.load(urlRequest)
+        ProgressHUD.show()
+    }
 
     private func setup() {
         NSLayoutConstraint.activate([
@@ -105,7 +116,30 @@ extension WebViewController: WKNavigationDelegate {
         title = webView.title
     }
 
-    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print("Fail: \(error.localizedDescription)")
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        showError(message: error.localizedDescription)
+    }
+
+    private func showError(message: String) {
+        let alertController = UIAlertController(
+                title: "Упс! Что-то пошло не так",
+                message: message,
+                preferredStyle: .alert)
+
+        let reloadAction = UIAlertAction(title: "Повторить", style: .default) { [weak self] action in
+            guard let self else { return }
+            didLoadPage()
+        }
+
+        let closeAction = UIAlertAction(title: "Закрыть", style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            navigationController?.popViewController(animated: true)
+            ProgressHUD.dismiss()
+        }
+
+        alertController.addAction(reloadAction)
+        alertController.addAction(closeAction)
+
+        present(alertController, animated: true)
     }
 }
