@@ -20,7 +20,7 @@ final class WebViewController: UIViewController {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = .primary
-        progressView.trackTintColor = .systemGray2
+        progressView.trackTintColor = .systemGray6
         progressView.setProgress(0.0, animated: false)
         return progressView
     }()
