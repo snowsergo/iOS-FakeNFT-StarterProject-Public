@@ -29,7 +29,7 @@
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
 		FB30E079764EFC2C2D4ACDB9 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E6A896458E44287356D5 /* CartViewController.swift */; };
 		FB30E0BF18D624866D1BA126 /* OrderNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E0F27B86E2BCAFE60A19 /* OrderNetworkModel.swift */; };
-		FB30E12FE6F6318B8A935B9D /* CartPayOfferController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E2E9AD4390949BC79308 /* CartPayOfferController.swift */; };
+		FB30E12FE6F6318B8A935B9D /* PayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E2E9AD4390949BC79308 /* PayController.swift */; };
 		FB30E144E26F2B16D07C4D27 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E8EE0A1BCDE03238B63B /* WebViewController.swift */; };
 		FB30E675F8F163186F8C9F42 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EFD07126EDE9C84777DF /* ColorScheme.swift */; };
 		FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */; };
@@ -37,6 +37,7 @@
 		FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED46738712A87A25488C /* ButtonSize.swift */; };
 		FB30EDAC5B048F813AA9123A /* OrderDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E3F3A1AA7FC3370B4DC5 /* OrderDetailsTableViewController.swift */; };
 		FB30EE22C3010CFB1CB1825F /* CartNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EA91AEF0FD38D7BE692B /* CartNavigationController.swift */; };
+		FB30EF9AB5BFD6A099951630 /* PaySuccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E13ABE7C877D42442ED0 /* PaySuccessController.swift */; };
 		FB30EFECDC7E2A2C2D37C3A7 /* OrderDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E33B7BCE08AB4405B79B /* OrderDetailsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,8 +82,9 @@
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
 		FB30E0F27B86E2BCAFE60A19 /* OrderNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderNetworkModel.swift; sourceTree = "<group>"; };
+		FB30E13ABE7C877D42442ED0 /* PaySuccessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaySuccessController.swift; sourceTree = "<group>"; };
 		FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
-		FB30E2E9AD4390949BC79308 /* CartPayOfferController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPayOfferController.swift; sourceTree = "<group>"; };
+		FB30E2E9AD4390949BC79308 /* PayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayController.swift; sourceTree = "<group>"; };
 		FB30E33B7BCE08AB4405B79B /* OrderDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		FB30E3F3A1AA7FC3370B4DC5 /* OrderDetailsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderDetailsTableViewController.swift; sourceTree = "<group>"; };
 		FB30E6A896458E44287356D5 /* CartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
@@ -200,8 +202,8 @@
 			children = (
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
 				FB30E8EE0A1BCDE03238B63B /* WebViewController.swift */,
-				FB30E4C0D48D778F200824FE /* CartPayOffer */,
-				FB30E964A6B6A15E707850FB /* CartView */,
+				FB30E4C0D48D778F200824FE /* Pay */,
+				FB30E964A6B6A15E707850FB /* Cart */,
 			);
 			path = "Scenes ";
 			sourceTree = "<group>";
@@ -269,12 +271,13 @@
 			path = OrderDetails;
 			sourceTree = "<group>";
 		};
-		FB30E4C0D48D778F200824FE /* CartPayOffer */ = {
+		FB30E4C0D48D778F200824FE /* Pay */ = {
 			isa = PBXGroup;
 			children = (
-				FB30E2E9AD4390949BC79308 /* CartPayOfferController.swift */,
+				FB30E2E9AD4390949BC79308 /* PayController.swift */,
+				FB30E13ABE7C877D42442ED0 /* PaySuccessController.swift */,
 			);
-			path = CartPayOffer;
+			path = Pay;
 			sourceTree = "<group>";
 		};
 		FB30E6BC22009305798B070B /* Button */ = {
@@ -287,14 +290,14 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
-		FB30E964A6B6A15E707850FB /* CartView */ = {
+		FB30E964A6B6A15E707850FB /* Cart */ = {
 			isa = PBXGroup;
 			children = (
 				FB30E6A896458E44287356D5 /* CartViewController.swift */,
 				FB30EA91AEF0FD38D7BE692B /* CartNavigationController.swift */,
 				FB30E4C06C74797235126210 /* OrderDetails */,
 			);
-			path = CartView;
+			path = Cart;
 			sourceTree = "<group>";
 		};
 		FB30EC19783B8593D4D5FCDF /* Components */ = {
@@ -462,12 +465,13 @@
 				FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */,
 				FB30E0BF18D624866D1BA126 /* OrderNetworkModel.swift in Sources */,
 				FB30E144E26F2B16D07C4D27 /* WebViewController.swift in Sources */,
-				FB30E12FE6F6318B8A935B9D /* CartPayOfferController.swift in Sources */,
+				FB30E12FE6F6318B8A935B9D /* PayController.swift in Sources */,
 				FB30E079764EFC2C2D4ACDB9 /* CartViewController.swift in Sources */,
 				FB30EE22C3010CFB1CB1825F /* CartNavigationController.swift in Sources */,
 				FB30EFECDC7E2A2C2D37C3A7 /* OrderDetailsTableViewCell.swift in Sources */,
 				FB30EDAC5B048F813AA9123A /* OrderDetailsTableViewController.swift in Sources */,
 				FB30E675F8F163186F8C9F42 /* ColorScheme.swift in Sources */,
+				FB30EF9AB5BFD6A099951630 /* PaySuccessController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
