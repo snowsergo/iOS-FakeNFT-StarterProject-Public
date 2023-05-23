@@ -4,7 +4,12 @@
 
 import UIKit
 
-final class CartPayOfferController: UIViewController {
+protocol PayStatusDelegate {
+    func didSuccessful()
+    func didFailure()
+}
+
+final class PayController: UIViewController {
     // TODO: - Заменить на коллекцию
     private let collectionView: UIView = {
         let collection = UIView()
@@ -80,13 +85,13 @@ final class CartPayOfferController: UIViewController {
             userAgreementLabel.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
 
             payButton.topAnchor.constraint(equalTo: userAgreementLabel.topAnchor, constant: 36),
+            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             payButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
             payButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
 
             footerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
             footerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 120),
 
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
@@ -99,11 +104,25 @@ final class CartPayOfferController: UIViewController {
         UISelectionFeedbackGenerator().selectionChanged()
         let payStatusController = PayStatusController(isSuccessful: Bool.random())
         payStatusController.modalPresentationStyle = .fullScreen
+        payStatusController.delegate = self
+
         present(payStatusController, animated: true)
     }
 
     @objc private func didTapAgreement(sender: UITapGestureRecognizer) {
         let vc = WebViewController(url: "https://yandex.ru/legal/practicum_termsofuse")
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension PayController: PayStatusDelegate {
+    func didSuccessful() {
+        navigationController?.popToRootViewController(animated: false)
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.rootTabBarController.selectedIndex = 1
+    }
+
+    func didFailure() {
     }
 }
