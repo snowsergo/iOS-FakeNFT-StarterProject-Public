@@ -8,6 +8,8 @@ final class PayStatusController: UIViewController {
 
     private let isSuccessful: Bool
 
+    var delegate: PayStatusDelegate?
+
     private lazy var imageView: UIImageView = { [self] in
         let imageName = isSuccessful ? "success-pay-status" : "failure-pay-status"
 
@@ -68,17 +70,28 @@ final class PayStatusController: UIViewController {
     }
 
     @objc func didTapBackButton(sender: Any) {
-        isSuccessful ? backToCatalog(sender) : backToPay(sender)
+        isSuccessful
+            ? paySuccessful(sender)
+            : payFailure(sender)
     }
 
-    private func backToCatalog(_ sender: Any) {
+    private func paySuccessful(_ sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
-        dismiss(animated: true)
+
+        dismiss(animated: true) { [weak self] in
+            guard let self else { return }
+            delegate?.didSuccessful()
+        }
     }
 
-    private func backToPay(_ sender: Any) {
+    private func payFailure(_ sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
-        dismiss(animated: true)
+
+        dismiss(animated: true) { [weak self] in
+            guard let self else { return }
+            delegate?.didFailure()
+        }
+
     }
 
     // MARK: - Private methods
