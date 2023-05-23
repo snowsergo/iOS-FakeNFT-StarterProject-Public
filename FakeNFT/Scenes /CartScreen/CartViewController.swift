@@ -50,27 +50,17 @@ final class CartViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.subviews.forEach({ $0.removeFromSuperview() })
-
-        overrideUserInterfaceStyle = .light // temporarily
 
         view.addSubview(sortByButton)
         view.addSubview(tableViewController.tableView)
         view.addSubview(footerView)
-
-        // setup
-        sortByButton.addTarget(self, action: #selector(didTapSortByButton), for: .touchUpInside)
-
-        // pay button
-        payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
         footerView.addSubview(payButton)
-        NSLayoutConstraint.activate([
-            payButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
-            payButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
-            payButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16)
-        ])
 
-        setupConstraints()
+        navigationItem.backButtonTitle = ""
+
+        overrideUserInterfaceStyle = .light
+
+        setup()
     }
 
     // MARK: - Actions
@@ -102,24 +92,15 @@ final class CartViewController: UIViewController {
 
     @objc private func didTapPayButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
-
-        let navigationController = UINavigationController(
-                rootViewController: CartPaySwitcherController())
-
-        navigationController.overrideUserInterfaceStyle = .light // temporarily
-        navigationController.modalPresentationStyle = .fullScreen
-        navigationController.hidesBarsOnSwipe = false
-
-        present(navigationController, animated: true)
-    }
-
-    @objc private func test(sender: Any) {
-        print(sender)
+        navigationController?.pushViewController(CartPaySwitcherController(), animated: true)
     }
 
     // MARK: - Private methods
 
-    private func setupConstraints() {
+    private func setup() {
+        sortByButton.addTarget(self, action: #selector(didTapSortByButton), for: .touchUpInside)
+        payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
+
         NSLayoutConstraint.activate([
             // constraints for filter button
             sortByButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -137,7 +118,12 @@ final class CartViewController: UIViewController {
             footerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             footerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 100)
+            footerView.heightAnchor.constraint(equalToConstant: 100),
+
+            //
+            payButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
+            payButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
+            payButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16)
         ])
     }
 }

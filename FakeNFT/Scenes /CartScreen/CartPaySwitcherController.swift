@@ -5,7 +5,6 @@
 import UIKit
 
 final class CartPaySwitcherController: UIViewController {
-
     // TODO: - Заменить на коллекцию
     private let collectionView: UIView = {
         let collection = UIView()
@@ -25,6 +24,7 @@ final class CartPaySwitcherController: UIViewController {
     private let userAgreementLabel: UILabel = {
         let linkLabel = UILabel()
         linkLabel.translatesAutoresizingMaskIntoConstraints = false
+        linkLabel.isUserInteractionEnabled = true
         linkLabel.text = "Пользовательского соглашения"
         linkLabel.textColor = .link
 
@@ -48,16 +48,17 @@ final class CartPaySwitcherController: UIViewController {
 
     override func viewDidLoad() {
         title = "Выберите способ оплаты"
+
+        footerView.addSubview(footerTextLabel)
+        footerView.addSubview(userAgreementLabel)
+        footerView.addSubview(payButton)
+        view.addSubview(footerView)
+        view.addSubview(collectionView)
+
         view.backgroundColor = .background
+        navigationItem.backButtonTitle = ""
 
-        let backButton = UIBarButtonItem(
-                image: UIImage(systemName: "chevron.backward"),
-                style: .plain,
-                target: self,
-                action: #selector(didTapDismiss))
-        backButton.tintColor = .primary
-
-        navigationItem.leftBarButtonItem = backButton
+        overrideUserInterfaceStyle = .light
 
         setup()
     }
@@ -65,18 +66,11 @@ final class CartPaySwitcherController: UIViewController {
     // MARK: - Private methods
 
     private func setup() {
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(didTapDismiss))
-        swipeRight.direction = .right
-        view.addGestureRecognizer(swipeRight)
-
-        view.addSubview(collectionView)
-
-        footerView.addSubview(footerTextLabel)
-        footerView.addSubview(userAgreementLabel)
-        footerView.addSubview(payButton)
-        view.addSubview(footerView)
-
+        // Targets
         payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
+
+        let didTapAgreement = UITapGestureRecognizer(target: self, action: #selector(didTapAgreement))
+        userAgreementLabel.addGestureRecognizer(didTapAgreement)
 
         NSLayoutConstraint.activate([
             footerTextLabel.topAnchor.constraint(equalTo: footerView.topAnchor),
@@ -107,7 +101,8 @@ final class CartPaySwitcherController: UIViewController {
         UISelectionFeedbackGenerator().selectionChanged()
     }
 
-    @objc private func didTapDismiss() {
-        dismiss(animated: true)
+    @objc private func didTapAgreement(sender: UITapGestureRecognizer) {
+        let vc = WebViewController(url: "https://yandex.ru/legal/practicum_termsofuse")
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
