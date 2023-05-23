@@ -14,8 +14,8 @@ final class CartViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("...", for: .normal)
-        button.setTitleColor(.primary, for: .normal)
-        button.backgroundColor = .systemGray6
+        button.setTitleColor(ColorScheme.black, for: .normal)
+        button.backgroundColor = ColorScheme.grey
         return button
     }()
 
@@ -39,11 +39,12 @@ final class CartViewController: UIViewController {
     private let footerView: UIView = {
         let footerView = UIView()
 
-        footerView.backgroundColor = .systemBackground
+        footerView.backgroundColor = ColorScheme.lightGrey
         footerView.translatesAutoresizingMaskIntoConstraints = false
 
         footerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         footerView.layer.cornerRadius = 16
+        footerView.layer.masksToBounds = true
 
         return footerView
     }()
@@ -57,8 +58,6 @@ final class CartViewController: UIViewController {
         footerView.addSubview(payButton)
 
         navigationItem.backButtonTitle = ""
-
-        overrideUserInterfaceStyle = .light
 
         setup()
     }

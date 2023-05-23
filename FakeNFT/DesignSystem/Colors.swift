@@ -19,21 +19,4 @@ extension UIColor {
         }
         self.init(red: CGFloat(red) / 255, green: CGFloat(green) / 255, blue: CGFloat(blue) / 255, alpha: CGFloat(alpha) / 255)
     }
-
-    // Creates color from BrandColor
-    convenience init(color: BrandColors) {
-        self.init(hexString: color.rawValue)
-    }
-
-    // MARK: - Colors
-
-    static let primary = UIColor(color: .dark)
-    static let secondary = UIColor(color: .secondaryGray)
-    static let background = UIColor(color: .white)
-    static let textPrimary = UIColor(color: .dark)
-    static let textSecondary = UIColor(color: .secondaryGray)
-    static let textOnPrimary = UIColor(color: .lightGray)
-    static let textOnSecondary = UIColor(color: .lightGray)
-    static let success = UIColor(color: .green)
-    static let failure = UIColor(color: .red)
 }

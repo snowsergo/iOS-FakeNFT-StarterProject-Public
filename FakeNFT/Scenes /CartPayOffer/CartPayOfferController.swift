@@ -26,7 +26,7 @@ final class CartPayOfferController: UIViewController {
         linkLabel.translatesAutoresizingMaskIntoConstraints = false
         linkLabel.isUserInteractionEnabled = true
         linkLabel.text = "Пользовательского соглашения"
-        linkLabel.textColor = .link
+        linkLabel.textColor = ColorScheme.blue
 
         return linkLabel
     }()
@@ -55,10 +55,8 @@ final class CartPayOfferController: UIViewController {
         view.addSubview(footerView)
         view.addSubview(collectionView)
 
-        view.backgroundColor = .background
+        view.backgroundColor = ColorScheme.white
         navigationItem.backButtonTitle = ""
-
-        overrideUserInterfaceStyle = .light
 
         setup()
     }

@@ -15,14 +15,15 @@ final class WebViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = ColorScheme.white
         return webView
     }()
 
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = .primary
-        progressView.trackTintColor = .systemGray6
+        progressView.progressTintColor = ColorScheme.blue
+        progressView.trackTintColor = ColorScheme.lightGrey
         progressView.setProgress(0.0, animated: false)
         return progressView
     }()
@@ -65,7 +66,7 @@ final class WebViewController: UIViewController {
         webView.load(urlRequest)
 
         webViewObserve = webView.observe(\WKWebView.estimatedProgress, options: .new) { [self] (_: WKWebView, change:NSKeyValueObservedChange<Double>) in
-            progressView.setProgress(Float(change.newValue!), animated: false)
+            progressView.setProgress(Float(change.newValue!), animated: true)
         }
     }
 
