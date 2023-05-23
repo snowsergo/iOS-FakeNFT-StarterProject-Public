@@ -7,5 +7,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         ProgressHUD.animationType = .circleStrokeSpin
         ProgressHUD.colorAnimation = ColorScheme.black
+
+        // Available main UITabBarController
+        guard let tabController = window?.rootViewController as? UITabBarController else { return }
+        (UIApplication.shared.delegate as! AppDelegate).rootTabBarController = tabController
     }
 }
