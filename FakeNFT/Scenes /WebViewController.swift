@@ -6,6 +6,8 @@ import UIKit
 import WebKit
 
 final class WebViewController: UIViewController {
+    // MARK: - Variables
+
     private var urlRequest: URLRequest
 
     private var webViewObserve: NSKeyValueObservation?
@@ -25,6 +27,8 @@ final class WebViewController: UIViewController {
         return progressView
     }()
 
+    // MARK: - Conversion initializes
+
     init(request: URLRequest) {
         urlRequest = request
         super.init(nibName: nil, bundle: nil)
@@ -43,6 +47,8 @@ final class WebViewController: UIViewController {
         fatalError("init(coder:) is not supported")
     }
 
+    // MARK: - Usage view methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,18 +57,6 @@ final class WebViewController: UIViewController {
         view.addSubview(webView)
 
         setup()
-    }
-
-    private func setup() {
-        NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-
-            progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-            progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-        ])
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -81,7 +75,23 @@ final class WebViewController: UIViewController {
         guard let webViewObserve = webViewObserve else { return }
         NotificationCenter.default.removeObserver(webViewObserve)
     }
+
+    // MARK: - Private methods
+
+    private func setup() {
+        NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+
+            progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
+        ])
+    }
 }
+
+// MARK: - Extensions
 
 extension WebViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
