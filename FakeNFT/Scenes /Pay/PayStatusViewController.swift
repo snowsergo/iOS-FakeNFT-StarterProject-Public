@@ -4,7 +4,7 @@
 
 import UIKit
 
-final class PayStatusController: UIViewController {
+final class PayStatusViewController: UIViewController {
 
     private let isSuccessful: Bool
 

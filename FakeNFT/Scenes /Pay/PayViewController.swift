@@ -9,7 +9,7 @@ protocol PayStatusDelegate {
     func didFailure()
 }
 
-final class PayController: UIViewController {
+final class PayViewController: UIViewController {
     // TODO: - Заменить на коллекцию
     private let collectionView: UIView = {
         let collection = UIView()
@@ -102,7 +102,7 @@ final class PayController: UIViewController {
 
     @objc private func didTapPayButton() {
         UISelectionFeedbackGenerator().selectionChanged()
-        let payStatusController = PayStatusController(isSuccessful: Bool.random())
+        let payStatusController = PayStatusViewController(isSuccessful: Bool.random())
         payStatusController.modalPresentationStyle = .fullScreen
         payStatusController.delegate = self
 
@@ -115,7 +115,7 @@ final class PayController: UIViewController {
     }
 }
 
-extension PayController: PayStatusDelegate {
+extension PayViewController: PayStatusDelegate {
     func didSuccessful() {
         navigationController?.popToRootViewController(animated: false)
 
