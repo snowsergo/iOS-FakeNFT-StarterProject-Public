@@ -18,6 +18,7 @@ final class WebViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.backgroundColor = ColorScheme.white
         return webView
     }()
 
