@@ -1,22 +1,35 @@
 import UIKit
 
 final class OrderDetailsTableViewController: UITableViewController {
+
+    var delegate: OrderTableCellDelegate?
+
+    var items: [Nft] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = ColorScheme.white
         tableView.register(OrderDetailsTableViewCell.self)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        30
+        items.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: OrderDetailsTableViewCell = tableView.dequeueReusableCell()
 
-        cell.backgroundColor = ColorScheme.white
-        cell.textLabel?.text = "Ячейка номер \(indexPath.row)"
+        let model = items[indexPath.row]
+
+        cell.setModel(model, itemIndex: indexPath.row)
+        cell.delegate = delegate
 
         return cell
     }

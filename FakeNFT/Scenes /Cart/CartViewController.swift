@@ -4,11 +4,17 @@
 
 import UIKit
 
+protocol OrderTableCellDelegate {
+    func didTapTrash(itemIndex: Int)
+}
+
 /**
  General screen controller for Cart Screen
  */
 final class CartViewController: UIViewController {
     // MARK: - Initial default variables
+
+    private var items: [Nft] = []
 
     lazy private var sortByButton: UIBarButtonItem = { [self] in
         guard let icon = UIImage(named: "filter-icon") else { return UIBarButtonItem() }
@@ -20,6 +26,8 @@ final class CartViewController: UIViewController {
 
     lazy private var tableViewController: OrderDetailsTableViewController = {
         let tableViewController = OrderDetailsTableViewController()
+        tableViewController.delegate = self
+
         let tableView = tableViewController.tableView!
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,16 +96,13 @@ final class CartViewController: UIViewController {
         view.addSubview(tableViewController.tableView)
         view.addSubview(totalView)
 
-        totalLabel.text = "3 NFT"
-        totalCostLabel.text = "5,34 ETH"
-
         setupView()
+        fetchData()
     }
 
     // MARK: - Actions
 
-    @objc
-    private func didTapSortByButton(sender: Any) {
+    @objc private func didTapSortByButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
 
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
@@ -122,10 +127,46 @@ final class CartViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    @objc
-    private func didTapPayButton(sender: Any) {
+    @objc private func didTapPayButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
         navigationController?.pushViewController(PayViewController(), animated: true)
+    }
+
+    // MARK: - Mock items
+
+    private func fetchData() {
+        items = [
+            Nft(
+                createdAt: Date(),
+                name: "April",
+                images: [
+                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/1.png",
+                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/2.png",
+                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/3.png"
+                ],
+                rating: 3,
+                description: "A 3D model of a mythical creature.",
+                price: 0.95,
+                id: "1"),
+
+            Nft(
+                createdAt: Date(),
+                name: "Aurora",
+                images: [
+                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Aurora/1.png",
+                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Aurora/2.png",
+                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Aurora/3.png"
+                ],
+                rating: 4,
+                description: "An abstract painting of a fiery sunset.",
+                price: 5.62,
+                id: "2")
+        ]
+
+        totalLabel.text = "\(items.count) NFT"
+        totalCostLabel.text = "\(items.reduce(0) { $0 + $1.price }) ETH"
+
+        tableViewController.items = items
     }
 
     // MARK: - Private methods
@@ -145,5 +186,16 @@ final class CartViewController: UIViewController {
             totalView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             totalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+}
+
+extension CartViewController: OrderTableCellDelegate {
+    func didTapTrash(itemIndex: Int) {
+        let deleteVc = DeleteItemViewController(item: items[itemIndex])
+        deleteVc.modalPresentationStyle = .overFullScreen
+
+        //view.addSubview(deleteVc.view)
+        //present(deleteVc, animated: true)
+        navigationController?.present(deleteVc, animated: true)
     }
 }
