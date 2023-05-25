@@ -69,7 +69,15 @@ final class DeleteItemViewController: UIViewController {
     }
 
     @objc private func didTapRemove(sender: Any) {
-        dismiss(animated: true)
+        UISelectionFeedbackGenerator().selectionChanged()
+
+        let alert = UIAlertController(title: "NFT удален", message: "Представьте что он удален 😁", preferredStyle: .alert)
+        alert.addAction(UIAlertAction.init(title: "Ок, представлю", style: .default) { [weak self] action in
+            guard let self else { return }
+            dismiss(animated: true)
+        })
+
+        present(alert, animated: true)
     }
 
     // MARK: - Private methods

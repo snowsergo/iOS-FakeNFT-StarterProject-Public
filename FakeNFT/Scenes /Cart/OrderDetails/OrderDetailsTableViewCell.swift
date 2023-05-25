@@ -69,6 +69,8 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
     }
 
     @objc private func didTapTrash() {
+        UISelectionFeedbackGenerator().selectionChanged()
+        
         guard let itemIndex = itemIndex else { return }
 
         if let delegate = delegate {
