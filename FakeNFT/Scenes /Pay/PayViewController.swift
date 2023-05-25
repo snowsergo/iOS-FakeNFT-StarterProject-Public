@@ -21,6 +21,7 @@ final class PayViewController: UIViewController {
     private let footerTextLabel: UILabel = {
         let textLabel = UILabel()
         textLabel.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.numberOfLines = 0
         textLabel.text = "Совершая покупку, вы соглашаетесь с условиями"
         textLabel.font = .systemFont(ofSize: 13)
 
