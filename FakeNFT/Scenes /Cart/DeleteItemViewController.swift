@@ -2,7 +2,6 @@
 // Created by Сергей Махленко on 24.05.2023.
 //
 
-import Foundation
 import UIKit
 
 final class DeleteItemViewController: UIViewController {
