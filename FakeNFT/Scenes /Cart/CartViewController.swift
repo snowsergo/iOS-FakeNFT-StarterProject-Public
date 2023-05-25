@@ -194,8 +194,6 @@ extension CartViewController: OrderTableCellDelegate {
         let deleteVc = DeleteItemViewController(item: items[itemIndex])
         deleteVc.modalPresentationStyle = .overFullScreen
 
-        //view.addSubview(deleteVc.view)
-        //present(deleteVc, animated: true)
         navigationController?.present(deleteVc, animated: true)
     }
 }
