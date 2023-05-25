@@ -6,16 +6,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
 
     private var itemIndex: Int?
 
-    let pictureView: UIImageView = {
-        let pictureView = UIImageView()
-        pictureView.translatesAutoresizingMaskIntoConstraints = false
-
-        pictureView.backgroundColor = ColorScheme.lightGrey
-        pictureView.clipsToBounds = true
-        pictureView.layer.cornerRadius = 12
-
-        return pictureView
-    }()
+    lazy private var pictureView: PreviewImageView = PreviewImageView(url: nil)
 
     let nameLabel: UILabel = {
         let nameLabel = UILabel()
@@ -73,7 +64,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
 
         if let imageUrlString = model.images.first {
             let url = URL(string: imageUrlString)!
-            pictureView.kf.setImage(with: url)
+            pictureView.load(url: url)
         }
     }
 

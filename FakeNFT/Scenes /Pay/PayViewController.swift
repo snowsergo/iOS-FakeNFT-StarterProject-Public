@@ -22,6 +22,7 @@ final class PayViewController: UIViewController {
         let textLabel = UILabel()
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.text = "Совершая покупку, вы соглашаетесь с условиями"
+        textLabel.font = .systemFont(ofSize: 13)
 
         return textLabel
     }()
@@ -32,6 +33,7 @@ final class PayViewController: UIViewController {
         linkLabel.isUserInteractionEnabled = true
         linkLabel.text = "Пользовательского соглашения"
         linkLabel.textColor = ColorScheme.blue
+        linkLabel.font = .systemFont(ofSize: 13)
 
         return linkLabel
     }()
