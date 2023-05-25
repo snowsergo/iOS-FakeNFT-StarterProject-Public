@@ -47,14 +47,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
     }()
 
     let deleteButton: UIButton = {
-        let imageLight = UIImage(named: "trash-icon-light")!
-        let imageDark = UIImage(named: "trash-icon-dark")!
-
-        let imageAsset = UIImageAsset()
-        imageAsset.register(imageLight, with: .init(userInterfaceStyle: .light))
-        imageAsset.register(imageDark, with: .init(userInterfaceStyle: .dark))
-
-        let image = imageAsset.image(with: UITraitCollection())
+        let image = UIImage(named: "trash-icon") ?? UIImage(systemName: "trash")
 
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
