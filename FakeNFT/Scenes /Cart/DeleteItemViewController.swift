@@ -13,7 +13,7 @@ final class DeleteItemViewController: UIViewController {
             ? URL(string: item.images.first!)
             : nil
 
-        return PreviewImageView(url: url)
+        return PreviewImageComponent(url: url)
     }()
 
     lazy private var confirmMessageLabel: UILabel = {

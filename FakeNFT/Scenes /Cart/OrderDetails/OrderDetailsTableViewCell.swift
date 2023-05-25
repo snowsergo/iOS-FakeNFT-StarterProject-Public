@@ -6,7 +6,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
 
     private var itemIndex: Int?
 
-    lazy private var pictureView: PreviewImageView = PreviewImageView(url: nil)
+    lazy private var pictureView: PreviewImageComponent = PreviewImageComponent(url: nil)
 
     let nameLabel: UILabel = {
         let nameLabel = UILabel()

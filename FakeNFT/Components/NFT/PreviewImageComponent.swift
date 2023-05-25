@@ -4,7 +4,7 @@
 
 import UIKit
 
-class PreviewImageView: UIImageView {
+class PreviewImageComponent: UIImageView {
 
     let loadingAnimation = UIView()
 
@@ -27,6 +27,7 @@ class PreviewImageView: UIImageView {
 
     func load(url: URL?) {
         if url != nil {
+            image = nil
             kf.setImage(with: url) { [weak self] _ in
                 guard let self else { return }
                 self.stopAnimating()
