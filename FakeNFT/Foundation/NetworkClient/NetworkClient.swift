@@ -84,7 +84,9 @@ struct DefaultNetworkClient: NetworkClient {
         guard let url = components.url else { return nil }
 
         var urlRequest = URLRequest(url: url)
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.httpBody = request.httpBody
 
         return urlRequest
     }
