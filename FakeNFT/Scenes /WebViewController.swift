@@ -118,29 +118,19 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        showError(message: error.localizedDescription)
-    }
+        let errorView = ErrorView.make(
+            title: "Упс! Что-то пошло не так",
+            message: error.localizedDescription,
+            repeatHandle: { [weak self] in
+                guard let self else { return }
+                didLoadPage()
+            },
+            cancelHandle: { [weak self] in
+                guard let self else { return }
+                navigationController?.popViewController(animated: true)
+                ProgressHUD.dismiss()
+            })
 
-    private func showError(message: String) {
-        let alertController = UIAlertController(
-                title: "Упс! Что-то пошло не так",
-                message: message,
-                preferredStyle: .alert)
-
-        let reloadAction = UIAlertAction(title: "Повторить", style: .default) { [weak self] action in
-            guard let self else { return }
-            didLoadPage()
-        }
-
-        let closeAction = UIAlertAction(title: "Закрыть", style: .destructive) { [weak self] _ in
-            guard let self else { return }
-            navigationController?.popViewController(animated: true)
-            ProgressHUD.dismiss()
-        }
-
-        alertController.addAction(reloadAction)
-        alertController.addAction(closeAction)
-
-        present(alertController, animated: true)
+        present(errorView, animated: true)
     }
 }

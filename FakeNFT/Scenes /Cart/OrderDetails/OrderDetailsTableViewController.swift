@@ -2,7 +2,7 @@ import UIKit
 
 final class OrderDetailsTableViewController: UITableViewController {
 
-    var delegate: OrderTableCellDelegate?
+    var delegate: UpdateCartViewProtocol?
 
     var items: [Nft] = [] {
         didSet {
@@ -17,6 +17,13 @@ final class OrderDetailsTableViewController: UITableViewController {
         tableView.register(OrderDetailsTableViewCell.self)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+    }
+
+    @objc func didRefresh() {
+        delegate?.fetchData(refreshControl: refreshControl)
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
@@ -28,7 +35,7 @@ final class OrderDetailsTableViewController: UITableViewController {
 
         let model = items[indexPath.row]
 
-        cell.setModel(model, itemIndex: indexPath.row)
+        cell.setModel(model)
         cell.delegate = delegate
 
         return cell

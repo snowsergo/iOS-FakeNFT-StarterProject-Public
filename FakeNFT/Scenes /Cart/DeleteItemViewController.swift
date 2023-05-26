@@ -8,6 +8,8 @@ final class DeleteItemViewController: UIViewController {
 
     private let item: Nft
 
+    var delegate: UpdateCartViewProtocol?
+
     lazy private var preview: UIImageView = {
         let url = item.images.count > 0
             ? URL(string: item.images.first!)
@@ -40,7 +42,7 @@ final class DeleteItemViewController: UIViewController {
         let button = ButtonComponent(.primary, size: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Удалить", for: .normal)
-        button.addTarget(self, action: #selector(didTapRemove), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapConfirmed), for: .touchUpInside)
         button.setTitleColor(ColorScheme.red, for: .normal)
 
         return button
@@ -68,16 +70,11 @@ final class DeleteItemViewController: UIViewController {
         dismiss(animated: true)
     }
 
-    @objc private func didTapRemove(sender: Any) {
+    @objc private func didTapConfirmed(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
+        dismiss(animated: true)
 
-        let alert = UIAlertController(title: "NFT удален", message: "Представьте что он удален 😁", preferredStyle: .alert)
-        alert.addAction(UIAlertAction.init(title: "Ок, представлю", style: .default) { [weak self] action in
-            guard let self else { return }
-            dismiss(animated: true)
-        })
-
-        present(alert, animated: true)
+        delegate?.deleteItem(itemId: item.id)
     }
 
     // MARK: - Private methods

@@ -2,9 +2,9 @@ import UIKit
 import Kingfisher
 
 final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
-    var delegate: OrderTableCellDelegate?
+    var delegate: UpdateCartViewProtocol?
 
-    private var itemIndex: Int?
+    private var model: Nft?
 
     lazy private var pictureView: PreviewImageComponent = PreviewImageComponent(url: nil)
 
@@ -15,9 +15,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         return nameLabel
     }()
 
-    let starsView: StarsComponent = {
-        StarsComponent()
-    }()
+    let starsView: StarsComponent = StarsComponent()
 
     let priceLabel: UILabel = {
         let priceLabel = UILabel()
@@ -37,7 +35,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         return priceTitleLabel
     }()
 
-    let deleteButton: UIButton = {
+    let confirmDeleteButton: UIButton = {
         let image = UIImage(named: "trash-icon") ?? UIImage(systemName: "trash")
 
         let button = UIButton()
@@ -56,8 +54,9 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setModel(_ model: Nft, itemIndex: Int) {
-        self.itemIndex = itemIndex
+    func setModel(_ model: Nft) {
+        self.model = model
+
         nameLabel.text = model.name
         priceLabel.text = "\(model.price) ETH"
         starsView.highlightStars(count: model.rating)
@@ -68,17 +67,15 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         }
     }
 
-    @objc private func didTapTrash() {
+    @objc private func didTapConfirmShow() {
         UISelectionFeedbackGenerator().selectionChanged()
-        
-        guard let itemIndex = itemIndex else { return }
 
         if let delegate = delegate {
-            DispatchQueue.main.async {
-                delegate.didTapTrash(itemIndex: itemIndex)
+            DispatchQueue.main.async { [weak self] in
+                guard let self, let model else { return }
+                delegate.showConfirmDelete(itemId: model.id)
             }
         }
-
     }
 
     private func setupView() {
@@ -86,7 +83,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
 
-        deleteButton.addTarget(self, action: #selector(didTapTrash), for: .touchUpInside)
+        confirmDeleteButton.addTarget(self, action: #selector(didTapConfirmShow), for: .touchUpInside)
 
         // content
         let nameAndStarsStackView = UIStackView(arrangedSubviews: [nameLabel, starsView])
@@ -102,7 +99,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         contentStackView.axis = .vertical
         contentStackView.alignment = .leading
 
-        let cellStackView = UIStackView(arrangedSubviews: [pictureView, contentStackView, deleteButton])
+        let cellStackView = UIStackView(arrangedSubviews: [pictureView, contentStackView, confirmDeleteButton])
         cellStackView.translatesAutoresizingMaskIntoConstraints = false
         cellStackView.spacing = 20
         cellStackView.alignment = .center
@@ -119,8 +116,8 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
             pictureView.widthAnchor.constraint(equalToConstant: 108),
             pictureView.heightAnchor.constraint(equalTo: pictureView.widthAnchor, multiplier: 1),
 
-            deleteButton.widthAnchor.constraint(equalToConstant: 40),
-            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 1)
+            confirmDeleteButton.widthAnchor.constraint(equalToConstant: 40),
+            confirmDeleteButton.heightAnchor.constraint(equalTo: confirmDeleteButton.widthAnchor, multiplier: 1)
         ])
     }
 }

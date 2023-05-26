@@ -3,18 +3,28 @@
 //
 
 import UIKit
+import ProgressHUD
 
-protocol OrderTableCellDelegate {
-    func didTapTrash(itemIndex: Int)
+enum CartNftSortable: String, CaseIterable {
+    case price = "По цене"
+    case name = "По названию"
+    case rating = "По рейтингу"
 }
 
 /**
  General screen controller for Cart Screen
  */
 final class CartViewController: UIViewController {
-    // MARK: - Initial default variables
+    // MARK: - View and variables
 
-    private var items: [Nft] = []
+    private let orderId = "1"
+
+    private var items: [Nft] = [] {
+        didSet {
+            didUpdateDataTable()
+            didUpdateTotalInfo()
+        }
+    }
 
     lazy private var sortByButton: UIBarButtonItem = { [self] in
         guard let icon = UIImage(named: "filter-icon") else { return UIBarButtonItem() }
@@ -87,12 +97,26 @@ final class CartViewController: UIViewController {
         return totalStackView
     }()
 
+    private var emptyItems: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        label.text = "Корзина пуста"
+        label.textColor = ColorScheme.black
+        label.font = .boldSystemFont(ofSize: 17)
+        label.textAlignment = .center
+        label.layer.zPosition = 10
+
+        return label
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.backButtonTitle = ""
         navigationItem.rightBarButtonItem = sortByButton
 
+        view.addSubview(emptyItems)
         view.addSubview(tableViewController.tableView)
         view.addSubview(totalView)
 
@@ -107,22 +131,17 @@ final class CartViewController: UIViewController {
 
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
 
-        let actions: [UIAlertAction] = [
-            UIAlertAction(title: "По цене", style: .default) { action in
-                print("Выбрана сортировка: \(action.title!)")
-            },
-            UIAlertAction(title: "По рейтингу", style: .default) { action in
-                print("Выбрана сортировка: \(action.title!)")
-            },
-            UIAlertAction(title: "По названию", style: .default) { action in
-                print("Выбрана сортировка: \(action.title!)")
-            },
-            UIAlertAction(title: "Закрыть", style: .cancel)
-        ]
+        CartNftSortable.allCases.forEach {
+            let sortCase = $0
+            let action = UIAlertAction(title: $0.rawValue, style: .default) { [weak self] action in
+                guard let self else { return }
+                sortable(by: sortCase)
+            }
 
-        actions.forEach { action in
             alertController.addAction(action)
         }
+
+        alertController.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
 
         present(alertController, animated: true)
     }
@@ -130,43 +149,6 @@ final class CartViewController: UIViewController {
     @objc private func didTapPayButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
         navigationController?.pushViewController(PayViewController(), animated: true)
-    }
-
-    // MARK: - Mock items
-
-    private func fetchData() {
-        items = [
-            Nft(
-                createdAt: Date(),
-                name: "April",
-                images: [
-                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/1.png",
-                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/2.png",
-                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/3.png"
-                ],
-                rating: 3,
-                description: "A 3D model of a mythical creature.",
-                price: 0.95,
-                id: "1"),
-
-            Nft(
-                createdAt: Date(),
-                name: "Aurora",
-                images: [
-                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Aurora/1.png",
-                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Aurora/2.png",
-                    "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Aurora/3.png"
-                ],
-                rating: 4,
-                description: "An abstract painting of a fiery sunset.",
-                price: 5.62,
-                id: "2")
-        ]
-
-        totalLabel.text = "\(items.count) NFT"
-        totalCostLabel.text = "\(items.reduce(0) { $0 + $1.price }) ETH"
-
-        tableViewController.items = items
     }
 
     // MARK: - Private methods
@@ -185,15 +167,154 @@ final class CartViewController: UIViewController {
             totalView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             totalView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             totalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            // empty message
+            emptyItems.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            emptyItems.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            emptyItems.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            emptyItems.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
         ])
     }
 }
 
-extension CartViewController: OrderTableCellDelegate {
-    func didTapTrash(itemIndex: Int) {
-        let deleteVc = DeleteItemViewController(item: items[itemIndex])
+// MARK: - Extensions
+
+extension CartViewController {
+    private func findBy(id: String) -> Nft? {
+        if items.count == 0 {
+            return nil
+        }
+
+        return items.first(where: { $0.id == id }) ?? nil
+    }
+
+    private func sortable(by: CartNftSortable) {
+        items.sort { (lhs: Nft, rhs: Nft) -> Bool in
+            switch by {
+            case .name: return lhs.name < rhs.name
+            case .price: return lhs.price < rhs.price
+            case .rating: return lhs.rating < rhs.rating
+            }
+        }
+    }
+}
+
+// MARK: - Update data and table method
+
+extension CartViewController: UpdateCartViewProtocol {
+    func didUpdateTotalInfo() {
+        let costSum = String(format: "%.02f", items.reduce(0) { $0 + $1.price })
+
+        totalLabel.text = "\(items.count) NFT"
+        totalCostLabel.text = "\(costSum) ETH"
+
+        //
+        let isHidden = items.isEmpty
+
+        totalView.isHidden = isHidden
+        emptyItems.isHidden = !isHidden
+        navigationItem.rightBarButtonItem = isHidden ? nil : sortByButton
+    }
+
+    func didUpdateDataTable() {
+        tableViewController.items = items
+    }
+
+    func showConfirmDelete(itemId: String) {
+        let item = findBy(id: itemId)
+        guard let item else { return }
+
+        let deleteVc = DeleteItemViewController(item: item)
         deleteVc.modalPresentationStyle = .overFullScreen
+        deleteVc.delegate = self
 
         navigationController?.present(deleteVc, animated: true)
+    }
+
+    func fetchData(refreshControl: UIRefreshControl? = nil) {
+        showLoader(isShow: true, refreshControl: refreshControl)
+
+        items = []
+
+        // load order data
+        OrderNetworkModel.fetchData(id: orderId) { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success(let order):
+                // load nft data
+                if order.nfts.count > 0 {
+                    order.nfts.forEach { id in
+                        NftNetworkModel.fetchData(id: id) { [weak self] result in
+                            guard let self else { return }
+
+                            switch result {
+                            case .success(let nftNetworkModel):
+                                let nft = Nft.make(by: nftNetworkModel)
+                                self.items.append(nft)
+                            case .failure (let error):
+                                self.showLoader(isShow: false, refreshControl: refreshControl)
+
+                                present(
+                                    ErrorView.make(
+                                        title: "Network Error",
+                                        message: error.localizedDescription) { [weak self] in
+                                            guard let self else { return }
+                                            self.fetchData(refreshControl: refreshControl)
+                                        }
+                                    , animated: true)
+                            }
+                        }
+                    }
+                }
+
+                // loading data is complete
+                self.showLoader(isShow: false, refreshControl: refreshControl)
+            case .failure(let error):
+                self.showLoader(isShow: false, refreshControl: refreshControl)
+
+                present(
+                    ErrorView.make(
+                        title: "Network Error",
+                        message: error.localizedDescription) { [weak self] in
+                            guard let self else { return }
+                            self.fetchData(refreshControl: refreshControl)
+                        }
+                , animated: true)
+            }
+        }
+    }
+
+    func deleteItem(itemId: String) {
+        let itemDelete = findBy(id: itemId)
+        guard let itemDelete else { return }
+
+        items = items.filter({ $0.id != itemDelete.id })
+
+        let nfts_id: [String] = items.map({
+            $0.id
+        })
+
+        OrderNetworkModel.updateData(id: orderId, nfts_id: nfts_id) { result in
+            print("Send to server. Ok (placeholder)")
+        }
+
+    }
+
+    func showLoader(isShow: Bool, refreshControl: UIRefreshControl?) {
+        if let refreshControl = refreshControl {
+            isShow
+                ? refreshControl.beginRefreshing()
+                : refreshControl.endRefreshing()
+            return
+        }
+
+        if isShow {
+            view.isUserInteractionEnabled = false
+            ProgressHUD.show()
+        } else {
+            view.isUserInteractionEnabled = true
+            ProgressHUD.dismiss()
+        }
     }
 }
