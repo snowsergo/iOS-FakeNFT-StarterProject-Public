@@ -1,11 +1,10 @@
 //
-// Created by Сергей Махленко on 25.05.2023.
+// Created by Сергей Махленко on 27.05.2023.
 //
 
 import UIKit
 
-class PreviewImageComponent: UIImageView {
-
+class ImageWithLoadingView: UIImageView {
     let loadingAnimation = UIView()
 
     init(url: URL?) {
@@ -13,11 +12,8 @@ class PreviewImageComponent: UIImageView {
 
         backgroundColor = .asset(.lightGrey)
         translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = 12
-        layer.masksToBounds = true
 
         showLoadingBackground()
-
         load(url: url)
     }
 
@@ -25,18 +21,21 @@ class PreviewImageComponent: UIImageView {
         fatalError("init(coder:) is not supported")
     }
 
-    func load(url: URL?) {
+    func load(url: URL?, completionHandle: (() -> Void)? = nil ) {
         if url != nil {
             image = nil
             kf.setImage(with: url) { [weak self] _ in
                 guard let self else { return }
                 self.stopAnimating()
                 self.alpha = 1.0
+
+                guard let completionHandle else { return }
+                completionHandle()
             }
         }
     }
 
-    func showLoadingBackground() {
+    private func showLoadingBackground() {
         UIView.animate(withDuration: 1.0, delay: 0, options: [.repeat, .autoreverse]) { [weak self] in
             guard let self else { return }
             self.alpha = 0.4

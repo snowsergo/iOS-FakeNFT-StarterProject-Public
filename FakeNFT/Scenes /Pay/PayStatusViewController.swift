@@ -6,11 +6,13 @@ import UIKit
 
 final class PayStatusViewController: UIViewController {
 
-    private let isSuccessful: Bool
+    private var isSuccessful: Bool = false
+    private let orderId: String
+    private let currencyId: String
 
     var delegate: PayStatusDelegate?
 
-    private lazy var imageView: UIImageView = { [self] in
+    private lazy var imageView: UIImageView = {
         let imageName = isSuccessful ? "success-pay-status" : "failure-pay-status"
 
         let image = UIImage(named: imageName)
@@ -47,8 +49,10 @@ final class PayStatusViewController: UIViewController {
         return backButton
     }()
 
-    init(isSuccessful: Bool) {
-        self.isSuccessful = isSuccessful
+    init(orderId: String, currencyId: String) {
+        self.orderId = orderId
+        self.currencyId = currencyId
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,17 +64,42 @@ final class PayStatusViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .asset(.white)
 
-        view.addSubview(imageView)
-        view.addSubview(messageLabel)
-        view.addSubview(backButton)
+        checkoutPayment() { [weak self] isSuccessful in
+            guard let self else { return }
 
-        setupView()
+            self.isSuccessful = isSuccessful
+
+            view.addSubview(imageView)
+            view.addSubview(messageLabel)
+            view.addSubview(backButton)
+
+            setupView()
+        }
     }
 
     @objc func didTapBackButton(sender: Any) {
-        isSuccessful
+        return isSuccessful
             ? paySuccessful(sender)
             : payFailure(sender)
+    }
+
+    // MARK: - Private methods
+
+    private func checkoutPayment(completeHandle: @escaping (_ isSuccessful: Bool) -> Void) {
+
+        let networkClient = DefaultNetworkClient()
+        let request = GetCheckoutPaymentRequest(orderId: orderId, currencyId: currencyId)
+
+        networkClient.send(request: request, type: CheckoutPaymentNetworkModel.self) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    completeHandle(response.success)
+                case .failure:
+                    completeHandle(false)
+                }
+            }
+        }
     }
 
     private func paySuccessful(_ sender: Any) {
@@ -84,15 +113,8 @@ final class PayStatusViewController: UIViewController {
 
     private func payFailure(_ sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
-
-        dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-            delegate?.didFailure()
-        }
-
+        dismiss(animated: true)
     }
-
-    // MARK: - Private methods
 
     private func setupView() {
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)

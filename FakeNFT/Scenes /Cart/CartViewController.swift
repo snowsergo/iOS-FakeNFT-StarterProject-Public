@@ -148,7 +148,7 @@ final class CartViewController: UIViewController {
 
     @objc private func didTapPayButton(sender: Any) {
         UISelectionFeedbackGenerator().selectionChanged()
-        navigationController?.pushViewController(PayViewController(), animated: true)
+        navigationController?.pushViewController(PayViewController(orderId: orderId), animated: true)
     }
 
     // MARK: - Private methods

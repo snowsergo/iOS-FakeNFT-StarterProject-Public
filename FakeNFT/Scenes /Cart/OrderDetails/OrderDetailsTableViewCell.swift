@@ -6,7 +6,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
 
     private var model: Nft?
 
-    lazy private var pictureView: PreviewImageComponent = PreviewImageComponent(url: nil)
+    lazy private var pictureView: PreviewImageView = PreviewImageView(url: nil)
 
     let nameLabel: UILabel = {
         let nameLabel = UILabel()
