@@ -10,6 +10,7 @@ final class StarsComponent: UIView {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
 
+        stack.spacing = 2
         stack.alignment = .center
         stack.distribution = .fillEqually
 

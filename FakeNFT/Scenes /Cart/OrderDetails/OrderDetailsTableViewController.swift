@@ -17,6 +17,7 @@ final class OrderDetailsTableViewController: UITableViewController {
         tableView.register(OrderDetailsTableViewCell.self)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
 
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(didRefresh), for: .valueChanged)

@@ -33,6 +33,8 @@ final class DeleteItemViewController: UIViewController {
         let button = ButtonComponent(.primary, size: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Вернуться", for: .normal)
+        button.titleLabel?.font = .bodyRegular
+
         button.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
 
         return button
@@ -42,8 +44,10 @@ final class DeleteItemViewController: UIViewController {
         let button = ButtonComponent(.primary, size: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Удалить", for: .normal)
-        button.addTarget(self, action: #selector(didTapConfirmed), for: .touchUpInside)
         button.setTitleColor(.asset(.red), for: .normal)
+        button.titleLabel?.font = .bodyRegular
+
+        button.addTarget(self, action: #selector(didTapConfirmed), for: .touchUpInside)
 
         return button
     }()
@@ -110,7 +114,10 @@ final class DeleteItemViewController: UIViewController {
             contentContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 
             preview.widthAnchor.constraint(equalToConstant: 108),
-            preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: 1)
+            preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: 1),
+
+            backButton.widthAnchor.constraint(equalToConstant: 127),
+            confirmRemoveButton.widthAnchor.constraint(equalToConstant: 127)
         ])
     }
 }
