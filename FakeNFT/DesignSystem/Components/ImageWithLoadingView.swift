@@ -5,8 +5,6 @@
 import UIKit
 
 class ImageWithLoadingView: UIImageView {
-    let loadingAnimation = UIView()
-
     init(url: URL?) {
         super.init(image: nil)
 
