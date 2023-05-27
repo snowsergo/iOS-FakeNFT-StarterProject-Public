@@ -40,7 +40,6 @@
 		FB30E4C296077E6A4D4CD35B /* UpdateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED074BF51990C2F11C3A /* UpdateOrderRequest.swift */; };
 		FB30E5F2DDD317045211119A /* StarsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EC86E15C54BF894A9E64 /* StarsComponent.swift */; };
 		FB30E64F096DAB44E072CC84 /* PreviewImageComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E5D2477EDDCB728442B4 /* PreviewImageComponent.swift */; };
-		FB30E675F8F163186F8C9F42 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EFD07126EDE9C84777DF /* ColorScheme.swift */; };
 		FB30E70CF6F213F3C59FA130 /* NftNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E6C35AE011B50BAC02F5 /* NftNetworkModel.swift */; };
 		FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */; };
 		FB30EA1906C7DED21C59757F /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */; };
@@ -115,7 +114,6 @@
 		FB30EE40A07021018913C62A /* UpdateCartViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateCartViewProtocol.swift; sourceTree = "<group>"; };
 		FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 		FB30EF377D74B33D67C1E13E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
-		FB30EFD07126EDE9C84777DF /* ColorScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +148,6 @@
 			children = (
 				3F478ECE29DB474E00F6D39E /* Colors.swift */,
 				3F478ED029DB476500F6D39E /* Fonts.swift */,
-				FB30EFD07126EDE9C84777DF /* ColorScheme.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -527,7 +524,6 @@
 				FB30EE22C3010CFB1CB1825F /* CartNavigationController.swift in Sources */,
 				FB30EFECDC7E2A2C2D37C3A7 /* OrderDetailsTableViewCell.swift in Sources */,
 				FB30EDAC5B048F813AA9123A /* OrderDetailsTableViewController.swift in Sources */,
-				FB30E675F8F163186F8C9F42 /* ColorScheme.swift in Sources */,
 				FB30EF9AB5BFD6A099951630 /* PayStatusViewController.swift in Sources */,
 				FB30E147EFCF19CDEEA5BC63 /* Nft.swift in Sources */,
 				FB30E31BF68ACBB470486017 /* DeleteItemViewController.swift in Sources */,

@@ -18,15 +18,15 @@ final class WebViewController: UIViewController {
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.backgroundColor = ColorScheme.white
+        webView.backgroundColor = .asset(.white)
         return webView
     }()
 
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = ColorScheme.blue
-        progressView.trackTintColor = ColorScheme.lightGrey
+        progressView.progressTintColor = .asset(.blue)
+        progressView.trackTintColor = .asset(.lightGrey)
         progressView.setProgress(0.0, animated: false)
         return progressView
     }()

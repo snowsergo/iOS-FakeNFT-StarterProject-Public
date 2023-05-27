@@ -34,8 +34,8 @@ final class StarsComponent: UIView {
 
         for index in 0..<maximumStars {
             stackView.arrangedSubviews[index].tintColor = index < count
-                ? ColorScheme.yellow
-                : ColorScheme.lightGrey
+                ? .asset(.yellow)
+                : .asset(.lightGrey)
         }
     }
 
@@ -46,7 +46,7 @@ final class StarsComponent: UIView {
 
         for _ in 0..<maximumStars {
             let starImageView = UIImageView(image: starImage)
-            starImageView.tintColor = ColorScheme.lightGrey
+            starImageView.tintColor = .asset(.lightGrey)
             stackView.addArrangedSubview(starImageView)
 
             NSLayoutConstraint.activate([

@@ -13,7 +13,7 @@ final class OrderDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ColorScheme.white
+        view.backgroundColor = .asset(.white)
         tableView.register(OrderDetailsTableViewCell.self)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none

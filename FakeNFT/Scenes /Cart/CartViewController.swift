@@ -29,7 +29,7 @@ final class CartViewController: UIViewController {
     lazy private var sortByButton: UIBarButtonItem = { [self] in
         guard let icon = UIImage(named: "filter-icon") else { return UIBarButtonItem() }
         let button = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(didTapSortByButton))
-        button.tintColor = ColorScheme.black
+        button.tintColor = .asset(.black)
 
         return button
     }()
@@ -48,7 +48,7 @@ final class CartViewController: UIViewController {
     lazy private var totalLabel: UILabel = {
         let totalLabel = UILabel()
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalLabel.textColor = ColorScheme.black
+        totalLabel.textColor = .asset(.black)
         totalLabel.font = .systemFont(ofSize: 15)
 
         return totalLabel
@@ -57,7 +57,7 @@ final class CartViewController: UIViewController {
     lazy private var totalCostLabel: UILabel = {
         let totalCostLabel = UILabel()
         totalCostLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalCostLabel.textColor = ColorScheme.green
+        totalCostLabel.textColor = .asset(.green)
         totalCostLabel.font = .boldSystemFont(ofSize: 17)
 
         return totalCostLabel
@@ -87,7 +87,7 @@ final class CartViewController: UIViewController {
         totalStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         totalStackView.isLayoutMarginsRelativeArrangement = true
 
-        totalStackView.backgroundColor = ColorScheme.lightGrey
+        totalStackView.backgroundColor = .asset(.lightGrey)
         totalStackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         totalStackView.layer.masksToBounds = true
         totalStackView.layer.cornerRadius = 16
@@ -102,7 +102,7 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         label.text = "Корзина пуста"
-        label.textColor = ColorScheme.black
+        label.textColor = .asset(.black)
         label.font = .boldSystemFont(ofSize: 17)
         label.textAlignment = .center
         label.layer.zPosition = 10

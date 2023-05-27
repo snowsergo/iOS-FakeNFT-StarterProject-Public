@@ -58,7 +58,7 @@ final class PayStatusViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ColorScheme.white
+        view.backgroundColor = .asset(.white)
 
         view.addSubview(imageView)
         view.addSubview(messageLabel)

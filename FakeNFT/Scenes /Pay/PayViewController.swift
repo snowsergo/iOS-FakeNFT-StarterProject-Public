@@ -33,8 +33,8 @@ final class PayViewController: UIViewController {
         linkLabel.translatesAutoresizingMaskIntoConstraints = false
         linkLabel.isUserInteractionEnabled = true
         linkLabel.text = "Пользовательского соглашения"
-        linkLabel.textColor = ColorScheme.blue
-        linkLabel.font = .systemFont(ofSize: 13)
+        linkLabel.textColor = .asset(.black)
+        linkLabel.font = .caption2
 
         return linkLabel
     }()
@@ -63,7 +63,7 @@ final class PayViewController: UIViewController {
         view.addSubview(footerView)
         view.addSubview(collectionView)
 
-        view.backgroundColor = ColorScheme.white
+        view.backgroundColor = .asset(.white)
         navigationItem.backButtonTitle = ""
 
         setupView()

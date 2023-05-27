@@ -8,8 +8,8 @@ class CartNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ColorScheme.white
-        navigationBar.tintColor = ColorScheme.black
+        view.backgroundColor = .asset(.white)
+        navigationBar.tintColor = .asset(.black)
 
         let rootController = CartViewController()
         pushViewController(rootController, animated: false)

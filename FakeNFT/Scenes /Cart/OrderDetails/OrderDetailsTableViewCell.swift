@@ -79,7 +79,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
     }
 
     private func setupView() {
-        backgroundColor = ColorScheme.white
+        backgroundColor = .asset(.white)
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
 

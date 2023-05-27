@@ -24,7 +24,7 @@ final class DeleteItemViewController: UIViewController {
         label.text = "Вы уверены, что хотите\nудалить объект из корзины?"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 13)
-        label.textColor = ColorScheme.black
+        label.textColor = .asset(.black)
 
         return label
     }()
@@ -43,7 +43,7 @@ final class DeleteItemViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Удалить", for: .normal)
         button.addTarget(self, action: #selector(didTapConfirmed), for: .touchUpInside)
-        button.setTitleColor(ColorScheme.red, for: .normal)
+        button.setTitleColor(.asset(.red), for: .normal)
 
         return button
     }()

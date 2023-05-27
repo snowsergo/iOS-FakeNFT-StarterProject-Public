@@ -1,5 +1,9 @@
 import UIKit
 
+enum ColorAsset: String, CaseIterable {
+    case black, blackUniversal, blue, green, grey, lightGrey, red, white, whiteUniversal, yellow
+}
+
 extension UIColor {
     // Creates color from a hex string
     convenience init(hexString: String) {
@@ -18,5 +22,9 @@ extension UIColor {
             (alpha, red, green, blue) = (255, 0, 0, 0)
         }
         self.init(red: CGFloat(red) / 255, green: CGFloat(green) / 255, blue: CGFloat(blue) / 255, alpha: CGFloat(alpha) / 255)
+    }
+
+    static func asset(_ colorAsset: ColorAsset) -> UIColor {
+        UIColor(named: colorAsset.rawValue) ?? .clear
     }
 }

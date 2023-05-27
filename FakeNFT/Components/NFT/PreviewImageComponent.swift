@@ -11,7 +11,7 @@ class PreviewImageComponent: UIImageView {
     init(url: URL?) {
         super.init(image: nil)
 
-        backgroundColor = ColorScheme.lightGrey
+        backgroundColor = .asset(.lightGrey)
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 12
         layer.masksToBounds = true
