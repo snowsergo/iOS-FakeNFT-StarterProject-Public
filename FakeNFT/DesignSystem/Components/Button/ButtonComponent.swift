@@ -10,7 +10,11 @@ final class ButtonComponent: UIButton {
             applyStyle()
         }
     }
-
+    override var isEnabled: Bool {
+        didSet {
+            alpha = isEnabled ? 1.0 : 0.3
+        }
+    }
     var size: ButtonSize = .normal
 
     override var isHighlighted: Bool {
