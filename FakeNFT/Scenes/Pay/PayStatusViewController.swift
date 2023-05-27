@@ -23,7 +23,7 @@ final class PayStatusViewController: UIViewController {
         return imageView
     }()
 
-    private lazy var messageLabel: UILabel = { [self] in
+    private lazy var messageLabel: UILabel = {
         let messageLabel = UILabel()
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.numberOfLines = 0
@@ -37,7 +37,7 @@ final class PayStatusViewController: UIViewController {
         return messageLabel
     }()
 
-    private lazy var backButton: UIButton = { [self] in
+    private lazy var backButton: UIButton = { [weak self] in
         let backButton = ButtonComponent(.primary, size: .large)
         backButton.translatesAutoresizingMaskIntoConstraints = false
 

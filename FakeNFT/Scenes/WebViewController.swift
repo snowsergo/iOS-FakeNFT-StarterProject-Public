@@ -66,8 +66,8 @@ final class WebViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        webViewObserve = webView.observe(\WKWebView.estimatedProgress, options: .new) { [self] (_: WKWebView, change:NSKeyValueObservedChange<Double>) in
-            progressView.setProgress(Float(change.newValue!), animated: false)
+        webViewObserve = webView.observe(\WKWebView.estimatedProgress, options: .new) { (_: WKWebView, change:NSKeyValueObservedChange<Double>) in
+            self.progressView.setProgress(Float(change.newValue!), animated: false)
             if change.newValue! > 0 {
                 ProgressHUD.dismiss()
             }
