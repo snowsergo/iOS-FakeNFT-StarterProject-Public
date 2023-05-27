@@ -25,7 +25,7 @@ final class PayStatusViewController: UIViewController {
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
-        messageLabel.font = .boldSystemFont(ofSize: 22)
+        messageLabel.font = .headline3
 
         messageLabel.text = isSuccessful
             ? "Успех! Оплата прошла,\nпоздравляем с покупкой!"

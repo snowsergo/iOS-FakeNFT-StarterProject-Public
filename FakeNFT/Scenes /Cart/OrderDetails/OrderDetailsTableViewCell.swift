@@ -11,7 +11,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
     let nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = .boldSystemFont(ofSize: 17)
+        nameLabel.font = .bodyBold
         return nameLabel
     }()
 
@@ -21,7 +21,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         let priceLabel = UILabel()
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        priceLabel.font = .boldSystemFont(ofSize: 17)
+        priceLabel.font = .bodyBold
         return priceLabel
     }()
 
@@ -30,7 +30,7 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
         priceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         priceTitleLabel.text = "Цена"
-        priceTitleLabel.font = .systemFont(ofSize: 14)
+        priceTitleLabel.font = .caption2
         
         return priceTitleLabel
     }()

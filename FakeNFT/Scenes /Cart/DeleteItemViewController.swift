@@ -23,7 +23,7 @@ final class DeleteItemViewController: UIViewController {
         label.numberOfLines = 0
         label.text = "Вы уверены, что хотите\nудалить объект из корзины?"
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 13)
+        label.font = .caption2
         label.textColor = .asset(.black)
 
         return label

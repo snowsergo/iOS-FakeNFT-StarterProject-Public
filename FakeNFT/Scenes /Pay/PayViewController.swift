@@ -23,7 +23,7 @@ final class PayViewController: UIViewController {
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.numberOfLines = 0
         textLabel.text = "Совершая покупку, вы соглашаетесь с условиями"
-        textLabel.font = .systemFont(ofSize: 13)
+        textLabel.font = .caption2
 
         return textLabel
     }()

@@ -49,7 +49,7 @@ final class CartViewController: UIViewController {
         let totalLabel = UILabel()
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
         totalLabel.textColor = .asset(.black)
-        totalLabel.font = .systemFont(ofSize: 15)
+        totalLabel.font = .caption1
 
         return totalLabel
     }()
@@ -58,7 +58,7 @@ final class CartViewController: UIViewController {
         let totalCostLabel = UILabel()
         totalCostLabel.translatesAutoresizingMaskIntoConstraints = false
         totalCostLabel.textColor = .asset(.green)
-        totalCostLabel.font = .boldSystemFont(ofSize: 17)
+        totalCostLabel.font = .bodyBold
 
         return totalCostLabel
     }()
@@ -103,7 +103,7 @@ final class CartViewController: UIViewController {
 
         label.text = "Корзина пуста"
         label.textColor = .asset(.black)
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = .bodyBold
         label.textAlignment = .center
         label.layer.zPosition = 10
 

@@ -33,22 +33,22 @@
 		FB30E12FE6F6318B8A935B9D /* PayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E2E9AD4390949BC79308 /* PayViewController.swift */; };
 		FB30E144E26F2B16D07C4D27 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E8EE0A1BCDE03238B63B /* WebViewController.swift */; };
 		FB30E147EFCF19CDEEA5BC63 /* Nft.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E7E731D75B44E56B45A6 /* Nft.swift */; };
-		FB30E22A9DA0E44E966739FE /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EA2E6D103963E7C0CF62 /* ErrorView.swift */; };
 		FB30E31BF68ACBB470486017 /* DeleteItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E51644AAE84FA861C5CF /* DeleteItemViewController.swift */; };
 		FB30E333B86EF3ABE3D4FC48 /* UpdateCartViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EE40A07021018913C62A /* UpdateCartViewProtocol.swift */; };
 		FB30E4658CFF59CD5F81D569 /* GetNftRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E2D56195780A591D87FB /* GetNftRequest.swift */; };
+		FB30E4A280DD213943CB530D /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E85F97D067BA44D72A07 /* ButtonComponent.swift */; };
+		FB30E4B9B7D4A62B0807342F /* PreviewImageComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E0C634E3782A4711E917 /* PreviewImageComponent.swift */; };
 		FB30E4C296077E6A4D4CD35B /* UpdateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED074BF51990C2F11C3A /* UpdateOrderRequest.swift */; };
-		FB30E5F2DDD317045211119A /* StarsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EC86E15C54BF894A9E64 /* StarsComponent.swift */; };
-		FB30E64F096DAB44E072CC84 /* PreviewImageComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E5D2477EDDCB728442B4 /* PreviewImageComponent.swift */; };
+		FB30E6433F42866203D55577 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E43DC9F93F3287FF741B /* ErrorView.swift */; };
 		FB30E70CF6F213F3C59FA130 /* NftNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E6C35AE011B50BAC02F5 /* NftNetworkModel.swift */; };
-		FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */; };
-		FB30EA1906C7DED21C59757F /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */; };
+		FB30E75D0A80DB21C1EDE73C /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EEA655945370527BEADD /* ButtonStyle.swift */; };
+		FB30E97C2CCB9F8F8C62A432 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E2B7071D0B6489313FA7 /* ButtonSize.swift */; };
 		FB30EA408E4219CBDD78F8EF /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E805E28A9999AB561D98 /* Config.swift */; };
-		FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED46738712A87A25488C /* ButtonSize.swift */; };
 		FB30EDAC5B048F813AA9123A /* OrderDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E3F3A1AA7FC3370B4DC5 /* OrderDetailsTableViewController.swift */; };
 		FB30EE22C3010CFB1CB1825F /* CartNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EA91AEF0FD38D7BE692B /* CartNavigationController.swift */; };
 		FB30EF9AB5BFD6A099951630 /* PayStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E13ABE7C877D42442ED0 /* PayStatusViewController.swift */; };
 		FB30EFECDC7E2A2C2D37C3A7 /* OrderDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E33B7BCE08AB4405B79B /* OrderDetailsTableViewCell.swift */; };
+		FB30EFFFDD1431D0CEB518AD /* StarsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EAA1CAC42B7D5D6E209C /* StarsComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,28 +91,28 @@
 		3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
+		FB30E0C634E3782A4711E917 /* PreviewImageComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageComponent.swift; sourceTree = "<group>"; };
 		FB30E0F27B86E2BCAFE60A19 /* OrderNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderNetworkModel.swift; sourceTree = "<group>"; };
 		FB30E13ABE7C877D42442ED0 /* PayStatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayStatusViewController.swift; sourceTree = "<group>"; };
-		FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		FB30E2B7071D0B6489313FA7 /* ButtonSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonSize.swift; sourceTree = "<group>"; };
 		FB30E2D56195780A591D87FB /* GetNftRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetNftRequest.swift; sourceTree = "<group>"; };
 		FB30E2E9AD4390949BC79308 /* PayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayViewController.swift; sourceTree = "<group>"; };
 		FB30E33B7BCE08AB4405B79B /* OrderDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		FB30E3F3A1AA7FC3370B4DC5 /* OrderDetailsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderDetailsTableViewController.swift; sourceTree = "<group>"; };
+		FB30E43DC9F93F3287FF741B /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		FB30E51644AAE84FA861C5CF /* DeleteItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteItemViewController.swift; sourceTree = "<group>"; };
-		FB30E5D2477EDDCB728442B4 /* PreviewImageComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageComponent.swift; sourceTree = "<group>"; };
 		FB30E622B6F6B708B75E4EF8 /* GetOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderRequest.swift; sourceTree = "<group>"; };
 		FB30E6A896458E44287356D5 /* CartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		FB30E6C35AE011B50BAC02F5 /* NftNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NftNetworkModel.swift; sourceTree = "<group>"; };
 		FB30E7E731D75B44E56B45A6 /* Nft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nft.swift; sourceTree = "<group>"; };
 		FB30E805E28A9999AB561D98 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		FB30E85F97D067BA44D72A07 /* ButtonComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 		FB30E8EE0A1BCDE03238B63B /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		FB30EA2E6D103963E7C0CF62 /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		FB30EA91AEF0FD38D7BE692B /* CartNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartNavigationController.swift; sourceTree = "<group>"; };
-		FB30EC86E15C54BF894A9E64 /* StarsComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarsComponent.swift; sourceTree = "<group>"; };
+		FB30EAA1CAC42B7D5D6E209C /* StarsComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarsComponent.swift; sourceTree = "<group>"; };
 		FB30ED074BF51990C2F11C3A /* UpdateOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateOrderRequest.swift; sourceTree = "<group>"; };
-		FB30ED46738712A87A25488C /* ButtonSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonSize.swift; sourceTree = "<group>"; };
 		FB30EE40A07021018913C62A /* UpdateCartViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateCartViewProtocol.swift; sourceTree = "<group>"; };
-		FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
+		FB30EEA655945370527BEADD /* ButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		FB30EF377D74B33D67C1E13E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,8 +187,8 @@
 				3F68069F29CBBAF200B4F915 /* Assets.xcassets */,
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
 				3F6806A429CBBAF200B4F915 /* Info.plist */,
-				FB30EC19783B8593D4D5FCDF /* Components */,
 				FB30E2D7045A03A0D938CB07 /* Resources */,
+				FB30E8B152CDC238E5671427 /* Components */,
 			);
 			path = FakeNFT;
 			sourceTree = "<group>";
@@ -288,15 +288,6 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
-		FB30E0295E3967F3B43E72F2 /* NFT */ = {
-			isa = PBXGroup;
-			children = (
-				FB30EC86E15C54BF894A9E64 /* StarsComponent.swift */,
-				FB30E5D2477EDDCB728442B4 /* PreviewImageComponent.swift */,
-			);
-			path = NFT;
-			sourceTree = "<group>";
-		};
 		FB30E2D7045A03A0D938CB07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,14 +322,24 @@
 			path = Pay;
 			sourceTree = "<group>";
 		};
-		FB30E6BC22009305798B070B /* Button */ = {
+		FB30E82ED25B5C22CB7025A6 /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */,
-				FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */,
-				FB30ED46738712A87A25488C /* ButtonSize.swift */,
+				FB30E85F97D067BA44D72A07 /* ButtonComponent.swift */,
+				FB30EEA655945370527BEADD /* ButtonStyle.swift */,
+				FB30E2B7071D0B6489313FA7 /* ButtonSize.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		FB30E8B152CDC238E5671427 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FB30E82ED25B5C22CB7025A6 /* Button */,
+				FB30EB0D690605092AB122AE /* NFT */,
+				FB30E43DC9F93F3287FF741B /* ErrorView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		FB30E964A6B6A15E707850FB /* Cart */ = {
@@ -352,14 +353,13 @@
 			path = Cart;
 			sourceTree = "<group>";
 		};
-		FB30EC19783B8593D4D5FCDF /* Components */ = {
+		FB30EB0D690605092AB122AE /* NFT */ = {
 			isa = PBXGroup;
 			children = (
-				FB30E6BC22009305798B070B /* Button */,
-				FB30E0295E3967F3B43E72F2 /* NFT */,
-				FB30EA2E6D103963E7C0CF62 /* ErrorView.swift */,
+				FB30EAA1CAC42B7D5D6E209C /* StarsComponent.swift */,
+				FB30E0C634E3782A4711E917 /* PreviewImageComponent.swift */,
 			);
-			path = Components;
+			path = NFT;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -514,9 +514,6 @@
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
-				FB30EA1906C7DED21C59757F /* ButtonComponent.swift in Sources */,
-				FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */,
-				FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */,
 				FB30E0BF18D624866D1BA126 /* OrderNetworkModel.swift in Sources */,
 				FB30E144E26F2B16D07C4D27 /* WebViewController.swift in Sources */,
 				FB30E12FE6F6318B8A935B9D /* PayViewController.swift in Sources */,
@@ -527,15 +524,18 @@
 				FB30EF9AB5BFD6A099951630 /* PayStatusViewController.swift in Sources */,
 				FB30E147EFCF19CDEEA5BC63 /* Nft.swift in Sources */,
 				FB30E31BF68ACBB470486017 /* DeleteItemViewController.swift in Sources */,
-				FB30E5F2DDD317045211119A /* StarsComponent.swift in Sources */,
-				FB30E64F096DAB44E072CC84 /* PreviewImageComponent.swift in Sources */,
 				FB30E333B86EF3ABE3D4FC48 /* UpdateCartViewProtocol.swift in Sources */,
 				FB30E0D4DDE504D421234540 /* GetOrderRequest.swift in Sources */,
-				FB30E22A9DA0E44E966739FE /* ErrorView.swift in Sources */,
 				FB30E70CF6F213F3C59FA130 /* NftNetworkModel.swift in Sources */,
 				FB30E4658CFF59CD5F81D569 /* GetNftRequest.swift in Sources */,
 				FB30E4C296077E6A4D4CD35B /* UpdateOrderRequest.swift in Sources */,
 				FB30EA408E4219CBDD78F8EF /* Config.swift in Sources */,
+				FB30E4A280DD213943CB530D /* ButtonComponent.swift in Sources */,
+				FB30E75D0A80DB21C1EDE73C /* ButtonStyle.swift in Sources */,
+				FB30E97C2CCB9F8F8C62A432 /* ButtonSize.swift in Sources */,
+				FB30EFFFDD1431D0CEB518AD /* StarsComponent.swift in Sources */,
+				FB30E4B9B7D4A62B0807342F /* PreviewImageComponent.swift in Sources */,
+				FB30E6433F42866203D55577 /* ErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
