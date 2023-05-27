@@ -201,7 +201,7 @@
 				3F478ECD29DB473000F6D39E /* DesignSystem */,
 				3F6806CE29CBBD1B00B4F915 /* Foundation */,
 				3F6806C929CBBCAF00B4F915 /* Models */,
-				3F6806C729CBBC5B00B4F915 /* Scenes  */,
+				3F6806C729CBBC5B00B4F915 /* Scenes */,
 				3F6806C629CBBC4E00B4F915 /* Services */,
 				3F68069C29CBBAF100B4F915 /* Main.storyboard */,
 				3F68069F29CBBAF200B4F915 /* Assets.xcassets */,
@@ -236,7 +236,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
+		3F6806C729CBBC5B00B4F915 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
@@ -244,7 +244,7 @@
 				FB30E4C0D48D778F200824FE /* Pay */,
 				FB30E964A6B6A15E707850FB /* Cart */,
 			);
-			path = "Scenes ";
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		3F6806C829CBBC8100B4F915 /* ProductDetails */ = {

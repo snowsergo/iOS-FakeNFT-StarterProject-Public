@@ -195,6 +195,6 @@ extension PayViewController: PayStatusDelegate {
         navigationController?.popToRootViewController(animated: false)
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        appDelegate.rootTabBarController.selectedIndex = 1
+        appDelegate.rootTabBarController?.selectedIndex = 1
     }
 }

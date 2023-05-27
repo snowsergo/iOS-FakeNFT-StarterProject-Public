@@ -2,8 +2,7 @@ import UIKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    lazy var rootTabBarController = UITabBarController()
+    var rootTabBarController: UITabBarController?
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
