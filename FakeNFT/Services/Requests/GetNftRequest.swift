@@ -5,11 +5,10 @@
 import Foundation
 
 struct GetNftRequest: NetworkRequest {
-    private(set) var httpMethod: HttpMethod = .get
     var endpoint: URL?
 
     init(id: String) {
-        guard let endpoint = URL(string: "\(baseUrl)/nft/\(id)") else { return }
+        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/nft/\(id)") else { return }
         self.endpoint = endpoint
     }
 }

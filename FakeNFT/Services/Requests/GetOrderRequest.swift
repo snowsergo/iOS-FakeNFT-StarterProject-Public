@@ -5,11 +5,10 @@
 import Foundation
 
 struct GetOrderRequest: NetworkRequest {
-    private(set) var httpMethod: HttpMethod = .get
     var endpoint: URL?
 
     init(id: String) {
-        guard let endpoint = URL(string: "\(baseUrl)/orders/\(id)") else { return }
+        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/orders/\(id)") else { return }
         self.endpoint = endpoint
     }
 }

@@ -17,7 +17,7 @@ enum CartNftSortable: String, CaseIterable {
 final class CartViewController: UIViewController {
     // MARK: - View and variables
 
-    private let orderId = "1"
+    private let orderId = Config.mockOrderId
 
     private var items: [Nft] = [] {
         didSet {
@@ -26,9 +26,13 @@ final class CartViewController: UIViewController {
         }
     }
 
-    lazy private var sortByButton: UIBarButtonItem = { [self] in
-        guard let icon = UIImage(named: "filter-icon") else { return UIBarButtonItem() }
-        let button = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(didTapSortByButton))
+    lazy private var sortByButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: .asset(.filter),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSortByButton))
+
         button.tintColor = .asset(.black)
 
         return button
@@ -291,11 +295,9 @@ extension CartViewController: UpdateCartViewProtocol {
 
         items = items.filter({ $0.id != itemDelete.id })
 
-        let nfts_id: [String] = items.map({
-            $0.id
-        })
+        let nftsId: [String] = items.map({ $0.id })
 
-        OrderNetworkModel.updateData(id: orderId, nfts_id: nfts_id) { result in
+        OrderNetworkModel.updateData(orderId: orderId, nftsId: nftsId) { _ in
             print("Send to server. Ok (placeholder)")
         }
 

@@ -13,10 +13,11 @@ final class PayStatusViewController: UIViewController {
     var delegate: PayStatusDelegate?
 
     private lazy var imageView: UIImageView = {
-        let imageName = isSuccessful ? "success-pay-status" : "failure-pay-status"
+        let image: UIImage = isSuccessful
+            ? .asset(.successPay)
+            : .asset(.failurePay)
 
-        let image = UIImage(named: imageName)
-        let imageView = UIImageView(image: image!)
+        let imageView = UIImageView(image: image)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

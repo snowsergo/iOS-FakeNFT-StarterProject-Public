@@ -36,11 +36,9 @@ final class OrderDetailsTableViewCell: UITableViewCell, ReuseIdentifying {
     }()
 
     let confirmDeleteButton: UIButton = {
-        let image = UIImage(named: "trash-icon") ?? UIImage(systemName: "trash")
-
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(image, for: .normal)
+        button.setImage(.asset(.trash), for: .normal)
 
         return button
     }()

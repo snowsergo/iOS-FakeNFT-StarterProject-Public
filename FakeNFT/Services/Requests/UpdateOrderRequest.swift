@@ -5,15 +5,15 @@
 import Foundation
 
 struct UpdateOrderRequest: NetworkRequest {
-    private(set) var httpMethod: HttpMethod = .put
-    private(set) var httpBody: Data? = nil
+    var httpMethod: HttpMethod = .put
+    var httpBody: Data? = nil
     var endpoint: URL?
 
-    init(id: String, nfts_id: [String]) {
-        guard let endpoint = URL(string: "\(baseUrl)/orders/\(id)") else { return }
+    init(orderId: String, nftsId: [String]) {
+        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/orders/\(orderId)") else { return }
         self.endpoint = endpoint
 
-        let data: [String: [String]] = [ "nfts": nfts_id ]
+        let data: [String: [String]] = [ "nfts": nftsId ]
         httpBody = try! JSONSerialization.data(withJSONObject: data)
     }
 }

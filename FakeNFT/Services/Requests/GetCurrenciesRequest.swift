@@ -5,6 +5,5 @@
 import Foundation
 
 struct GetCurrenciesRequest: NetworkRequest {
-    private(set) var httpMethod: HttpMethod = .get
-    var endpoint: URL? = URL(string: "\(baseUrl)/currencies")
+    var endpoint: URL? = URL(string: "\(Config.baseUrl)/api/v1/currencies")
 }
