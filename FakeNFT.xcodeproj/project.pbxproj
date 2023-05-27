@@ -44,6 +44,7 @@
 		FB30E70CF6F213F3C59FA130 /* NftNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E6C35AE011B50BAC02F5 /* NftNetworkModel.swift */; };
 		FB30E93D2529D7129CA94F4E /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E27E3FE3C04C6A048352 /* ButtonStyle.swift */; };
 		FB30EA1906C7DED21C59757F /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EEEB00DD001BF1A0E460 /* ButtonComponent.swift */; };
+		FB30EA408E4219CBDD78F8EF /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E805E28A9999AB561D98 /* Config.swift */; };
 		FB30EB69560D11E38AC10183 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED46738712A87A25488C /* ButtonSize.swift */; };
 		FB30EDAC5B048F813AA9123A /* OrderDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E3F3A1AA7FC3370B4DC5 /* OrderDetailsTableViewController.swift */; };
 		FB30EE22C3010CFB1CB1825F /* CartNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EA91AEF0FD38D7BE692B /* CartNavigationController.swift */; };
@@ -104,6 +105,7 @@
 		FB30E6A896458E44287356D5 /* CartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		FB30E6C35AE011B50BAC02F5 /* NftNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NftNetworkModel.swift; sourceTree = "<group>"; };
 		FB30E7E731D75B44E56B45A6 /* Nft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nft.swift; sourceTree = "<group>"; };
+		FB30E805E28A9999AB561D98 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		FB30E8EE0A1BCDE03238B63B /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		FB30EA2E6D103963E7C0CF62 /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		FB30EA91AEF0FD38D7BE692B /* CartNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartNavigationController.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
 				3F6806A429CBBAF200B4F915 /* Info.plist */,
 				FB30EC19783B8593D4D5FCDF /* Components */,
+				FB30E2D7045A03A0D938CB07 /* Resources */,
 			);
 			path = FakeNFT;
 			sourceTree = "<group>";
@@ -295,6 +298,14 @@
 				FB30E5D2477EDDCB728442B4 /* PreviewImageComponent.swift */,
 			);
 			path = NFT;
+			sourceTree = "<group>";
+		};
+		FB30E2D7045A03A0D938CB07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FB30E805E28A9999AB561D98 /* Config.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		FB30E41CAF14B66B7AFBD58F /* Protocols */ = {
@@ -528,6 +539,7 @@
 				FB30E70CF6F213F3C59FA130 /* NftNetworkModel.swift in Sources */,
 				FB30E4658CFF59CD5F81D569 /* GetNftRequest.swift in Sources */,
 				FB30E4C296077E6A4D4CD35B /* UpdateOrderRequest.swift in Sources */,
+				FB30EA408E4219CBDD78F8EF /* Config.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
