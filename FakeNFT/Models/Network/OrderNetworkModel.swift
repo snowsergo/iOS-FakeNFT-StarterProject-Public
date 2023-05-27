@@ -20,13 +20,13 @@ struct OrderNetworkModel: Codable {
     }
 
     static func updateData(
-        id: String,
-        nfts_id: [String],
+        orderId: String,
+        nftsId: [String],
         onResponse: @escaping (Result<Data, Error>) -> Void)
     {
         let networkClient = DefaultNetworkClient()
 
-        networkClient.send(request: UpdateOrderRequest(id: id, nfts_id: nfts_id), type: self) {
+        networkClient.send(request: UpdateOrderRequest(orderId: orderId, nftsId: nftsId), type: self) {
             (result: Result<OrderNetworkModel, Error>) in
             switch result {
             case .success(let data):
