@@ -17,9 +17,6 @@ final class UserViewCell: UITableViewCell {
         countView.text = count
 
         guard let url = url, let validUrl = URL(string: url) else {return}
-        //        let processor = RoundCornerImageProcessor(cornerRadius: 16)
-        //         avatarView.kf.setImage(with: validUrl, placeholder: UIImage(named: "avatar"))/
-
         let imageSize = CGSize(width: 28, height: 28)
         let placeholderSize = CGSize(width: 28, height: 28)
         let processor = RoundCornerImageProcessor(cornerRadius: imageSize.width / 2)
@@ -38,58 +35,46 @@ final class UserViewCell: UITableViewCell {
 
     private lazy var labelView: UILabel = {
         let label = UILabel()
-
-        //        label.font = .asset(.ysDisplayRegular, size: 17)
         label.textColor = .asset(.black)
-
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private lazy var countView: UILabel = {
         let label = UILabel()
-
-        //        label.font = .asset(.ysDisplayRegular, size: 17)
         label.textColor = .asset(.black)
-
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+
     private lazy var indexView: UILabel = {
         let label = UILabel()
-
-        //        label.font = .asset(.ysDisplayRegular, size: 17)
         label.textColor = .asset(.black)
-
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private lazy var backView: UIView = {
         let view = UIView()
-
         view.backgroundColor = .asset(.lightGrey)
-
         view.layer.cornerRadius = 12
         view.layer.masksToBounds = true
-        //        view.layer.maskedCorners = []
-
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+
     private lazy var avatarView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .red
 
         // Задаем размер изображения
-           let imageSize = CGSize(width: 28, height: 28)
-           view.widthAnchor.constraint(equalToConstant: imageSize.width).isActive = true
-           view.heightAnchor.constraint(equalToConstant: imageSize.height).isActive = true
+        let imageSize = CGSize(width: 28, height: 28)
+        view.widthAnchor.constraint(equalToConstant: imageSize.width).isActive = true
+        view.heightAnchor.constraint(equalToConstant: imageSize.height).isActive = true
 
-           // Задаем форму в виде круга
-           view.layer.cornerRadius = imageSize.width / 2
-           view.clipsToBounds = true
+        // Задаем форму в виде круга
+        view.layer.cornerRadius = imageSize.width / 2
+        view.clipsToBounds = true
 
         return view
     }()
@@ -106,7 +91,6 @@ private extension UserViewCell {
         addSubview(labelView)
         addSubview(countView)
         addSubview(avatarView)
-//        configureAvatarView()
         insertSubview(backView, at: 0)
 
         NSLayoutConstraint.activate([
@@ -122,8 +106,6 @@ private extension UserViewCell {
 
             avatarView.centerYAnchor.constraint(equalTo: centerYAnchor),
             avatarView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 16),
-            //            avatarView.topAnchor.constraint(equalTo: topAnchor),
-            //            avatarView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             labelView.centerYAnchor.constraint(equalTo: centerYAnchor),
             labelView.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 16),

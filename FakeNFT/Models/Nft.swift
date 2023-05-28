@@ -1,7 +1,7 @@
 import Foundation
 
-struct Nft {
-    let createdAt: Date
+struct Nft: Codable {
+    let createdAt: String
     let name: String
     let images: [String]
     let rating: Int

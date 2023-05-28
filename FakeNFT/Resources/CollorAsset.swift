@@ -2,7 +2,6 @@ import UIKit
 
 enum ColorAsset: String, CaseIterable {
     case black, blue, white, grey, lightGrey, yellow
-//    case contrast, background
 }
 
 extension UIColor {

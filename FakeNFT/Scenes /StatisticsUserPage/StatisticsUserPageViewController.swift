@@ -10,13 +10,11 @@ final class StatisticsUserPageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("_____ user_page _______")
         viewModel = StatisticsUserPageViewModel()
         viewModel.onChange = configure
         viewModel.getUser(userId: userId)
         setupAppearance()
         view.backgroundColor = .white
-        //        viewModel.onChange = updatePage()
     }
 
     init(userId: String) {
@@ -29,10 +27,7 @@ final class StatisticsUserPageViewController: UIViewController {
     }
     private lazy var nameView: UILabel = {
         let label = UILabel()
-
-        //        label.font = .asset(.ysDisplayRegular, size: 17)
         label.textColor = .asset(.black)
-
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -40,7 +35,6 @@ final class StatisticsUserPageViewController: UIViewController {
     private lazy var avatarView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        //        view.backgroundColor = .red
 
         // Задаем размер изображения
         let imageSize = CGSize(width: 70, height: 70)
@@ -57,7 +51,6 @@ final class StatisticsUserPageViewController: UIViewController {
     private lazy var descriptionView: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        //        label.font = .asset(.ysDisplayRegular, size: 17)
         label.textColor = .asset(.black)
 
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -115,10 +108,10 @@ final class StatisticsUserPageViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: button.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: button.bottomAnchor)
         ])
-        // Add tap gesture recognizer to stackView
-           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openNFTCollection))
-           stackView.addGestureRecognizer(tapGesture)
-           stackView.isUserInteractionEnabled = true
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openNFTCollection))
+        stackView.addGestureRecognizer(tapGesture)
+        stackView.isUserInteractionEnabled = true
 
         return button
     }()
@@ -143,7 +136,6 @@ final class StatisticsUserPageViewController: UIViewController {
 
     @objc
     private func openWebView() {
-        print("openWebView")
         guard let siteUrl = viewModel.user?.website, let url = URL(string: siteUrl) else {
             return
         }
@@ -157,18 +149,21 @@ final class StatisticsUserPageViewController: UIViewController {
         let backButton = UIBarButtonItem()
         backButton.title = ""
         navigationItem.backBarButtonItem = backButton
-
         navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc
     private func openNFTCollection() {
-        print("____ open nft collection _____")
+        let viewController = StatisticsUserCollectionPageViewController(nfts: viewModel.user?.nfts)
+        viewController.title = "Коллекция NFT"
+        let backButton = UIBarButtonItem()
+        backButton.title = ""
+        navigationItem.backBarButtonItem = backButton
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     func setupAppearance() {
         view.backgroundColor = .white
-        //        selectionStyle = .none
 
         view.addSubview(avatarView)
         view.addSubview(nameView)
@@ -200,5 +195,4 @@ final class StatisticsUserPageViewController: UIViewController {
             collectionButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
-
 }
