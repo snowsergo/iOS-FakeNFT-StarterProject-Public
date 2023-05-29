@@ -1,18 +1,19 @@
 import UIKit
+import ProgressHUD
 
 final class StatisticsPageViewController: UIViewController {
     private var viewModel: StatisticsPageViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.white)
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         let navigationController = UINavigationController(rootViewController: StatisticsPageViewController())
@@ -25,7 +26,7 @@ final class StatisticsPageViewController: UIViewController {
 
         viewModel = StatisticsPageViewModel()
         viewModel.onChange = updateTable
-        viewModel.getUsers()
+        viewModel.getUsers(showLoader: showLoader)
     }
 
     func updateTable() {
@@ -36,7 +37,7 @@ final class StatisticsPageViewController: UIViewController {
         let table = UITableView()
         table.register(UserViewCell.self, forCellReuseIdentifier: "cell")
         table.separatorInset = .init(top: 0, left: 32, bottom: 0, right: 32)
-        table.separatorColor = .asset(.grey)
+        table.separatorStyle = .none
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +51,7 @@ final class StatisticsPageViewController: UIViewController {
             target: self,
             action: #selector(openMenu)
         )
-        menuButton.tintColor = .black
+        menuButton.tintColor = .asset(.black)
         return menuButton
     }()
 
@@ -74,6 +75,18 @@ final class StatisticsPageViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
 
         self.present(alert, animated: true)
+    }
+
+    func showLoader(isShow: Bool) {
+        DispatchQueue.main.async {
+            if isShow {
+                self.view.isUserInteractionEnabled = false
+                ProgressHUD.show()
+            } else {
+                self.view.isUserInteractionEnabled = true
+                ProgressHUD.dismiss()
+            }
+        }
     }
 }
 

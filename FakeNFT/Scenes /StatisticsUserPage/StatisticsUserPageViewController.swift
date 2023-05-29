@@ -14,7 +14,7 @@ final class StatisticsUserPageViewController: UIViewController {
         viewModel.onChange = configure
         viewModel.getUser(userId: userId)
         setupAppearance()
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.white)
     }
 
     init(userId: String) {
@@ -28,6 +28,7 @@ final class StatisticsUserPageViewController: UIViewController {
     private lazy var nameView: UILabel = {
         let label = UILabel()
         label.textColor = .asset(.black)
+        label.font = .headline3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -35,14 +36,6 @@ final class StatisticsUserPageViewController: UIViewController {
     private lazy var avatarView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-
-        // Задаем размер изображения
-        let imageSize = CGSize(width: 70, height: 70)
-        view.widthAnchor.constraint(equalToConstant: imageSize.width).isActive = true
-        view.heightAnchor.constraint(equalToConstant: imageSize.height).isActive = true
-
-        // Задаем форму в виде круга
-        view.layer.cornerRadius = imageSize.width / 2
         view.clipsToBounds = true
 
         return view
@@ -52,6 +45,7 @@ final class StatisticsUserPageViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.textColor = .asset(.black)
+        label.font = .caption2
 
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -61,12 +55,12 @@ final class StatisticsUserPageViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Перейти на сайт пользователя", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.titleLabel?.font = .caption1
 
         button.layer.cornerRadius = 17
         button.clipsToBounds = true
         button.tintColor = .clear
-        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderColor = UIColor.asset(.black).cgColor
         button.layer.borderWidth = 1.0
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(openWebView), for: .touchUpInside)
@@ -76,8 +70,8 @@ final class StatisticsUserPageViewController: UIViewController {
     private lazy var collectionButtonLabel: UILabel = {
         let label = UILabel()
         label.text = "Коллекция NFT"
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .asset(.black)
+        label.font = .bodyBold
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return label
     }()
@@ -163,7 +157,7 @@ final class StatisticsUserPageViewController: UIViewController {
     }
 
     func setupAppearance() {
-        view.backgroundColor = .white
+        view.backgroundColor = .asset(.white)
 
         view.addSubview(avatarView)
         view.addSubview(nameView)
@@ -172,6 +166,8 @@ final class StatisticsUserPageViewController: UIViewController {
         view.addSubview(collectionButton)
 
         NSLayoutConstraint.activate([
+            avatarView.widthAnchor.constraint(equalToConstant: 70),
+            avatarView.heightAnchor.constraint(equalTo: avatarView.widthAnchor),
             avatarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             avatarView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 

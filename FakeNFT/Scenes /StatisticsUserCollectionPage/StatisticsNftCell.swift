@@ -49,6 +49,7 @@ final class StatisticsNftCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textColor = .asset(.black)
+        label.font = .bodyBold
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,6 +58,7 @@ final class StatisticsNftCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textColor = .asset(.black)
+        label.font = .caption2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

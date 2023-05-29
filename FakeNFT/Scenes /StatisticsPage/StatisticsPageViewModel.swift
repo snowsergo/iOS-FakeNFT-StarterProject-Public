@@ -21,11 +21,13 @@ final class StatisticsPageViewModel {
     }
 
     let defaultNetworkClient = DefaultNetworkClient()
-    func getUsers() {
+    func getUsers(showLoader: @escaping (_ active: Bool) -> Void ) {
+        showLoader(true)
         let request = Request(endpoint: URL(string: defaultBaseUrl + "/users"), httpMethod: .get)
 
         let fulfillCompletionOnMainThread: (Result<[User], Error>) -> Void = { [weak self] result in
             guard let self = self else { return }
+            showLoader(false)
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):

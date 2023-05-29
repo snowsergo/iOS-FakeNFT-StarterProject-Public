@@ -11,7 +11,11 @@ final class StatisticsUserCollectionPageViewModel {
 
     let defaultNetworkClient = DefaultNetworkClient()
 
-    func getUserNfts(ids: [Int]) {
+    func getUserNfts(ids: [Int], showLoader: @escaping (_ active: Bool) -> Void ) {
+        showLoader(true)
+
+        let dispatchGroup = DispatchGroup()
+
         for id in ids {
             let request = Request(endpoint: URL(string: defaultBaseUrl + "/nft" + "/\(id)"), httpMethod: .get)
             let fulfillCompletionOnMainThread: (Result<Nft, Error>) -> Void = { [weak self] result in
@@ -23,10 +27,17 @@ final class StatisticsUserCollectionPageViewModel {
                     case .failure:
                         print("___failure")
                     }
+                    // Помечаем выполнение запроса в группе как завершенное
+                    dispatchGroup.leave()
                 }
             }
+            // Увеличиваем счетчик группы перед отправкой запроса
+            dispatchGroup.enter()
             defaultNetworkClient.send(request: request, type: Nft.self, onResponse: fulfillCompletionOnMainThread)
         }
-
+        // Обрабатываем завершение всех запросов в группе
+        dispatchGroup.notify(queue: .main) {
+            showLoader(false)
+        }
     }
 }

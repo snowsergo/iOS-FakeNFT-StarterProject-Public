@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 final class StatisticsUserCollectionPageViewController: UIViewController {
     private var viewModel: StatisticsUserCollectionPageViewModel!
@@ -17,8 +18,8 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
         super.viewDidLoad()
         viewModel = StatisticsUserCollectionPageViewModel()
         viewModel.onChange = change
-        viewModel.getUserNfts(ids: nfts ?? [])
-        view.backgroundColor = .white
+        viewModel.getUserNfts(ids: nfts ?? [], showLoader: showLoader)
+        view.backgroundColor = .asset(.white)
         setupCollectionView()
     }
 
@@ -50,6 +51,18 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+
+    func showLoader(isShow: Bool) {
+        DispatchQueue.main.async {
+            if isShow {
+                self.view.isUserInteractionEnabled = false
+                ProgressHUD.show()
+            } else {
+                self.view.isUserInteractionEnabled = true
+                ProgressHUD.dismiss()
+            }
+        }
     }
 }
 

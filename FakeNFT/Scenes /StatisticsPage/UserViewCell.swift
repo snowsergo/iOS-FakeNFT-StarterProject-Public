@@ -36,6 +36,7 @@ final class UserViewCell: UITableViewCell {
     private lazy var labelView: UILabel = {
         let label = UILabel()
         label.textColor = .asset(.black)
+        label.font = .headline3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -43,6 +44,7 @@ final class UserViewCell: UITableViewCell {
     private lazy var countView: UILabel = {
         let label = UILabel()
         label.textColor = .asset(.black)
+        label.font = .headline3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,6 +52,7 @@ final class UserViewCell: UITableViewCell {
     private lazy var indexView: UILabel = {
         let label = UILabel()
         label.textColor = .asset(.black)
+        label.font = .caption1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
