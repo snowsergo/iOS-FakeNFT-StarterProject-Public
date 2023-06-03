@@ -87,7 +87,11 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
     private func setupView() {
         selectionStyle = .none
         backgroundColor = .asset(.white)
-        contentView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        contentView.layoutMargins = UIEdgeInsets(
+            top: .padding(.standard),
+            left: .padding(.standard),
+            bottom: .padding(.standard),
+            right: .padding(.standard))
         contentView.insetsLayoutMarginsFromSafeArea = true
 
         contentView.addSubview(cellStackView)
@@ -95,10 +99,10 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
 
     private func setupLayout() {
         NSLayoutConstraint.activate([
-            cellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            cellStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cellStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            cellStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+            cellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .padding(.standard)),
+            cellStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .padding(.standardInverse)),
+            cellStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: .padding(.standardInverse)),
+            cellStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .padding(.standard))
         ])
 
         NSLayoutConstraint.activate([

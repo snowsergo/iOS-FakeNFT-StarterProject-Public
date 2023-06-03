@@ -84,22 +84,22 @@ class PaymentViewController: UIViewController {
             .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
 
         NSLayoutConstraint.activate([
-            paymentMethodsCollection.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 16),
-            paymentMethodsCollection.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
-            paymentMethodsCollection.bottomAnchor.constraint(equalTo: userAgreementTextView.topAnchor, constant: -16),
-            paymentMethodsCollection.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16)
+            paymentMethodsCollection.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: .padding(.standard)),
+            paymentMethodsCollection.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
+            paymentMethodsCollection.bottomAnchor.constraint(equalTo: userAgreementTextView.topAnchor, constant: .padding(.standardInverse)),
+            paymentMethodsCollection.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard))
         ])
 
         NSLayoutConstraint.activate([
-             userAgreementTextView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -20),
-             userAgreementTextView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
-             userAgreementTextView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+             userAgreementTextView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: .padding(.large)),
+             userAgreementTextView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
+             userAgreementTextView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
         ])
 
         NSLayoutConstraint.activate([
             payButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            payButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
-            payButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+            payButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
+            payButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
         ])
     }
 
@@ -134,7 +134,7 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
             sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let perRow = 2.0
-        let totalSpacingWidth = Config.collectionSpacing * (perRow - 1)
+        let totalSpacingWidth = .padding(.cellSpacing) * (perRow - 1)
         return CGSize(width: (collectionView.bounds.width - totalSpacingWidth) / perRow, height: 46)
     }
 
@@ -143,7 +143,7 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
             layout collectionViewLayout: UICollectionViewLayout,
             minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
-        Config.collectionSpacing
+        .padding(.cellSpacing)
     }
 
     public func collectionView(
@@ -151,7 +151,7 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
             layout collectionViewLayout: UICollectionViewLayout,
             minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        Config.collectionSpacing
+        .padding(.cellSpacing)
     }
 }
 

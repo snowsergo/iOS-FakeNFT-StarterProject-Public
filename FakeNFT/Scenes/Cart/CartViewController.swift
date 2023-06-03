@@ -20,7 +20,7 @@ class CartViewController: UIViewController {
         tableView.register(NftViewCell.self)
         tableView.backgroundColor = .asset(.white)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: .padding(.large), left: 0, bottom: .padding(.large), right: 0)
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -50,8 +50,12 @@ class CartViewController: UIViewController {
         stackView.backgroundColor = .asset(.lightGray)
         stackView.spacing = 24
 
-        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(
+            top: .padding(.standard),
+            left: .padding(.standard),
+            bottom: .padding(.standard),
+            right: .padding(.standard))
 
         stackView.layer.cornerRadius = 16
         stackView.layer.masksToBounds = true
@@ -109,8 +113,8 @@ class CartViewController: UIViewController {
         NSLayoutConstraint.activate([
             emptyMessageLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             emptyMessageLabel.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
-            emptyMessageLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
-            emptyMessageLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+            emptyMessageLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
+            emptyMessageLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
         ])
 
         NSLayoutConstraint.activate([

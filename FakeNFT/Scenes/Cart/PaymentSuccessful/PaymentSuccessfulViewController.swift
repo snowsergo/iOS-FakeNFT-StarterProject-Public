@@ -4,7 +4,9 @@
 
 import UIKit
 
-class PaymentSuccessfulViewController: UIViewController {
+class PaymentSuccessfulViewController: UIViewController, PaymentStatusProtocol {
+
+    var didTapComplete: (() -> Void)?
 
     // MARK: - UI elements
 
@@ -32,7 +34,7 @@ class PaymentSuccessfulViewController: UIViewController {
     lazy private var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [pictureView, messageLabel])
         stackView.axis = .vertical
-        stackView.spacing = 20
+        stackView.spacing = .padding(.large)
         return stackView
     }()
 
@@ -63,8 +65,8 @@ class PaymentSuccessfulViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             completeButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            completeButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
-            completeButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16)
+            completeButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
+            completeButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse))
         ])
     }
 
