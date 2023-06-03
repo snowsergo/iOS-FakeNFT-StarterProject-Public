@@ -10,7 +10,7 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
 
     // MARK: - UI elements
 
-    private var previewImageView: UIImageView = {
+    private var previewImageView: ImageViewWithPreloading = {
         let imageView = ImageViewWithPreloading()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 12
@@ -25,7 +25,7 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
         return label
     }()
 
-    private var ratingView: UIView = {
+    private var ratingView: RatingView = {
         let rating = RatingView()
         return rating
     }()
@@ -118,7 +118,13 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
 
     // MARK: - Setup cell data
 
-    func setup(deleteTapHandle: (() -> Void)? = nil) {
+    func setup(nft: Nft, deleteTapHandle: (() -> Void)? = nil) {
+        titleLabel.text = nft.name
+        costLabel.text = "\(nft.price) ETH"
+        ratingView.set(count: nft.rating)
+
+        previewImageView.load(url: nft.previewUrl())
+
         self.deleteTapHandle = deleteTapHandle
     }
 

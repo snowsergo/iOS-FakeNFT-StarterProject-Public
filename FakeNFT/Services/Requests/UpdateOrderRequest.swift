@@ -9,11 +9,11 @@ struct UpdateOrderRequest: NetworkRequest {
     var httpBody: Data? = nil
     var endpoint: URL?
 
-    init(orderId: String, nftsId: [String]) {
-        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/orders/\(orderId)") else { return }
+    init(order: Order) {
+        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/orders/\(order.id)") else { return }
         self.endpoint = endpoint
 
-        let data: [String: [String]] = [ "nfts": nftsId ]
-        httpBody = try! JSONSerialization.data(withJSONObject: data)
+        let encoder = JSONEncoder()
+        httpBody = try! encoder.encode(order)
     }
 }

@@ -123,7 +123,7 @@ extension WebViewService: WKNavigationDelegate {
     }
 
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        let errorView = ErrorView.make(
+        let errorView = RepeatAlertMaker.make(
             title: "Упс! Что-то пошло не так",
             message: error.localizedDescription,
             repeatHandle: { [weak self] in

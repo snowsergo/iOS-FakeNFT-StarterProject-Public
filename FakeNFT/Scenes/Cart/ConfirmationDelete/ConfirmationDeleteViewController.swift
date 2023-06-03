@@ -3,23 +3,33 @@
 //
 
 import UIKit
+import ProgressHUD
 
-class ConfirmationDeleteViewController: UIViewController {
+final class ConfirmationDeleteViewController: UIViewController {
 
-    private var viewModel: ConfirmationDeleteViewModel = {
-        ConfirmationDeleteViewModel()
+    var order: Order
+
+    private let item: Nft
+
+    var completeRemoveClosure: (() -> Void)?
+
+    lazy private var viewModel: ConfirmationDeleteViewModel = {
+        ConfirmationDeleteViewModel(networkClient: DefaultNetworkClient())
     }()
 
     // MARK: - UI elements
 
-    private var previewImageView: UIImageView = {
+    lazy private var previewImageView: UIImageView = {
         let imageView = ImageViewWithPreloading()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 12
+
+        imageView.load(url: item.previewUrl())
+
         return imageView
     }()
 
-    lazy private var messageLabel: UILabel = {
+    private let messageLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .caption2
@@ -64,6 +74,17 @@ class ConfirmationDeleteViewController: UIViewController {
 
     // MARK: - Setup view
 
+    init(order: Order, item: Nft) {
+        self.order = order
+        self.item = item
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -107,13 +128,21 @@ class ConfirmationDeleteViewController: UIViewController {
     }
 
     private func setupViewModel() {
+        viewModel.successfulClosure = { [weak self] in
+            self?.completeRemoveClosure?()
+        }
+
+        viewModel.updateLoadingStatus = { [weak self] in
+            self?.viewModel.isLoading ?? false
+                ? ProgressHUD.show()
+                : ProgressHUD.dismiss()
+        }
     }
 
     // MARK: - Actions
 
     @objc private func didTapRemove() {
-        // TODO: Add method remove
-        dismiss(animated: true)
+        viewModel.removeItemFromOrder(order: order, item: item)
     }
 
     @objc private func didTapDismissScreen() {

@@ -91,7 +91,7 @@ class PaymentViewController: UIViewController {
         ])
 
         NSLayoutConstraint.activate([
-             userAgreementTextView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: .padding(.large)),
+             userAgreementTextView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: .padding(.largeInverse)),
              userAgreementTextView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
              userAgreementTextView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
         ])

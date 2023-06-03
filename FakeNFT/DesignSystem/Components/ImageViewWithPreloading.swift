@@ -15,7 +15,7 @@ class ImageViewWithPreloading: UIImageView {
         fatalError("init(coder:) is not supported")
     }
 
-    func load(url: URL, completionHandle: (() -> Void)? = nil ) {
+    func load(url: URL?, completionHandle: (() -> Void)? = nil ) {
         image = nil
 
         kf.setImage(with: url) { [weak self] _ in

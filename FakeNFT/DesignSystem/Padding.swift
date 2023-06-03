@@ -9,6 +9,7 @@ enum Padding: Float {
     case standard = 16
     case standardInverse = -16
     case large = 20
+    case largeInverse = -20
     case cellSpacing = 7
 }
 

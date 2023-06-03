@@ -4,7 +4,7 @@
 
 import UIKit
 
-class ErrorView {
+class RepeatAlertMaker {
     static func make(
             title: String,
             message: String,
