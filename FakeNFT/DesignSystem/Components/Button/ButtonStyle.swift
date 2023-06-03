@@ -10,11 +10,11 @@ enum ButtonStyle {
     case secondary
 
     var backgroundColorPressed: UIColor? {
-        .asset(.grey)
+        .asset(.gray)
     }
 
     var textColorPressed: UIColor? {
-        .asset(.lightGrey)
+        .asset(.lightGray)
     }
 
     var backgroundColor: UIColor? {
@@ -23,7 +23,7 @@ enum ButtonStyle {
             return .asset(.white)
         case .primary:
             return .asset(.black)
-        default:
+        case .secondary:
             return nil
         }
     }
@@ -35,15 +35,15 @@ enum ButtonStyle {
         case .primary:
             return .asset(.white)
         case .secondary:
-            return .asset(.grey)
+            return .asset(.gray)
         }
     }
 
     var borderColor: UIColor? {
         switch self {
         case .secondary:
-            return .asset(.grey)
-        default:
+            return .asset(.gray)
+        case .standard, .primary:
             return nil
         }
     }
@@ -52,7 +52,7 @@ enum ButtonStyle {
         switch self {
         case .secondary:
             return 1
-        default:
+        case .standard, .primary:
             return 0
         }
     }
@@ -61,7 +61,7 @@ enum ButtonStyle {
         switch self {
         case .secondary:
             return .caption1
-        default:
+        case .standard, .primary:
             return .bodyBold
         }
     }

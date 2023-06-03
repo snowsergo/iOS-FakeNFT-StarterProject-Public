@@ -19,14 +19,11 @@ final class ButtonComponent: UIButton {
 
     override var isHighlighted: Bool {
         didSet {
-            switch style {
-            case .secondary:
-                backgroundColor = isHighlighted ? style.backgroundColorPressed : style.backgroundColor
+            if style == .secondary {
                 layer.borderColor = isHighlighted ? style.backgroundColorPressed?.cgColor : style.backgroundColor?.cgColor
-            default:
-                backgroundColor = isHighlighted ? style.backgroundColorPressed : style.backgroundColor
             }
 
+            backgroundColor = isHighlighted ? style.backgroundColorPressed : style.backgroundColor
             setTitleColor(isHighlighted ? style.textColorPressed : style.textColor, for: .normal)
         }
     }

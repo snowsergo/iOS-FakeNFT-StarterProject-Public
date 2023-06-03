@@ -1,322 +1,162 @@
 //
-// Created by Сергей Махленко on 18.05.2023.
+// Created by Сергей Махленко on 02.06.2023.
 //
 
 import UIKit
-import ProgressHUD
 
-enum CartNftSortable: String, CaseIterable {
-    case price = "По цене"
-    case name = "По названию"
-    case rating = "По рейтингу"
-}
+class CartViewController: UIViewController {
 
-/**
- General screen controller for Cart Screen
- */
-final class CartViewController: UIViewController {
-    // MARK: - View and variables
+    private let orderId: String = "2"
 
-    private let orderId = Config.mockOrderId
-
-    private var items: [Nft] = [] {
-        didSet {
-            didUpdateDataTable()
-            didUpdateTotalInfo()
-        }
-    }
-
-    lazy private var sortByButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: .asset(.filter),
-            style: .plain,
-            target: self,
-            action: #selector(didTapSortByButton))
-
-        button.tintColor = .asset(.black)
-
-        return button
+    private var viewModel: CartViewModel = {
+        CartViewModel()
     }()
 
-    lazy private var tableViewController: OrderDetailsTableViewController = {
-        let tableViewController = OrderDetailsTableViewController()
-        tableViewController.delegate = self
+    // MARK - UI Elements
 
-        let tableView = tableViewController.tableView!
-
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        return tableViewController
+    lazy private var itemsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.register(NftViewCell.self)
+        tableView.backgroundColor = .asset(.white)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        tableView.separatorStyle = .none
+        return tableView
     }()
 
-    lazy private var totalLabel: UILabel = {
-        let totalLabel = UILabel()
-        totalLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalLabel.textColor = .asset(.black)
-        totalLabel.font = .caption1
-
-        return totalLabel
-    }()
-
-    lazy private var totalCostLabel: UILabel = {
-        let totalCostLabel = UILabel()
-        totalCostLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalCostLabel.textColor = .asset(.green)
-        totalCostLabel.font = .bodyBold
-
-        return totalCostLabel
-    }()
-
-    lazy private var payButton: ButtonComponent = {
-        let button = ButtonComponent(.primary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("К оплате", for: .normal)
-
-        return button
-    }()
-
-    lazy private var totalInfoView: UIStackView = {
-        let totalInfoStackView = UIStackView(arrangedSubviews: [totalLabel, totalCostLabel])
-        totalInfoStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        totalInfoStackView.axis = .vertical
-        totalInfoStackView.distribution = .fillEqually
-
-        return totalInfoStackView
-    }()
-
-    lazy private var totalView: UIStackView = {
-        let totalStackView = UIStackView(arrangedSubviews: [totalInfoView, payButton])
-        totalStackView.translatesAutoresizingMaskIntoConstraints = false
-        totalStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        totalStackView.isLayoutMarginsRelativeArrangement = true
-
-        totalStackView.backgroundColor = .asset(.lightGrey)
-        totalStackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        totalStackView.layer.masksToBounds = true
-        totalStackView.layer.cornerRadius = 16
-        totalStackView.spacing = 24
-        totalStackView.alignment = .top
-
-        return totalStackView
-    }()
-
-    private var emptyItems: UILabel = {
+    private var totalCountLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-
-        label.text = "Корзина пуста"
+        label.font = .caption1
         label.textColor = .asset(.black)
-        label.font = .bodyBold
-        label.textAlignment = .center
-        label.layer.zPosition = 10
-
+        label.text = "20 NFT"
         return label
     }()
 
+    private var totalPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .bodyBold
+        label.textColor = .asset(.green)
+        label.text = "12.23 ETH"
+        return label
+    }()
+
+    lazy private var cartInfoStackView: UIStackView = {
+        let totalStackView = UIStackView(arrangedSubviews: [totalCountLabel, totalPriceLabel])
+        totalStackView.axis = .vertical
+        totalStackView.spacing = 2
+
+        let stackView = UIStackView(arrangedSubviews: [totalStackView, paymentButton])
+        stackView.backgroundColor = .asset(.lightGray)
+        stackView.spacing = 24
+
+        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        stackView.isLayoutMarginsRelativeArrangement = true
+
+        stackView.layer.cornerRadius = 16
+        stackView.layer.masksToBounds = true
+        stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+
+        return stackView
+    }()
+
+    lazy private var paymentButton: UIButton = {
+        let button = ButtonComponent(.primary) as UIButton
+        button.setTitle("К оплате", for: .normal)
+        button.addTarget(self, action: #selector(didTapPaymentShow), for: .touchUpInside)
+        return button
+    }()
+
+    lazy private var sortButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: .asset(.sort), style: .plain, target: self, action: nil)
+        button.tintColor = .asset(.black)
+        return button
+    }()
+
+    lazy private var emptyMessageLabel: UILabel = {
+        let label = UILabel()
+        label.font = .bodyBold
+        label.textColor = .asset(.black)
+        label.textAlignment = .center
+        label.text = "Корзина пуста"
+        return label
+    }()
+
+    // MARK: - Setup view
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.backButtonTitle = ""
-        navigationItem.rightBarButtonItem = sortByButton
-
-        view.addSubview(emptyItems)
-        view.addSubview(tableViewController.tableView)
-        view.addSubview(totalView)
-
         setupView()
-        fetchData()
+        setupLayout()
+        setupViewModel()
     }
-
-    // MARK: - Actions
-
-    @objc private func didTapSortByButton(sender: Any) {
-        UISelectionFeedbackGenerator().selectionChanged()
-
-        let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
-
-        CartNftSortable.allCases.forEach {
-            let sortCase = $0
-            let action = UIAlertAction(title: $0.rawValue, style: .default) { [weak self] action in
-                guard let self else { return }
-                sortable(by: sortCase)
-            }
-
-            alertController.addAction(action)
-        }
-
-        alertController.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
-
-        present(alertController, animated: true)
-    }
-
-    @objc private func didTapPayButton(sender: Any) {
-        UISelectionFeedbackGenerator().selectionChanged()
-        navigationController?.pushViewController(PayViewController(orderId: orderId), animated: true)
-    }
-
-    // MARK: - Private methods
 
     private func setupView() {
-        payButton.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
+        navigationItem.backButtonTitle = ""
+        navigationItem.rightBarButtonItem = sortButton
+
+        [itemsTableView, cartInfoStackView, emptyMessageLabel].forEach({
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        })
+
+        emptyMessageLabel.isHidden = true
+    }
+
+    private func setupLayout() {
+        let safeArea = view.safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([
-            // constraints for collection view
-            tableViewController.tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableViewController.tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableViewController.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableViewController.tableView.bottomAnchor.constraint(equalTo: totalView.topAnchor),
+            emptyMessageLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+            emptyMessageLabel.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+            emptyMessageLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+            emptyMessageLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+        ])
 
-            // constraints for footer
-            totalView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            totalView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            totalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        NSLayoutConstraint.activate([
+            cartInfoStackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            cartInfoStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            cartInfoStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
+        ])
 
-            // empty message
-            emptyItems.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            emptyItems.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            emptyItems.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            emptyItems.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+        NSLayoutConstraint.activate([
+            itemsTableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            itemsTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            itemsTableView.bottomAnchor.constraint(equalTo: cartInfoStackView.topAnchor),
+            itemsTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
         ])
     }
+
+    private func setupViewModel() {}
 }
 
-// MARK: - Extensions
+// MARK - Extensions
 
 extension CartViewController {
-    private func findBy(id: String) -> Nft? {
-        if items.count == 0 {
-            return nil
-        }
-
-        return items.first(where: { $0.id == id }) ?? nil
+    private func deleteTapHandle() {
+        let confirmationDeleteViewController = ConfirmationDeleteViewController()
+        confirmationDeleteViewController.modalPresentationStyle = .overFullScreen
+        navigationController?.present(confirmationDeleteViewController, animated: true)
     }
 
-    private func sortable(by: CartNftSortable) {
-        items.sort { (lhs: Nft, rhs: Nft) -> Bool in
-            switch by {
-            case .name: return lhs.name < rhs.name
-            case .price: return lhs.price < rhs.price
-            case .rating: return lhs.rating < rhs.rating
-            }
-        }
+    @objc private func didTapPaymentShow() {
+        let paymentViewController = PaymentViewController()
+        navigationController?.pushViewController(paymentViewController, animated: true)
     }
 }
 
-// MARK: - Update data and table method
-
-extension CartViewController: UpdateCartViewProtocol {
-    func didUpdateTotalInfo() {
-        let costSum = String(format: "%.02f", items.reduce(0) { $0 + $1.price })
-
-        totalLabel.text = "\(items.count) NFT"
-        totalCostLabel.text = "\(costSum) ETH"
-
-        //
-        let isHidden = items.isEmpty
-
-        totalView.isHidden = isHidden
-        emptyItems.isHidden = !isHidden
-        navigationItem.rightBarButtonItem = isHidden ? nil : sortByButton
+extension CartViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        5
     }
 
-    func didUpdateDataTable() {
-        tableViewController.items = items
-    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: NftViewCell = tableView.dequeueReusableCell()
 
-    func showConfirmDelete(itemId: String) {
-        let item = findBy(id: itemId)
-        guard let item else { return }
-
-        let deleteVc = DeleteItemViewController(item: item)
-        deleteVc.modalPresentationStyle = .overFullScreen
-        deleteVc.delegate = self
-
-        navigationController?.present(deleteVc, animated: true)
-    }
-
-    func fetchData(refreshControl: UIRefreshControl? = nil) {
-        showLoader(isShow: true, refreshControl: refreshControl)
-
-        items = []
-
-        // load order data
-        OrderNetworkModel.fetchData(id: orderId) { [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success(let order):
-                // load nft data
-                if order.nfts.count > 0 {
-                    order.nfts.forEach { id in
-                        NftNetworkModel.fetchData(id: id) { [weak self] result in
-                            guard let self else { return }
-
-                            switch result {
-                            case .success(let nftNetworkModel):
-                                let nft = Nft.make(by: nftNetworkModel)
-                                self.items.append(nft)
-                            case .failure (let error):
-                                self.showLoader(isShow: false, refreshControl: refreshControl)
-
-                                present(
-                                    ErrorView.make(
-                                        title: "Network Error",
-                                        message: error.localizedDescription) { [weak self] in
-                                            guard let self else { return }
-                                            self.fetchData(refreshControl: refreshControl)
-                                        }
-                                    , animated: true)
-                            }
-                        }
-                    }
-                }
-
-                // loading data is complete
-                self.showLoader(isShow: false, refreshControl: refreshControl)
-            case .failure(let error):
-                self.showLoader(isShow: false, refreshControl: refreshControl)
-
-                present(
-                    ErrorView.make(
-                        title: "Network Error",
-                        message: error.localizedDescription) { [weak self] in
-                            guard let self else { return }
-                            self.fetchData(refreshControl: refreshControl)
-                        }
-                , animated: true)
-            }
-        }
-    }
-
-    func deleteItem(itemId: String) {
-        let itemDelete = findBy(id: itemId)
-        guard let itemDelete else { return }
-
-        items = items.filter({ $0.id != itemDelete.id })
-
-        let nftsId: [String] = items.map({ $0.id })
-
-        OrderNetworkModel.updateData(orderId: orderId, nftsId: nftsId) { _ in
-            print("Send to server. Ok (placeholder)")
+        cell.setup { [weak self] in
+            self?.deleteTapHandle()
         }
 
-    }
-
-    func showLoader(isShow: Bool, refreshControl: UIRefreshControl?) {
-        if let refreshControl = refreshControl {
-            isShow
-                ? refreshControl.beginRefreshing()
-                : refreshControl.endRefreshing()
-            return
-        }
-
-        if isShow {
-            view.isUserInteractionEnabled = false
-            ProgressHUD.show()
-        } else {
-            view.isUserInteractionEnabled = true
-            ProgressHUD.dismiss()
-        }
+        return cell
     }
 }

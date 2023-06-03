@@ -4,8 +4,7 @@
 
 import UIKit
 
-final class StarsComponent: UIView {
-
+final class RatingView: UIView {
     lazy private var stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -30,13 +29,13 @@ final class StarsComponent: UIView {
 
     // MARK: - Methods
 
-    func highlightStars(count: Int) {
+    func set(count: Int) {
         guard count >= 0 && count <= maximumStars else { return }
 
         for index in 0..<maximumStars {
             stackView.arrangedSubviews[index].tintColor = index < count
                 ? .asset(.yellow)
-                : .asset(.lightGrey)
+                : .asset(.lightGray)
         }
     }
 
@@ -47,7 +46,7 @@ final class StarsComponent: UIView {
 
         for _ in 0..<maximumStars {
             let starImageView = UIImageView(image: starImage)
-            starImageView.tintColor = .asset(.lightGrey)
+            starImageView.tintColor = .asset(.lightGray)
             stackView.addArrangedSubview(starImageView)
 
             NSLayoutConstraint.activate([

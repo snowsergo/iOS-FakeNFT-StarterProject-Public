@@ -6,14 +6,12 @@ import UIKit
 import WebKit
 import ProgressHUD
 
-final class WebViewController: UIViewController {
+final class WebViewService: UIViewController {
     // MARK: - Variables
 
     private let timeoutInterval = 5
 
     private var urlRequest: URLRequest
-
-    private var webViewObserve: NSKeyValueObservation?
 
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
@@ -26,17 +24,12 @@ final class WebViewController: UIViewController {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = .asset(.blue)
-        progressView.trackTintColor = .asset(.lightGrey)
+        progressView.trackTintColor = .asset(.lightGray)
         progressView.setProgress(0.0, animated: false)
         return progressView
     }()
 
     // MARK: - Conversion initializes
-
-    init(request: URLRequest) {
-        urlRequest = request
-        super.init(nibName: nil, bundle: nil)
-    }
 
     init(url: String) {
         guard let url = URL(string: url) else {
@@ -44,6 +37,16 @@ final class WebViewController: UIViewController {
         }
 
         urlRequest = URLRequest(url: url)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    init(url: URL) {
+        urlRequest = URLRequest(url: url)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    init(request: URLRequest) {
+        urlRequest = request
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -63,24 +66,26 @@ final class WebViewController: UIViewController {
         setupView()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        webViewObserve = webView.observe(\WKWebView.estimatedProgress, options: .new) { (_: WKWebView, change:NSKeyValueObservedChange<Double>) in
-            self.progressView.setProgress(Float(change.newValue!), animated: false)
-            if change.newValue! > 0 {
-                ProgressHUD.dismiss()
-            }
-        }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         didLoadPage()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+    }
 
-        guard let webViewObserve = webViewObserve else { return }
-        NotificationCenter.default.removeObserver(webViewObserve)
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "estimatedProgress" {
+            progressView.progress = Float(webView.estimatedProgress)
+            if fabs(webView.estimatedProgress - 1.0) >= 0.0001 {
+                ProgressHUD.dismiss()
+            }
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
 
     // MARK: - Private methods
@@ -106,7 +111,7 @@ final class WebViewController: UIViewController {
 
 // MARK: - Extensions
 
-extension WebViewController: WKNavigationDelegate {
+extension WebViewService: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         progressView.setProgress(0.0, animated: false)
         progressView.isHidden = false
