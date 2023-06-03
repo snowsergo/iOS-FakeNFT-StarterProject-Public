@@ -6,17 +6,23 @@ import Foundation
 
 final class ConfirmationDeleteViewModel: NetworkViewModel {
 
-    var successfulClosure: (() -> Void)?
+    var order: Order!
+
+    var successfulClosure: ((_: Order) -> Void)?
 
     // MARK: - Methods ViewModel
 
-    func removeItemFromOrder(order: Order, item: Nft) {
+    func orderWithoutNft(item: Nft) -> Order {
         let newListNfts = order.nfts.filter({ $0 != item.id })
-        let newOrder = Order(nfts: newListNfts, id: order.id)
+        return Order(nfts: newListNfts, id: order.id)
+    }
+
+    func removeItemFromOrder(item: Nft) {
+        order = orderWithoutNft(item: item)
 
         isLoading = true
 
-        networkClient.send(request: UpdateOrderRequest(order: newOrder), type: Order.self) { (result: Result<Order, Error>) in
+        networkClient.send(request: UpdateOrderRequest(order: order), type: Order.self) { (result: Result<Order, Error>) in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
@@ -24,8 +30,8 @@ final class ConfirmationDeleteViewModel: NetworkViewModel {
 
                 switch result {
                 case .success(let order):
-                    if newOrder.nfts.count == order.nfts.count && Set(newOrder.nfts).isSubset(of: Set(order.nfts)) {
-                        self.successfulClosure?()
+                    if self.order.nfts.count == order.nfts.count {
+                        self.successfulClosure?(self.order)
                     } else {
                         self.errorMessage = "Ошибка удаления NFT."
                     }

@@ -5,6 +5,9 @@
 import UIKit
 
 class CartNavigationController: UINavigationController {
+    // TODO: Думаю его нужно поднимать выше в SceneDelegate для всего приложения
+    static var sharedNetworkClient = DefaultNetworkClient()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

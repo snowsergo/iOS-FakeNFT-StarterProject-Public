@@ -87,6 +87,7 @@ struct DefaultNetworkClient: NetworkClient {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpMethod = request.httpMethod.rawValue
         urlRequest.httpBody = request.httpBody
+        urlRequest.timeoutInterval = 5.0
 
         return urlRequest
     }

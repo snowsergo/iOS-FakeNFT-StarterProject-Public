@@ -7,14 +7,12 @@ import ProgressHUD
 
 final class ConfirmationDeleteViewController: UIViewController {
 
-    var order: Order
-
     private let item: Nft
 
-    var completeRemoveClosure: (() -> Void)?
+    var completeRemoveClosure: ((_: Order) -> Void)?
 
-    lazy private var viewModel: ConfirmationDeleteViewModel = {
-        ConfirmationDeleteViewModel(networkClient: DefaultNetworkClient())
+    private var viewModel: ConfirmationDeleteViewModel = {
+        ConfirmationDeleteViewModel(networkClient: CartNavigationController.sharedNetworkClient)
     }()
 
     // MARK: - UI elements
@@ -75,7 +73,7 @@ final class ConfirmationDeleteViewController: UIViewController {
     // MARK: - Setup view
 
     init(order: Order, item: Nft) {
-        self.order = order
+        viewModel.order = order
         self.item = item
 
         super.init(nibName: nil, bundle: nil)
@@ -128,8 +126,8 @@ final class ConfirmationDeleteViewController: UIViewController {
     }
 
     private func setupViewModel() {
-        viewModel.successfulClosure = { [weak self] in
-            self?.completeRemoveClosure?()
+        viewModel.successfulClosure = { [weak self] (order: Order) in
+            self?.completeRemoveClosure?(order)
         }
 
         viewModel.updateLoadingStatus = { [weak self] in
@@ -137,12 +135,23 @@ final class ConfirmationDeleteViewController: UIViewController {
                 ? ProgressHUD.show()
                 : ProgressHUD.dismiss()
         }
+
+        viewModel.showAlertClosure = { [weak self] in
+            guard let self else { return }
+            let alert = RepeatAlertMaker.make(
+                    title: "Упс! У нас ошибка",
+                    message: self.viewModel.errorMessage!) {
+                self.viewModel.removeItemFromOrder(item: self.item)
+            }
+
+            present(alert, animated: true)
+        }
     }
 
     // MARK: - Actions
 
     @objc private func didTapRemove() {
-        viewModel.removeItemFromOrder(order: order, item: item)
+        viewModel.removeItemFromOrder(item: item)
     }
 
     @objc private func didTapDismissScreen() {

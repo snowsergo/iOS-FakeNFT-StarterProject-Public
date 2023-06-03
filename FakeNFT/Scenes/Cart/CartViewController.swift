@@ -9,8 +9,8 @@ final class CartViewController: UIViewController {
 
     private let orderId: String = Config.mockOrderId
 
-    private var viewModel: CartViewModel = {
-        CartViewModel(networkClient: DefaultNetworkClient())
+    lazy private var viewModel: CartViewModel = {
+        CartViewModel(networkClient: CartNavigationController.sharedNetworkClient)
     }()
 
     // MARK - UI Elements
@@ -26,9 +26,7 @@ final class CartViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(NftViewCell.self)
         tableView.backgroundColor = .asset(.white)
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.contentInset = UIEdgeInsets(top: .padding(.large), left: 0, bottom: .padding(.large), right: 0)
-        tableView.separatorStyle = .none
         tableView.refreshControl = refreshControl
 
         return tableView
@@ -163,7 +161,9 @@ final class CartViewController: UIViewController {
                 self.toggleEmptyTable(isEmpty)
                 self.updateCartInfo()
 
-                self.itemsTableView.deleteRows(at: [indexPath], with: .left)
+                self.itemsTableView.performBatchUpdates({
+                    self.itemsTableView.deleteRows(at: [indexPath], with: .automatic)
+                }, completion: nil)
             }
         }
 
@@ -211,16 +211,19 @@ extension CartViewController {
         totalPriceLabel.text = "\(viewModel.totalPriceCells) ETH"
     }
 
-    private func deleteTapHandle(at indexPath: IndexPath) {
+    private func deleteTapHandle(id: String) {
         guard let order = viewModel.order else { return }
 
+        let indexPath = viewModel.getCellIndexPath(id: id)
         let item = viewModel.getCellViewModel(at: indexPath)
 
         let confirmationDeleteViewController = ConfirmationDeleteViewController(order: order, item: item)
         confirmationDeleteViewController.modalPresentationStyle = .overFullScreen
 
-        confirmationDeleteViewController.completeRemoveClosure = {
+        confirmationDeleteViewController.completeRemoveClosure = { [weak self] (order: Order) in
+            self?.viewModel.order = order
             confirmationDeleteViewController.dismiss(animated: true)
+
             DispatchQueue.main.async { [weak self] in
                 self?.viewModel.removeCellViewModel(at: indexPath)
             }
@@ -274,7 +277,7 @@ extension CartViewController: UITableViewDataSource {
         let nft = viewModel.getCellViewModel(at: indexPath)
 
         cell.setup(nft: nft) {[weak self] in
-            self?.deleteTapHandle(at: indexPath)
+            self?.deleteTapHandle(id: nft.id)
         }
 
         return cell

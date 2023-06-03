@@ -28,6 +28,10 @@ final class CartViewModel: NetworkViewModel {
         cellViewModels[indexPath.row]
     }
 
+    func getCellIndexPath(id: String) -> IndexPath {
+        IndexPath(row: cellViewModels.firstIndex(where: { $0.id == id })!, section: 0)
+    }
+
     func sort(by: SortType) {
         cellViewModels.sort { (lhs: Nft, rhs: Nft) -> Bool in
             switch by {
@@ -36,11 +40,13 @@ final class CartViewModel: NetworkViewModel {
             case .rating: return lhs.rating < rhs.rating
             }
         }
+
+        reloadTableViewClosure?()
     }
 
     func removeCellViewModel(at indexPath: IndexPath) {
-        cellViewModels.remove(at: indexPath.row)
         removeTableCellClosure?(indexPath)
+        cellViewModels.remove(at: indexPath.row)
     }
 
     func fetchOrder(id: String) {
@@ -69,6 +75,10 @@ final class CartViewModel: NetworkViewModel {
                     }
 
                     dispatchGroup.notify(queue: .main) {
+                        cells.sort { nft, nft2 in
+                            nft.id < nft2.id
+                        }
+
                         self.cellViewModels = cells
                         self.isLoading = false
                         self.reloadTableViewClosure?()
