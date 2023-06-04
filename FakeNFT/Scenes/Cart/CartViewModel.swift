@@ -97,7 +97,7 @@ final class CartViewModel: NetworkViewModel {
     }
 
     // TODO: Кажется это должно быть в другой модели, а с другой стороны это часть заказа
-    private func fetchNft(id: String, onResponse: @escaping (_ nft: Nft) -> Void ) {
+    private func fetchNft(id: Int, onResponse: @escaping (_ nft: Nft) -> Void ) {
         networkClient.send(request: GetNftRequest(id: id), type: Nft.self) { [weak self] (result: Result<Nft, Error>) in
             switch result {
             case .success(let nft):

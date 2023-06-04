@@ -3,6 +3,6 @@
 //
 
 struct Order: Codable {
-    let nfts: [String]
+    let nfts: [Int]
     let id: String
 }

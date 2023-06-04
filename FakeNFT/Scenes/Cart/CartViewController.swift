@@ -27,8 +27,10 @@ final class CartViewController: UIViewController {
         tableView.register(NftViewCell.self)
         tableView.backgroundColor = .asset(.white)
         tableView.contentInset = UIEdgeInsets(top: .padding(.large), left: 0, bottom: .padding(.large), right: 0)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 140
+        tableView.separatorStyle = .none
         tableView.refreshControl = refreshControl
-
         return tableView
     }()
 
@@ -109,7 +111,6 @@ final class CartViewController: UIViewController {
         navigationItem.rightBarButtonItem = sortButton
 
         [itemsTableView, cartInfoStackView, emptyMessageLabel].forEach({
-            $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         })
 
@@ -118,6 +119,9 @@ final class CartViewController: UIViewController {
 
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
+
+        [emptyMessageLabel, cartInfoStackView, itemsTableView]
+            .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
 
         NSLayoutConstraint.activate([
             emptyMessageLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),

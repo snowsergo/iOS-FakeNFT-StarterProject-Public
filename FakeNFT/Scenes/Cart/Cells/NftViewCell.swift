@@ -39,7 +39,8 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
     }()
 
     lazy private var removeButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .custom)
+        button.frame.size = CGSize(width: 44, height: 44)
         button.setImage(.asset(.trash), for: .normal)
         button.addTarget(self, action: #selector(didTapRemove), for: .touchUpInside)
         return button
@@ -65,9 +66,7 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
         contentStackView.spacing = 12
         cellStackView.spacing = 20
 
-        cellStackView.translatesAutoresizingMaskIntoConstraints = false
         cellStackView.alignment = .center
-        cellStackView.distribution = .fill
 
         return cellStackView
     }()
@@ -98,6 +97,9 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
     }
 
     private func setupLayout() {
+        [cellStackView, previewImageView, removeButton]
+            .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+
         NSLayoutConstraint.activate([
             cellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .padding(.standard)),
             cellStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .padding(.standardInverse)),
