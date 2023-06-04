@@ -170,7 +170,7 @@ class PaymentViewController: UIViewController {
                     viewController.didComplete = { [weak self] in
                         guard let self else { return }
                         self.dismiss(animated: true) {
-                            self.navigationController?.popToRootViewController(animated: true)
+                            self.navigationController?.popToRootViewController(animated: false)
                             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
                             appDelegate.rootTabBarController?.selectedIndex = 1
                         }
@@ -184,7 +184,7 @@ class PaymentViewController: UIViewController {
                 }
 
                 viewController.modalPresentationStyle = .fullScreen
-                self.present(viewController, animated: true)
+                navigationController?.present(viewController, animated: true)
             }
         }
 
