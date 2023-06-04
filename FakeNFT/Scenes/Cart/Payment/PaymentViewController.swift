@@ -163,25 +163,8 @@ class PaymentViewController: UIViewController {
                 let order = self.viewModel.order!
 
                 let viewController = paymentStatus.success
-                        ? PaySuccessfulViewController(order: order)
-                        : PayFailureViewController()
-
-                if let viewController = viewController as? PaySuccessfulViewController {
-                    viewController.didComplete = { [weak self] in
-                        guard let self else { return }
-                        self.dismiss(animated: true) {
-                            self.navigationController?.popToRootViewController(animated: false)
-                            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-                            appDelegate.rootTabBarController?.selectedIndex = 1
-                        }
-                    }
-                }
-
-                if let viewController = viewController as? PayFailureViewController {
-                    viewController.didComplete = { [weak self] in
-                        self?.dismiss(animated: true)
-                    }
-                }
+                    ? PaySuccessfulViewController()
+                    : PayFailureViewController()
 
                 viewController.modalPresentationStyle = .fullScreen
                 navigationController?.present(viewController, animated: true)

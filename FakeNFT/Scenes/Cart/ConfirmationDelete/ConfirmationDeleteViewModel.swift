@@ -22,7 +22,7 @@ final class ConfirmationDeleteViewModel: NetworkViewModel {
 
         isLoading = true
 
-        networkClient.send(request: UpdateOrderRequest(order: order), type: Order.self) { (result: Result<Order, Error>) in
+        networkClient.send(request: UpdateOrderRequest(order: order), type: Order.self) { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 

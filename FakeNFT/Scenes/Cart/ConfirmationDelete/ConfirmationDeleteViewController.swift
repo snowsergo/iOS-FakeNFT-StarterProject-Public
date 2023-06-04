@@ -131,9 +131,10 @@ final class ConfirmationDeleteViewController: UIViewController {
         }
 
         viewModel.updateLoadingStatus = { [weak self] in
-            self?.viewModel.isLoading ?? false
-                ? ProgressHUD.show()
-                : ProgressHUD.dismiss()
+            let isLoading = self?.viewModel.isLoading ?? false
+
+            isLoading ? ProgressHUD.show() : ProgressHUD.dismiss()
+            self?.view.isUserInteractionEnabled = !isLoading
         }
 
         viewModel.showAlertClosure = { [weak self] in

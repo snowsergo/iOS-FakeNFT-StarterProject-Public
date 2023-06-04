@@ -4,22 +4,12 @@
 
 import UIKit
 
-class PaySuccessfulViewController: UIViewController, PaymentStatusProtocol {
-    var didComplete: (() -> Void)?
-
-    init(order: Order) {
-        print("Success controller: \(order)")
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+class PayFailureViewController: UIViewController {
 
     // MARK: - UI elements
 
     private let pictureView: UIImageView = {
-        let image = UIImageView(image: .asset(.successPay))
+        let image = UIImageView(image: .asset(.failurePay))
         return image
     }()
 
@@ -29,13 +19,13 @@ class PaySuccessfulViewController: UIViewController, PaymentStatusProtocol {
         label.textColor = .asset(.black)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.text = "Успех! Оплата прошла,\nпоздравляем с покупкой!"
+        label.text = "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!"
         return label
     }()
 
     lazy private var completeButton: ButtonComponent = {
         let button = ButtonComponent(.primary, size: .large)
-        button.setTitle("Вернуться в каталог", for: .normal)
+        button.setTitle("Попробовать еще раз", for: .normal)
         button.addTarget(self, action: #selector(didTapComplete), for: .touchUpInside)
         return button
     }()
@@ -82,8 +72,8 @@ class PaySuccessfulViewController: UIViewController, PaymentStatusProtocol {
     }
 }
 
-extension PaySuccessfulViewController {
+extension PayFailureViewController {
     @objc func didTapComplete() {
-        didComplete?()
+        dismiss(animated: true)
     }
 }

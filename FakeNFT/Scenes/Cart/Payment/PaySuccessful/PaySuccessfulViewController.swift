@@ -4,14 +4,12 @@
 
 import UIKit
 
-class PayFailureViewController: UIViewController, PaymentStatusProtocol {
-
-    var didComplete: (() -> Void)?
+class PaySuccessfulViewController: UIViewController {
 
     // MARK: - UI elements
 
     private let pictureView: UIImageView = {
-        let image = UIImageView(image: .asset(.failurePay))
+        let image = UIImageView(image: .asset(.successPay))
         return image
     }()
 
@@ -21,13 +19,13 @@ class PayFailureViewController: UIViewController, PaymentStatusProtocol {
         label.textColor = .asset(.black)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.text = "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!"
+        label.text = "Успех! Оплата прошла,\nпоздравляем с покупкой!"
         return label
     }()
 
-    private let completeButton: ButtonComponent = {
+    lazy private var completeButton: ButtonComponent = {
         let button = ButtonComponent(.primary, size: .large)
-        button.setTitle("Попробовать еще раз", for: .normal)
+        button.setTitle("Вернуться в каталог", for: .normal)
         button.addTarget(self, action: #selector(didTapComplete), for: .touchUpInside)
         return button
     }()
@@ -74,8 +72,12 @@ class PayFailureViewController: UIViewController, PaymentStatusProtocol {
     }
 }
 
-extension PayFailureViewController {
+extension PaySuccessfulViewController {
     @objc func didTapComplete() {
-        didComplete?()
+        dismiss(animated: true) {
+            self.navigationController?.popToRootViewController(animated: false)
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            appDelegate.rootTabBarController?.selectedIndex = 1
+        }
     }
 }

@@ -53,7 +53,7 @@ final class CartViewModel: NetworkViewModel {
         isLoading = true
         order = nil
 
-        networkClient.send(request: OrderRequest(id: id), type: Order.self) { [weak self] (result: Result<Order, Error>) in
+        networkClient.send(request: OrderRequest(id: id), type: Order.self) { [weak self] result in
             guard let self else { return }
 
             switch result {
@@ -96,9 +96,8 @@ final class CartViewModel: NetworkViewModel {
         }
     }
 
-    // TODO: Кажется это должно быть в другой модели, а с другой стороны это часть заказа
     private func fetchNft(id: Int, onResponse: @escaping (_ nft: Nft) -> Void ) {
-        networkClient.send(request: NftRequest(id: id), type: Nft.self) { [weak self] (result: Result<Nft, Error>) in
+        networkClient.send(request: NftRequest(id: id), type: Nft.self) { [weak self] result in
             switch result {
             case .success(let nft):
                 onResponse(nft)
