@@ -1,6 +1,6 @@
 import UIKit
 
-enum ColorAsset: String, CaseIterable {
+enum ColorAsset: String {
     case black
     case blue
     case white

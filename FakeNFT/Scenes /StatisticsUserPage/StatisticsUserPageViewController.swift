@@ -10,7 +10,8 @@ final class StatisticsUserPageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = StatisticsUserPageViewModel()
+        let model = StatisticsUserPageModel()
+        viewModel = StatisticsUserPageViewModel(model: model)
         viewModel.onChange = configure
         viewModel.getUser(userId: userId)
         setupAppearance()

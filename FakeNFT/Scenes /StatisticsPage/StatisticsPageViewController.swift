@@ -23,8 +23,8 @@ final class StatisticsPageViewController: UIViewController {
         backButton.title = ""
         navigationItem.backBarButtonItem = backButton
         navigationItem.rightBarButtonItem = menuButton
-
-        viewModel = StatisticsPageViewModel()
+        let model = StatisticsPageModel()
+        viewModel = StatisticsPageViewModel(model: model)
         viewModel.onChange = updateTable
         viewModel.getUsers(showLoader: showLoader)
     }

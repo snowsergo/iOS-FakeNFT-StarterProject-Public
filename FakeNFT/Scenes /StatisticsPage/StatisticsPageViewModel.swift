@@ -6,6 +6,8 @@ enum SortType: String {
 }
 
 final class StatisticsPageViewModel {
+    private let model: StatisticsPageModel
+
     var onChange: (() -> Void)?
 
     private(set) var users: [User] = [] {
@@ -15,35 +17,35 @@ final class StatisticsPageViewModel {
     }
     var sortType: SortType? {
         didSet {
-            users = getSorted(users: users)
+            sortUsers()
             onChange?()
         }
     }
 
-    let defaultNetworkClient = DefaultNetworkClient()
-    func getUsers(showLoader: @escaping (_ active: Bool) -> Void ) {
-        showLoader(true)
-        let request = Request(endpoint: URL(string: defaultBaseUrl + "/users"), httpMethod: .get)
+    init(model: StatisticsPageModel) {
+        self.model = model
+    }
 
-        let fulfillCompletionOnMainThread: (Result<[User], Error>) -> Void = { [weak self] result in
+    func getUsers(showLoader: @escaping (_ active: Bool) -> Void) {
+        showLoader(true)
+
+        model.getUsers { [weak self] result in
             guard let self = self else { return }
             showLoader(false)
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):
-                    self.users = self.getSorted(users: users)
-                case .failure:
-                    print("___failure")
+                    self.users = users
+                    self.sortUsers()
+                case .failure(let error):
+                    print("Error: \(error)")
+                    self.users = []
                 }
             }
         }
-        defaultNetworkClient.send(request: request, type: [User].self, onResponse: fulfillCompletionOnMainThread)
     }
 
-    private func getSorted(users: [User]) -> [User] {
-        guard let sortType = sortType else {
-            return users
-        }
+    private func getSorted(users: [User], by sortType: SortType) -> [User] {
         switch sortType {
         case .byName:
             return users.sorted { $0.name < $1.name }
@@ -58,5 +60,12 @@ final class StatisticsPageViewModel {
 
     func setSortedByCount() {
         sortType = .byCount
+    }
+
+    private func sortUsers() {
+        guard let sortType = sortType else {
+            return
+        }
+        users = getSorted(users: users, by: sortType)
     }
 }

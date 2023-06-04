@@ -16,7 +16,8 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = StatisticsUserCollectionPageViewModel()
+        let model = StatisticsUserCollectionModel()
+        viewModel = StatisticsUserCollectionPageViewModel(model: model)
         viewModel.onChange = change
         viewModel.getUserNfts(ids: nfts ?? [], showLoader: showLoader)
         view.backgroundColor = .asset(.white)
@@ -82,7 +83,6 @@ extension StatisticsUserCollectionPageViewController: UICollectionViewDataSource
 
         let nft = viewModel.nfts[indexPath.row]
         cell.configure(with: nft)
-
         return cell
     }
 
@@ -95,7 +95,7 @@ extension StatisticsUserCollectionPageViewController: UICollectionViewDelegateFl
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width - 16 - 16 - 16) / 3, height: 180)
+        return CGSize(width: (collectionView.bounds.width - 16 - 16 - 16) / 3, height: 192)
     }
 
     func collectionView(
@@ -119,6 +119,6 @@ extension StatisticsUserCollectionPageViewController: UICollectionViewDelegateFl
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        return 40
+        return 20
     }
 }

@@ -30,6 +30,7 @@ final class UserViewCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         configure()
     }
 

@@ -13,6 +13,7 @@ final class StatisticsNftCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         configure(with: nil)
     }
 
@@ -23,6 +24,7 @@ final class StatisticsNftCell: UICollectionViewCell {
         button.tintColor = .asset(.white)
         button.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+
         return button
     }()
 
@@ -116,20 +118,27 @@ private extension StatisticsNftCell {
             imageBackground.trailingAnchor.constraint(equalTo: trailingAnchor),
             imageBackground.heightAnchor.constraint(equalTo: widthAnchor),
 
-            likeButton.topAnchor.constraint(equalTo: imageBackground.topAnchor, constant: 8),
-            likeButton.trailingAnchor.constraint(equalTo: imageBackground.trailingAnchor, constant: -8),
+            likeButton.widthAnchor.constraint(equalToConstant: 40),
+            likeButton.heightAnchor.constraint(equalToConstant: 40),
+            likeButton.topAnchor.constraint(equalTo: imageBackground.topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: imageBackground.trailingAnchor),
 
             ratingView.topAnchor.constraint(equalTo: imageBackground.bottomAnchor, constant: 8),
             ratingView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            ratingView.heightAnchor.constraint(equalToConstant: 12),
 
             nameLabel.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 6),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            nameLabel.heightAnchor.constraint(equalToConstant: 22),
 
-            bucketButton.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 16),
-            bucketButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -11),
+            bucketButton.widthAnchor.constraint(equalToConstant: 40),
+            bucketButton.heightAnchor.constraint(equalToConstant: 40),
+            bucketButton.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 0),
+            bucketButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
 
             priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
-            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0)
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            priceLabel.heightAnchor.constraint(equalToConstant: 12)
 
         ])
     }
