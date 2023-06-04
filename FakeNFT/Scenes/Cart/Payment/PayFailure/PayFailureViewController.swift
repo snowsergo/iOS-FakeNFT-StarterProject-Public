@@ -5,7 +5,6 @@
 import UIKit
 
 class PayFailureViewController: UIViewController {
-
     // MARK: - UI elements
 
     private let pictureView: UIImageView = {
@@ -55,19 +54,20 @@ class PayFailureViewController: UIViewController {
     func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
 
-        [contentStackView, completeButton].forEach({
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        })
+        [contentStackView, completeButton].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
             contentStackView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
-            contentStackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+            contentStackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor)
         ])
 
         NSLayoutConstraint.activate([
             completeButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
             completeButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
-            completeButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse))
+            completeButton.trailingAnchor
+                .constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse))
         ])
     }
 }

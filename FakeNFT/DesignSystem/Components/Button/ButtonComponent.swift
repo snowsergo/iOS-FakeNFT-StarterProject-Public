@@ -20,7 +20,9 @@ final class ButtonComponent: UIButton {
     override var isHighlighted: Bool {
         didSet {
             if style == .secondary {
-                layer.borderColor = isHighlighted ? style.backgroundColorPressed?.cgColor : style.backgroundColor?.cgColor
+                layer.borderColor = isHighlighted
+                    ? style.backgroundColorPressed?.cgColor
+                    : style.backgroundColor?.cgColor
             }
 
             backgroundColor = isHighlighted ? style.backgroundColorPressed : style.backgroundColor

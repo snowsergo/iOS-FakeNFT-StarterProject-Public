@@ -29,11 +29,11 @@ final class RatingView: UIView {
 
     // MARK: - Methods
 
-    func set(count: Int) {
-        guard count >= 0 && count <= maximumStars else { return }
+    func set(length: Int) {
+        guard length >= 0 && length <= maximumStars else { return }
 
         for index in 0..<maximumStars {
-            stackView.arrangedSubviews[index].tintColor = index < count
+            stackView.arrangedSubviews[index].tintColor = index < length
                 ? .asset(.yellow)
                 : .asset(.lightGray)
         }

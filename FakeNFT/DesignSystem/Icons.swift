@@ -13,6 +13,6 @@ enum Icons: String {
 
 extension UIImage {
     static func asset(_ icon: Icons) -> UIImage {
-        UIImage(named: icon.rawValue)!
+        UIImage(named: icon.rawValue) ?? UIImage()
     }
 }

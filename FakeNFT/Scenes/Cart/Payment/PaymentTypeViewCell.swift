@@ -72,8 +72,9 @@ class PaymentTypeViewCell: UICollectionViewCell, ReuseIdentifying {
     private func setupLayout() {
         let safeArea = contentView.safeAreaLayoutGuide
 
-        [cellStackView, iconImageView]
-            .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        [cellStackView, iconImageView].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
             cellStackView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 5),
@@ -100,5 +101,4 @@ class PaymentTypeViewCell: UICollectionViewCell, ReuseIdentifying {
         let width = isSelected ? 1.0 : 0.0
         contentView.layer.borderWidth = width
     }
-
 }

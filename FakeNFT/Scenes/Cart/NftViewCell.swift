@@ -5,7 +5,6 @@
 import UIKit
 
 class NftViewCell: UITableViewCell, ReuseIdentifying {
-
     private var deleteTapHandle: (() -> Void)?
 
     // MARK: - UI elements
@@ -55,9 +54,9 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
         let contentStackView = UIStackView(arrangedSubviews: [topRowContentStackView, bottomRowContentStackView])
         let cellStackView = UIStackView(arrangedSubviews: [previewImageView, contentStackView, removeButton])
 
-        [topRowContentStackView, bottomRowContentStackView, contentStackView].forEach({
-            $0.axis = .vertical
-        })
+        [topRowContentStackView, bottomRowContentStackView, contentStackView].forEach { view in
+            view.axis = .vertical
+        }
 
         topRowContentStackView.spacing = 4
         topRowContentStackView.spacing = 2
@@ -95,14 +94,19 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
     }
 
     private func setupLayout() {
-        [cellStackView, previewImageView, removeButton]
-            .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        [cellStackView, previewImageView, removeButton].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
-            cellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .padding(.standard)),
-            cellStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .padding(.standardInverse)),
-            cellStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: .padding(.standardInverse)),
-            cellStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .padding(.standard))
+            cellStackView.topAnchor
+                .constraint(equalTo: contentView.topAnchor, constant: .padding(.standard)),
+            cellStackView.trailingAnchor
+                .constraint(equalTo: contentView.trailingAnchor, constant: .padding(.standardInverse)),
+            cellStackView.bottomAnchor
+                .constraint(equalTo: contentView.bottomAnchor, constant: .padding(.standardInverse)),
+            cellStackView.leadingAnchor
+                .constraint(equalTo: contentView.leadingAnchor, constant: .padding(.standard))
         ])
 
         NSLayoutConstraint.activate([
@@ -121,7 +125,7 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
     func setup(nft: Nft, deleteTapHandle: (() -> Void)? = nil) {
         titleLabel.text = nft.name
         costLabel.text = "\(nft.price) ETH"
-        ratingView.set(count: nft.rating)
+        ratingView.set(length: nft.rating)
 
         previewImageView.load(url: nft.previewUrl())
 

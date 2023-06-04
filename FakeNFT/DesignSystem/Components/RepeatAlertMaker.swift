@@ -4,12 +4,12 @@
 
 import UIKit
 
-class RepeatAlertMaker {
+enum RepeatAlertMaker {
     static func make(
-            title: String,
-            message: String,
-            repeatHandle: @escaping () -> Void,
-            cancelHandle: (() -> Void)? = nil
+        title: String,
+        message: String,
+        repeatHandle: @escaping () -> Void,
+        cancelHandle: (() -> Void)? = nil
     ) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 

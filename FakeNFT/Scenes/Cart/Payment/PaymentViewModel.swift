@@ -5,7 +5,6 @@
 import Foundation
 
 class PaymentViewModel: NetworkViewModel {
-
     var order: Order!
     var selectedPaymentMethodId: String?
 
@@ -30,7 +29,11 @@ class PaymentViewModel: NetworkViewModel {
     }
 
     func getCellIndexPath(id: String) -> IndexPath {
-        IndexPath(row: cellViewModels.firstIndex(where: { $0.id == id })!, section: 0)
+        let row = cellViewModels.firstIndex { currency in
+            currency.id == id
+        }
+
+        return IndexPath(row: row!, section: 0)
     }
 
     func fetchPaymentMethods() {
@@ -70,6 +73,5 @@ class PaymentViewModel: NetworkViewModel {
                 self.errorMessage = error.localizedDescription
             }
         }
-
     }
 }

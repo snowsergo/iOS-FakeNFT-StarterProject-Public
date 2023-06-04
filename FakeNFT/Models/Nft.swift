@@ -15,6 +15,7 @@ struct Nft: Codable {
     let id: String
 
     func previewUrl() -> URL? {
-        URL(string: images.first!)
+        guard let previewUrl = images.first else { return nil }
+        return URL(string: previewUrl)
     }
 }

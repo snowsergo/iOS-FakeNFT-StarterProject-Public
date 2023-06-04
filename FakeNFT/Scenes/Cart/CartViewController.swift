@@ -6,14 +6,13 @@ import UIKit
 import ProgressHUD
 
 final class CartViewController: UIViewController {
-
     private let orderId: String = Config.mockOrderId
 
     lazy private var viewModel: CartViewModel = {
         CartViewModel(networkClient: CartNavigationController.sharedNetworkClient)
     }()
 
-    // MARK - UI Elements
+    // MARK: - UI Elements
 
     lazy private var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -110,9 +109,9 @@ final class CartViewController: UIViewController {
         navigationItem.backButtonTitle = ""
         navigationItem.rightBarButtonItem = sortButton
 
-        [itemsTableView, cartInfoStackView, emptyMessageLabel].forEach({
-            view.addSubview($0)
-        })
+        [itemsTableView, cartInfoStackView, emptyMessageLabel].forEach { view in
+            self.view.addSubview(view)
+        }
 
         toggleEmptyTable(true)
     }
@@ -120,13 +119,15 @@ final class CartViewController: UIViewController {
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
 
-        [emptyMessageLabel, cartInfoStackView, itemsTableView]
-            .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        [emptyMessageLabel, cartInfoStackView, itemsTableView].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
             emptyMessageLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             emptyMessageLabel.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
-            emptyMessageLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
+            emptyMessageLabel.trailingAnchor
+                .constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
             emptyMessageLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard))
         ])
 
@@ -201,7 +202,7 @@ final class CartViewController: UIViewController {
     }
 }
 
-// MARK - Extensions
+// MARK: - Extensions
 
 extension CartViewController {
     private func toggleEmptyTable(_ isEmpty: Bool) {
@@ -237,12 +238,22 @@ extension CartViewController {
     }
 
     private func refreshShowLoading(_ isLoading: Bool) {
-        isLoading ? refreshControl.beginRefreshing() : refreshControl.endRefreshing()
+        if isLoading {
+            refreshControl.beginRefreshing()
+        } else {
+            refreshControl.endRefreshing()
+        }
+
         view.isUserInteractionEnabled = !isLoading
     }
 
     private func defaultShowLoading(_ isLoading: Bool) {
-        isLoading ? ProgressHUD.show() : ProgressHUD.dismiss()
+        if isLoading {
+            ProgressHUD.show()
+        } else {
+            ProgressHUD.dismiss()
+        }
+
         view.isUserInteractionEnabled = !isLoading
     }
 

@@ -160,8 +160,6 @@ class PaymentViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
-                let order = self.viewModel.order!
-
                 let viewController = paymentStatus.success
                     ? PaySuccessfulViewController()
                     : PayFailureViewController()
