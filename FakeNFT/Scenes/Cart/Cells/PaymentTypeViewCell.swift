@@ -88,6 +88,12 @@ class PaymentTypeViewCell: UICollectionViewCell, ReuseIdentifying {
         ])
     }
 
+    func setup(model: Currency) {
+        titleLabel.text = model.title
+        nameLabel.text = model.name
+        iconImageView.load(url: URL(string: model.image))
+    }
+
     // MARK: Actions
 
     func toggleSelectedState() {

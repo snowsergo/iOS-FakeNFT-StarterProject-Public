@@ -5,5 +5,5 @@
 import Foundation
 
 protocol PaymentStatusProtocol {
-    var didTapComplete: (() -> Void)? { get set }
+    var didComplete: (() -> Void)? { get set }
 }

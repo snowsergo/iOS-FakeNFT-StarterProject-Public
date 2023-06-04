@@ -4,5 +4,5 @@
 
 import Foundation
 
-class PaymentFailureViewModel {
+class PayFailureViewModel {
 }

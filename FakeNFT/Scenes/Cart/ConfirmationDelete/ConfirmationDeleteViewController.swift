@@ -15,6 +15,17 @@ final class ConfirmationDeleteViewController: UIViewController {
         ConfirmationDeleteViewModel(networkClient: CartNavigationController.sharedNetworkClient)
     }()
 
+    init(order: Order, item: Nft) {
+        viewModel.order = order
+        self.item = item
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - UI elements
 
     lazy private var previewImageView: UIImageView = {
@@ -71,17 +82,6 @@ final class ConfirmationDeleteViewController: UIViewController {
     }()
 
     // MARK: - Setup view
-
-    init(order: Order, item: Nft) {
-        viewModel.order = order
-        self.item = item
-
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

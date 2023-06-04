@@ -262,12 +262,14 @@ extension CartViewController {
     }
 
     @objc private func didTapPaymentShow() {
-        let paymentViewController = PaymentViewController()
+        guard let order = viewModel.order else { return }
+
+        let paymentViewController = PaymentViewController(order: order)
         navigationController?.pushViewController(paymentViewController, animated: true)
     }
 
     @objc private func refreshData() {
-        viewModel.fetchOrder(id: orderId)
+        viewModel.fetchOrder(id: viewModel.order?.id ?? orderId)
     }
 }
 

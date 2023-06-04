@@ -3,12 +3,21 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class PaymentViewController: UIViewController {
-
     private var viewModel: PaymentViewModel = {
-        PaymentViewModel()
+        PaymentViewModel(networkClient: CartNavigationController.sharedNetworkClient)
     }()
+
+    init(order: Order) {
+        viewModel.order = order
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK - UI Elements
 
@@ -25,6 +34,7 @@ class PaymentViewController: UIViewController {
     lazy private var payButton: UIButton = {
         let button = ButtonComponent(.primary, size: .large)
         button.setTitle("Оплатить", for: .normal)
+        button.addTarget(self, action: #selector(didTapPay), for: .touchUpInside)
         return button
     }()
 
@@ -104,10 +114,91 @@ class PaymentViewController: UIViewController {
     }
 
     func setupViewModel() {
+        viewModel.updateLoadingStatus = {
+            DispatchQueue.main.async { [weak self] in
+                let isLoading = self?.viewModel.isLoading ?? false
+
+                isLoading ? ProgressHUD.show() : ProgressHUD.dismiss()
+                self?.view.isUserInteractionEnabled = !isLoading
+            }
+        }
+
+        viewModel.showAlertClosure = {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+
+                let alert = RepeatAlertMaker.make(
+                        title: "Упс! У нас ошибка.",
+                        message: self.viewModel.errorMessage!) { [weak self] in
+                    self?.viewModel.fetchPaymentMethods()
+                }
+
+                present(alert, animated: true)
+            }
+        }
+
+        viewModel.reloadCollectionViewClosure = {
+            DispatchQueue.main.async { [weak self] in
+                self?.paymentMethodsCollection.reloadData()
+            }
+        }
+
+        viewModel.methodNotSelectedClosure = {
+            DispatchQueue.main.async { [weak self] in
+                let alertController = UIAlertController(
+                        title: "Так не пойдет 🤨",
+                        message: "Выберите метод оплаты",
+                        preferredStyle: .alert)
+
+                alertController.addAction(UIAlertAction(title: "Понятно", style: .cancel))
+
+                self?.present(alertController, animated: true)
+            }
+        }
+
+        viewModel.checkedPayStatusClosure = { paymentStatus in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+
+                let order = self.viewModel.order!
+
+                let viewController = paymentStatus.success
+                        ? PaySuccessfulViewController(order: order)
+                        : PayFailureViewController()
+
+                if let viewController = viewController as? PaySuccessfulViewController {
+                    viewController.didComplete = { [weak self] in
+                        guard let self else { return }
+                        self.dismiss(animated: true) {
+                            self.navigationController?.popToRootViewController(animated: true)
+                            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                            appDelegate.rootTabBarController?.selectedIndex = 1
+                        }
+                    }
+                }
+
+                if let viewController = viewController as? PayFailureViewController {
+                    viewController.didComplete = { [weak self] in
+                        self?.dismiss(animated: true)
+                    }
+                }
+
+                viewController.modalPresentationStyle = .fullScreen
+                self.present(viewController, animated: true)
+            }
+        }
+
+        viewModel.fetchPaymentMethods()
     }
 }
 
 // MARK: - Extensions
+
+extension PaymentViewController {
+    @objc private func didTapPay() {
+        viewModel.checkPayment()
+    }
+}
 
 extension PaymentViewController: UITextViewDelegate {
     func textView(
@@ -153,15 +244,27 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGFloat {
         .padding(.cellSpacing)
     }
+
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectedPaymentMethodId = viewModel.getCellViewModel(at: indexPath).id
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        viewModel.selectedPaymentMethodId = nil
+    }
 }
 
 extension PaymentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        8
+        viewModel.numberOfCells
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PaymentTypeViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        let model = viewModel.getCellViewModel(at: indexPath)
+
+        cell.setup(model: model)
+
         return cell;
     }
 }

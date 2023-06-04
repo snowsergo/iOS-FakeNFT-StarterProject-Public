@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct GetNftRequest: NetworkRequest {
+struct NftRequest: NetworkRequest {
     var endpoint: URL?
 
     init(id: Int) {

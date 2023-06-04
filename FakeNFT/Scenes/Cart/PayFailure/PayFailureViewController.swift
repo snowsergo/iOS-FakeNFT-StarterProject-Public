@@ -4,14 +4,14 @@
 
 import UIKit
 
-class PaymentSuccessfulViewController: UIViewController, PaymentStatusProtocol {
+class PayFailureViewController: UIViewController, PaymentStatusProtocol {
 
-    var didTapComplete: (() -> Void)?
+    var didComplete: (() -> Void)?
 
     // MARK: - UI elements
 
     private let pictureView: UIImageView = {
-        let image = UIImageView(image: .asset(.successPay))
+        let image = UIImageView(image: .asset(.failurePay))
         return image
     }()
 
@@ -21,13 +21,14 @@ class PaymentSuccessfulViewController: UIViewController, PaymentStatusProtocol {
         label.textColor = .asset(.black)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.text = "Успех! Оплата прошла,\nпоздравляем с покупкой!"
+        label.text = "Упс! Что-то пошло не так :(\nПопробуйте ещё раз!"
         return label
     }()
 
     private let completeButton: ButtonComponent = {
         let button = ButtonComponent(.primary, size: .large)
-        button.setTitle("Вернуться в каталог", for: .normal)
+        button.setTitle("Попробовать еще раз", for: .normal)
+        button.addTarget(self, action: #selector(didTapComplete), for: .touchUpInside)
         return button
     }()
 
@@ -47,6 +48,8 @@ class PaymentSuccessfulViewController: UIViewController, PaymentStatusProtocol {
     }
 
     func setupView() {
+        view.backgroundColor = .asset(.white)
+
         view.addSubview(contentStackView)
         view.addSubview(completeButton)
     }
@@ -69,5 +72,10 @@ class PaymentSuccessfulViewController: UIViewController, PaymentStatusProtocol {
             completeButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse))
         ])
     }
+}
 
+extension PayFailureViewController {
+    @objc func didTapComplete() {
+        didComplete?()
+    }
 }

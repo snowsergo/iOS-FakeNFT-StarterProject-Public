@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct GetOrderRequest: NetworkRequest {
+struct OrderRequest: NetworkRequest {
     var endpoint: URL?
 
     init(id: String) {
