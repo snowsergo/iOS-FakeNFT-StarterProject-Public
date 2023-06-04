@@ -99,7 +99,7 @@
                             <constraint firstItem="5sC-YF-RVI" firstAttribute="trailing" secondItem="hE3-IK-5YF" secondAttribute="trailing" constant="16" id="vcF-aZ-X0d"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Корзина" image="trash" catalog="system" id="4N1-bS-JmX"/>
+                    <tabBarItem key="tabBarItem" title="Корзина" image="tabBarCart" id="4N1-bS-JmX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lqF-RD-h9V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -162,7 +162,7 @@
         <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="flag.2.crossed.fill" catalog="system" width="128" height="72"/>
         <image name="square.stack.3d.up.fill" catalog="system" width="128" height="125"/>
-        <image name="trash" catalog="system" width="117" height="128"/>
+        <image name="tabBarCart" width="30" height="30"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
