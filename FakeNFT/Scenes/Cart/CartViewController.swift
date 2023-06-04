@@ -265,6 +265,7 @@ extension CartViewController {
         guard let order = viewModel.order else { return }
 
         let paymentViewController = PaymentViewController(order: order)
+        paymentViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(paymentViewController, animated: true)
     }
 
