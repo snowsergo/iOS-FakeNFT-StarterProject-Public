@@ -5,7 +5,6 @@
 import Foundation
 
 final class ConfirmationDeleteViewModel: NetworkViewModel {
-
     var order: Order!
 
     var successfulClosure: ((_: Order) -> Void)?
@@ -13,7 +12,10 @@ final class ConfirmationDeleteViewModel: NetworkViewModel {
     // MARK: - Methods ViewModel
 
     func orderWithoutNft(item: Nft) -> Order {
-        let newListNfts = order.nfts.filter({ $0 != Int(item.id) })
+        let newListNfts = order.nfts.filter { itemId in
+            itemId != Int(item.id)
+        }
+
         return Order(nfts: newListNfts, id: order.id)
     }
 

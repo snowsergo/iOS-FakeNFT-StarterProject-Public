@@ -5,7 +5,6 @@
 import Foundation
 
 final class CartViewModel: NetworkViewModel {
-
     var order: Order?
 
     var reloadTableViewClosure: (() -> Void)?
@@ -29,7 +28,11 @@ final class CartViewModel: NetworkViewModel {
     }
 
     func getCellIndexPath(id: String) -> IndexPath {
-        IndexPath(row: cellViewModels.firstIndex(where: { $0.id == id })!, section: 0)
+        let row = cellViewModels.firstIndex { nft in
+            nft.id == id
+        }
+
+        return IndexPath(row: row!, section: 0)
     }
 
     func sort(by: SortType) {
@@ -60,10 +63,10 @@ final class CartViewModel: NetworkViewModel {
             case .success(let order):
                 self.order = order
 
-                if order.nfts.count > 0 {
+                if order.nfts.isEmpty {
                     let dispatchGroup = DispatchGroup()
 
-                    var cells:[Nft] = []
+                    var cells: [Nft] = []
                     order.nfts.forEach { id in
                         dispatchGroup.enter()
                         DispatchQueue.main.async {
@@ -83,7 +86,6 @@ final class CartViewModel: NetworkViewModel {
                         self.isLoading = false
                         self.reloadTableViewClosure?()
                     }
-
                 } else {
                     self.cellViewModels = []
                     self.isLoading = false

@@ -16,26 +16,25 @@ protocol NetworkViewModelProtocol {
     var isLoading: Bool { get }
 }
 
-
-
 class NetworkViewModel: NetworkViewModelProtocol {
     var networkClient: DefaultNetworkClient
 
     var showAlertClosure: (() -> Void)?
-    var errorMessage: String? = nil {
+    var errorMessage: String? {
         didSet {
             showAlertClosure?()
         }
     }
 
     var updateLoadingStatus: (() -> Void)?
-    var isLoading: Bool = false {
+    var isLoading: Bool {
         didSet {
             updateLoadingStatus?()
         }
     }
 
     init(networkClient: DefaultNetworkClient) {
+        isLoading = false
         self.networkClient = networkClient
     }
 }

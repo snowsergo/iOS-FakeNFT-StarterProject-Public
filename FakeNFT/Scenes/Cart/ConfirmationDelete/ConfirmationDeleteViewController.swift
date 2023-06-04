@@ -6,7 +6,6 @@ import UIKit
 import ProgressHUD
 
 final class ConfirmationDeleteViewController: UIViewController {
-
     private let item: Nft
 
     var completeRemoveClosure: ((_: Order) -> Void)?
@@ -69,10 +68,10 @@ final class ConfirmationDeleteViewController: UIViewController {
         let actionsStackView = UIStackView(arrangedSubviews: [removeButton, dismissButton])
         let contentStackView = UIStackView(arrangedSubviews: [previewStackView, actionsStackView])
 
-        [previewStackView, contentStackView].forEach({
-            $0.axis = .vertical
-            $0.alignment = .center
-        })
+        [previewStackView, contentStackView].forEach { view in
+            view.axis = .vertical
+            view.alignment = .center
+        }
 
         previewStackView.spacing = 12
         actionsStackView.spacing = 8
@@ -103,15 +102,15 @@ final class ConfirmationDeleteViewController: UIViewController {
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
 
-        [contentStackView, previewImageView].forEach({
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        })
+        [contentStackView, previewImageView].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
             contentStackView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor)
         ])
 
         NSLayoutConstraint.activate([
@@ -133,15 +132,20 @@ final class ConfirmationDeleteViewController: UIViewController {
         viewModel.updateLoadingStatus = { [weak self] in
             let isLoading = self?.viewModel.isLoading ?? false
 
-            isLoading ? ProgressHUD.show() : ProgressHUD.dismiss()
+            if isLoading {
+                ProgressHUD.show()
+            } else {
+                ProgressHUD.dismiss()
+            }
+
             self?.view.isUserInteractionEnabled = !isLoading
         }
 
         viewModel.showAlertClosure = { [weak self] in
             guard let self else { return }
             let alert = RepeatAlertMaker.make(
-                    title: "Упс! У нас ошибка",
-                    message: self.viewModel.errorMessage!) {
+                title: "Упс! У нас ошибка",
+                message: self.viewModel.errorMessage ?? "") {
                 self.viewModel.removeItemFromOrder(item: self.item)
             }
 
