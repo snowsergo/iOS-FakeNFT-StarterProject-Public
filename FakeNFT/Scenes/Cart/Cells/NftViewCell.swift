@@ -21,7 +21,6 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .asset(.black)
-        label.text = "April"
         return label
     }()
 
@@ -34,7 +33,6 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .asset(.black)
-        label.text = "1,78 ETH"
         return label
     }()
 
