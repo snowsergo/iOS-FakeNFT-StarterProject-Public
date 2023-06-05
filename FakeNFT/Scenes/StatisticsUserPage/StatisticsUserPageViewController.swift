@@ -1,6 +1,5 @@
 import UIKit
 import Kingfisher
-import WebKit
 
 final class StatisticsUserPageViewController: UIViewController {
     private var viewModel: StatisticsUserPageViewModel!
@@ -55,7 +54,7 @@ final class StatisticsUserPageViewController: UIViewController {
     private lazy var siteButton: UIButton = {
         let button = UIButton()
         button.setTitle("Перейти на сайт пользователя", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.asset(.black), for: .normal)
         button.titleLabel?.font = .caption1
 
         button.layer.cornerRadius = 17
@@ -127,6 +126,7 @@ final class StatisticsUserPageViewController: UIViewController {
         nameView.text = user.name
         descriptionView.text = user.description
         collectionButtonLabel.text = "Коллекция NFT (\(user.nfts.count))"
+        collectionButtonLabel.tintColor = .asset(.black)
     }
 
     @objc
@@ -134,17 +134,9 @@ final class StatisticsUserPageViewController: UIViewController {
         guard let siteUrl = viewModel.user?.website, let url = URL(string: siteUrl) else {
             return
         }
+
         let webView = WebViewService(url: url)
-
-        if let navigationController = navigationController {
-            navigationController.navigationBar.backgroundColor = .asset(.white)
-            navigationController.pushViewController(webView, animated: true)
-            tabBarController?.tabBar.isHidden = true
-
-        }
-        let backButton = UIBarButtonItem()
-        backButton.title = ""
-        navigationItem.backBarButtonItem = backButton
+        navigationController?.pushViewController(webView, animated: true)
     }
 
     @objc

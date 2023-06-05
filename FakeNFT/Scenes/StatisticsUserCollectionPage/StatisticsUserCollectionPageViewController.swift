@@ -39,6 +39,7 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
     // настройка коллекции
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .asset(.white)
 
         view.addSubview(collectionView)
         let safeArea = view.safeAreaLayoutGuide

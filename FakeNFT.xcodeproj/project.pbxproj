@@ -50,6 +50,7 @@
 		FB30E618BA95D5575FBAA74D /* StatisticsPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EEDA299383608B61F96C /* StatisticsPageModel.swift */; };
 		FB30E63C42B3CE7F619C46C8 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30ED1B54051AF91CB9B797 /* RatingView.swift */; };
 		FB30E69ED6EAF8B62837BC8C /* NetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E64E8833BF9FF5D67AF6 /* NetworkTask.swift */; };
+		FB30E6CF84D063D85A002314 /* StatisticNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E1952F5775BE7700C3FC /* StatisticNavigationController.swift */; };
 		FB30E822050E8AD094451272 /* StatisticsPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EE426BFEDDB9EAD6535A /* StatisticsPageViewModel.swift */; };
 		FB30E83A7E04526EE634006B /* CartNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30E9479000A0A9422E5D2F /* CartNavigationController.swift */; };
 		FB30E87533642F12B289F58A /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30EAB987848DE32D06D711 /* ButtonSize.swift */; };
@@ -113,6 +114,7 @@
 		FB30E06D06C3D2B8642AC182 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		FB30E0B7DD247B4D4C363BED /* ButtonComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 		FB30E16436F517E5A27D4770 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FB30E1952F5775BE7700C3FC /* StatisticNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticNavigationController.swift; sourceTree = "<group>"; };
 		FB30E1BEAFE48FDE242D72E3 /* StatisticsNftCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsNftCell.swift; sourceTree = "<group>"; };
 		FB30E22391FB652F1A7BEA54 /* PayFailureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayFailureViewController.swift; sourceTree = "<group>"; };
 		FB30E326FB2AA542F71E0A74 /* ButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				FB30ED5D840F26B957FEBE4D /* StatisticsPage */,
 				FB30EA0D7532CA2D79410BBE /* StatisticsUserCollectionPage */,
 				FB30E9B31EEE0E6DBB3D3B4E /* StatisticsUserPage */,
+				FB30E1952F5775BE7700C3FC /* StatisticNavigationController.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -658,6 +661,7 @@
 				FB30E2B13964D9FFC27F34B2 /* StatisticsUserModel.swift in Sources */,
 				FB30EE3650925157DD4EF30C /* StatisticsUserPageViewModel.swift in Sources */,
 				FB30E5E3DF663AF96F3973F7 /* StatisticsUserPageViewController.swift in Sources */,
+				FB30E6CF84D063D85A002314 /* StatisticNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
