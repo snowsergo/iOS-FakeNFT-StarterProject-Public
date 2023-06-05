@@ -265,7 +265,7 @@ extension CartViewController {
     @objc private func didTapSort() {
         let alertController = UIAlertController()
 
-        SortType.allCases.forEach { type in
+        CartSortType.allCases.forEach { type in
             alertController.addAction(
                 UIAlertAction(title: type.rawValue, style: .default) { [weak self] _ in
                     self?.viewModel.sort(by: type)

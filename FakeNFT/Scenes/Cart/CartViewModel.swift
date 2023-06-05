@@ -35,7 +35,7 @@ final class CartViewModel: NetworkViewModel {
         return IndexPath(row: row!, section: 0)
     }
 
-    func sort(by: SortType) {
+    func sort(by: CartSortType) {
         cellViewModels.sort { (lhs: Nft, rhs: Nft) -> Bool in
             switch by {
             case .name: return lhs.name < rhs.name
