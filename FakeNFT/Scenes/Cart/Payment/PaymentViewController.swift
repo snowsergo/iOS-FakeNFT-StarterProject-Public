@@ -167,7 +167,7 @@ class PaymentViewController: UIViewController {
                     self?.viewModel.fetchPaymentMethods()
                 }
 
-                present(alert, animated: true)
+                self.present(alert, animated: true)
             }
         }
 
@@ -205,7 +205,7 @@ class PaymentViewController: UIViewController {
                 }
 
                 viewController.modalPresentationStyle = .fullScreen
-                navigationController?.present(viewController, animated: true)
+                self.navigationController?.present(viewController, animated: true)
             }
         }
 

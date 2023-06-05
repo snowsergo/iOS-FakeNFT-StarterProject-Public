@@ -128,11 +128,11 @@ extension WebViewService: WKNavigationDelegate {
             message: error.localizedDescription,
             repeatHandle: { [weak self] in
                 guard let self else { return }
-                didLoadPage()
+                self.didLoadPage()
             },
             cancelHandle: { [weak self] in
                 guard let self else { return }
-                navigationController?.popViewController(animated: true)
+                self.navigationController?.popViewController(animated: true)
                 ProgressHUD.dismiss()
             })
 

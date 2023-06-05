@@ -40,7 +40,7 @@ class PaymentViewModel: NetworkViewModel {
         isLoading = true
         networkClient.send(request: CurrenciesRequest(), type: [Currency].self) { [weak self] result in
             guard let self else { return }
-            isLoading = false
+            self.isLoading = false
 
             switch result {
             case .success(let currencies):

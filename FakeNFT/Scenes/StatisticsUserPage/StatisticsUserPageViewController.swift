@@ -134,17 +134,17 @@ final class StatisticsUserPageViewController: UIViewController {
         guard let siteUrl = viewModel.user?.website, let url = URL(string: siteUrl) else {
             return
         }
+        let webView = WebViewService(url: url)
 
-        let webView = WKWebView()
-        let request = URLRequest(url: url)
-        webView.load(request)
-        let viewController = UIViewController()
-        viewController.view = webView
+        if let navigationController = navigationController {
+            navigationController.navigationBar.backgroundColor = .asset(.white)
+            navigationController.pushViewController(webView, animated: true)
+            tabBarController?.tabBar.isHidden = true
 
+        }
         let backButton = UIBarButtonItem()
         backButton.title = ""
         navigationItem.backBarButtonItem = backButton
-        navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc
