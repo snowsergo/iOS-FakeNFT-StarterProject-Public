@@ -13,6 +13,8 @@ final class WebViewService: UIViewController {
 
     private var urlRequest: URLRequest
 
+    private var observation: NSKeyValueObservation?
+
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,24 +70,23 @@ final class WebViewService: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+
+        observation = webView.observe(\WKWebView.estimatedProgress, options: .new) { _, change in
+            DispatchQueue.main.async { [weak self] in
+                let progressValue = fabs(change.newValue ?? 0.0)
+                self?.progressView.progress = Float(progressValue)
+
+                if progressValue >= 0.0001 {
+                    ProgressHUD.dismiss()
+                }
+            }
+        }
+
         didLoadPage()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
-    }
-
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "estimatedProgress" {
-            progressView.progress = Float(webView.estimatedProgress)
-            if fabs(webView.estimatedProgress - 1.0) >= 0.0001 {
-                ProgressHUD.dismiss()
-            }
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+    deinit {
+        observation = nil
     }
 
     // MARK: - Private methods
