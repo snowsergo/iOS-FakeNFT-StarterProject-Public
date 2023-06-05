@@ -16,9 +16,6 @@ final class StatisticsPageViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
-        let navigationController = UINavigationController(rootViewController: StatisticsPageViewController())
-
-        navigationController.view.translatesAutoresizingMaskIntoConstraints = false
         let backButton = UIBarButtonItem()
         backButton.title = ""
         navigationItem.backBarButtonItem = backButton
