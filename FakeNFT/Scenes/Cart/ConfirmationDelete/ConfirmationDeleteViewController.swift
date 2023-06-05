@@ -152,7 +152,7 @@ final class ConfirmationDeleteViewController: UIViewController {
                 self.viewModel.removeItemFromOrder(item: self.item)
             }
 
-            present(alert, animated: true)
+            self.present(alert, animated: true)
         }
     }
 
