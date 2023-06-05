@@ -115,7 +115,10 @@ final class ConfirmationDeleteViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             previewImageView.widthAnchor.constraint(equalToConstant: 108),
-            previewImageView.heightAnchor.constraint(equalTo: previewImageView.widthAnchor, multiplier: 1)
+
+            previewImageView.heightAnchor.constraint(
+                equalTo: previewImageView.widthAnchor,
+                multiplier: 1)
         ])
 
         NSLayoutConstraint.activate([

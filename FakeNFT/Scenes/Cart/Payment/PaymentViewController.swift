@@ -19,7 +19,7 @@ class PaymentViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK - UI Elements
+    // MARK: - UI Elements
 
     lazy private var paymentMethodsCollection: UICollectionView = {
         let collectionLayout = UICollectionViewFlowLayout()
@@ -54,13 +54,15 @@ class PaymentViewController: UIViewController {
         paragraphStyle.lineSpacing = 4
         paragraphStyle.lineBreakMode = .byWordWrapping
 
-        attributedString.addAttributes([
-            .font: UIFont.caption2,
-            .foregroundColor: UIColor.asset(.black),
-            .paragraphStyle: paragraphStyle
-        ], range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttributes(
+            [
+                .font: UIFont.caption2,
+                .foregroundColor: UIColor.asset(.black),
+                .paragraphStyle: paragraphStyle
+            ], range: NSRange(location: 0, length: attributedString.length))
 
-        attributedString.addAttribute(.link,
+        attributedString.addAttribute(
+            .link,
             value: Config.userAgreementUrl,
             range: NSRange(location: text.count + 1, length: link.count))
 
@@ -77,7 +79,7 @@ class PaymentViewController: UIViewController {
         setupLayout()
         setupViewModel()
     }
-    
+
     private func setupView() {
         title = "Выберите способ оплаты"
         view.backgroundColor = .asset(.white)
@@ -90,26 +92,53 @@ class PaymentViewController: UIViewController {
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
 
-        [paymentMethodsCollection, userAgreementTextView, payButton]
-            .forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
+        [paymentMethodsCollection, userAgreementTextView, payButton].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
-            paymentMethodsCollection.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: .padding(.standard)),
-            paymentMethodsCollection.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
-            paymentMethodsCollection.bottomAnchor.constraint(equalTo: userAgreementTextView.topAnchor, constant: .padding(.standardInverse)),
-            paymentMethodsCollection.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard))
+            paymentMethodsCollection.topAnchor.constraint(
+                equalTo: safeArea.topAnchor,
+                constant: .padding(.standard)),
+
+            paymentMethodsCollection.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: .padding(.standardInverse)),
+
+            paymentMethodsCollection.bottomAnchor.constraint(
+                equalTo: userAgreementTextView.topAnchor,
+                constant: .padding(.standardInverse)),
+
+            paymentMethodsCollection.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: .padding(.standard))
         ])
 
-        NSLayoutConstraint.activate([
-             userAgreementTextView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: .padding(.largeInverse)),
-             userAgreementTextView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
-             userAgreementTextView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
-        ])
+        NSLayoutConstraint.activate(
+            [
+                userAgreementTextView.bottomAnchor.constraint(
+                    equalTo: payButton.topAnchor,
+                    constant: .padding(.largeInverse)),
+
+                userAgreementTextView.trailingAnchor.constraint(
+                    equalTo: safeArea.trailingAnchor,
+                    constant: .padding(.standardInverse)),
+
+                userAgreementTextView.leadingAnchor.constraint(
+                    equalTo: safeArea.leadingAnchor,
+                    constant: .padding(.standard))
+            ])
 
         NSLayoutConstraint.activate([
             payButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            payButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
-            payButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
+
+            payButton.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: .padding(.standardInverse)),
+
+            payButton.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: .padding(.standard))
         ])
     }
 
@@ -118,7 +147,12 @@ class PaymentViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.viewModel.isLoading ?? false
 
-                isLoading ? ProgressHUD.show() : ProgressHUD.dismiss()
+                if isLoading {
+                    ProgressHUD.show()
+                } else {
+                    ProgressHUD.dismiss()
+                }
+
                 self?.view.isUserInteractionEnabled = !isLoading
             }
         }
@@ -128,8 +162,8 @@ class PaymentViewController: UIViewController {
                 guard let self else { return }
 
                 let alert = RepeatAlertMaker.make(
-                        title: "Упс! У нас ошибка.",
-                        message: self.viewModel.errorMessage!) { [weak self] in
+                    title: "Упс! У нас ошибка.",
+                    message: self.viewModel.errorMessage ?? "") { [weak self] in
                     self?.viewModel.fetchPaymentMethods()
                 }
 
@@ -146,9 +180,9 @@ class PaymentViewController: UIViewController {
         viewModel.methodNotSelectedClosure = {
             DispatchQueue.main.async { [weak self] in
                 let alertController = UIAlertController(
-                        title: "Так не пойдет 🤨",
-                        message: "Выберите метод оплаты",
-                        preferredStyle: .alert)
+                    title: "Так не пойдет 🤨",
+                    message: "Выберите метод оплаты",
+                    preferredStyle: .alert)
 
                 alertController.addAction(UIAlertAction(title: "Понятно", style: .cancel))
 
@@ -163,6 +197,12 @@ class PaymentViewController: UIViewController {
                 let viewController = paymentStatus.success
                     ? PaySuccessfulViewController()
                     : PayFailureViewController()
+
+                if let viewController = viewController as? PaySuccessfulViewController {
+                    viewController.didComplete = { [weak self] in
+                        self?.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
 
                 viewController.modalPresentationStyle = .fullScreen
                 navigationController?.present(viewController, animated: true)
@@ -183,11 +223,11 @@ extension PaymentViewController {
 
 extension PaymentViewController: UITextViewDelegate {
     func textView(
-            _ textView: UITextView,
-            shouldInteractWith URL: URL,
-            in characterRange: NSRange,
-            interaction: UITextItemInteraction) -> Bool {
-
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
         let webView = WebViewService(url: URL)
         if let navigationController = navigationController {
             navigationController.pushViewController(webView, animated: true)
@@ -201,9 +241,9 @@ extension PaymentViewController: UITextViewDelegate {
 
 extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(
-            _ collectionView: UICollectionView,
-            layout collectionViewLayout: UICollectionViewLayout,
-            sizeForItemAt indexPath: IndexPath
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let perRow = 2.0
         let totalSpacingWidth = .padding(.cellSpacing) * (perRow - 1)
@@ -211,17 +251,17 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     }
 
     public func collectionView(
-            _ collectionView: UICollectionView,
-            layout collectionViewLayout: UICollectionViewLayout,
-            minimumInteritemSpacingForSectionAt section: Int
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
         .padding(.cellSpacing)
     }
 
     public func collectionView(
-            _ collectionView: UICollectionView,
-            layout collectionViewLayout: UICollectionViewLayout,
-            minimumLineSpacingForSectionAt section: Int
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
         .padding(.cellSpacing)
     }
@@ -246,6 +286,6 @@ extension PaymentViewController: UICollectionViewDataSource {
 
         cell.setup(model: model)
 
-        return cell;
+        return cell
     }
 }

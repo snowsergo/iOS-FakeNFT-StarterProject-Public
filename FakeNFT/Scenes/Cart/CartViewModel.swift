@@ -63,7 +63,7 @@ final class CartViewModel: NetworkViewModel {
             case .success(let order):
                 self.order = order
 
-                if order.nfts.isEmpty {
+                if order.nfts.count > 0 {
                     let dispatchGroup = DispatchGroup()
 
                     var cells: [Nft] = []

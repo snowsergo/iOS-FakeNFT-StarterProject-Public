@@ -5,6 +5,8 @@
 import UIKit
 
 class PaySuccessfulViewController: UIViewController {
+    var didComplete: (() -> Void)?
+
     // MARK: - UI elements
 
     private let pictureView: UIImageView = {
@@ -65,19 +67,24 @@ class PaySuccessfulViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             completeButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            completeButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
-            completeButton.trailingAnchor
-                .constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse))
+
+            completeButton.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: .padding(.standard)),
+
+            completeButton.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: .padding(.standardInverse))
         ])
     }
 }
 
 extension PaySuccessfulViewController {
     @objc func didTapComplete() {
-        dismiss(animated: true) {
-            self.navigationController?.popToRootViewController(animated: false)
+        dismiss(animated: true) { [weak self] in
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             appDelegate.rootTabBarController?.selectedIndex = 1
+            self?.didComplete?()
         }
     }
 }

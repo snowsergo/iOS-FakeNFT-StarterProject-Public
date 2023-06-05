@@ -25,7 +25,6 @@ class PaymentTypeViewCell: UICollectionViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .caption2
         label.textColor = .asset(.black)
-        label.text = "Tron"
         return label
     }()
 
@@ -33,7 +32,6 @@ class PaymentTypeViewCell: UICollectionViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .caption2
         label.textColor = .asset(.green)
-        label.text = "TRX"
         return label
     }()
 

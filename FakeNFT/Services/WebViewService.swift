@@ -104,7 +104,7 @@ final class WebViewService: UIViewController {
             webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 
             progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-            progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor)
         ])
     }
 }
@@ -112,17 +112,17 @@ final class WebViewService: UIViewController {
 // MARK: - Extensions
 
 extension WebViewService: WKNavigationDelegate {
-    public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation) {
         progressView.setProgress(0.0, animated: false)
         progressView.isHidden = false
     }
 
-    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
         progressView.isHidden = true
         title = webView.title
     }
 
-    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation, withError error: Error) {
         let errorView = RepeatAlertMaker.make(
             title: "Упс! Что-то пошло не так",
             message: error.localizedDescription,

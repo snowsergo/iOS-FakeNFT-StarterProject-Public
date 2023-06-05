@@ -126,9 +126,14 @@ final class CartViewController: UIViewController {
         NSLayoutConstraint.activate([
             emptyMessageLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
             emptyMessageLabel.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
-            emptyMessageLabel.trailingAnchor
-                .constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse)),
-            emptyMessageLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard))
+
+            emptyMessageLabel.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: .padding(.standardInverse)),
+
+            emptyMessageLabel.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: .padding(.standard))
         ])
 
         NSLayoutConstraint.activate([

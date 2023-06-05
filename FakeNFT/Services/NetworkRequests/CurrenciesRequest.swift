@@ -5,5 +5,5 @@
 import Foundation
 
 struct CurrenciesRequest: NetworkRequest {
-    var endpoint: URL? = URL(string: "\(Config.baseUrl)/api/v1/currencies")
+    var endpoint: URL? = URL(string: "\(Config.baseUrl)/currencies")
 }
