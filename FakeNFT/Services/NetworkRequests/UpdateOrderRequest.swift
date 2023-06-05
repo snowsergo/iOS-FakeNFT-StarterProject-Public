@@ -6,11 +6,11 @@ import Foundation
 
 struct UpdateOrderRequest: NetworkRequest {
     var httpMethod: HttpMethod = .put
-    var httpBody: Data? = nil
+    var httpBody: Data?
     var endpoint: URL?
 
     init(order: Order) {
-        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/orders/\(order.id)") else { return }
+        guard let endpoint = URL(string: "\(Config.baseUrl)/orders/\(order.id)") else { return }
         self.endpoint = endpoint
 
         let encoder = JSONEncoder()

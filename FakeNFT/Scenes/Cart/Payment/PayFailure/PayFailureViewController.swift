@@ -65,9 +65,14 @@ class PayFailureViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             completeButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            completeButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: .padding(.standard)),
-            completeButton.trailingAnchor
-                .constraint(equalTo: safeArea.trailingAnchor, constant: .padding(.standardInverse))
+
+            completeButton.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: .padding(.standard)),
+
+            completeButton.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: .padding(.standardInverse))
         ])
     }
 }

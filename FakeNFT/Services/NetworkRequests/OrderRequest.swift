@@ -8,7 +8,7 @@ struct OrderRequest: NetworkRequest {
     var endpoint: URL?
 
     init(id: String) {
-        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/orders/\(id)") else { return }
+        guard let endpoint = URL(string: "\(Config.baseUrl)/orders/\(id)") else { return }
         self.endpoint = endpoint
     }
 }

@@ -8,7 +8,7 @@ struct NftRequest: NetworkRequest {
     var endpoint: URL?
 
     init(id: Int) {
-        guard let endpoint = URL(string: "\(Config.baseUrl)/api/v1/nft/\(id)") else { return }
+        guard let endpoint = URL(string: "\(Config.baseUrl)/nft/\(id)") else { return }
         self.endpoint = endpoint
     }
 }

@@ -99,24 +99,35 @@ class NftViewCell: UITableViewCell, ReuseIdentifying {
         }
 
         NSLayoutConstraint.activate([
-            cellStackView.topAnchor
-                .constraint(equalTo: contentView.topAnchor, constant: .padding(.standard)),
-            cellStackView.trailingAnchor
-                .constraint(equalTo: contentView.trailingAnchor, constant: .padding(.standardInverse)),
-            cellStackView.bottomAnchor
-                .constraint(equalTo: contentView.bottomAnchor, constant: .padding(.standardInverse)),
-            cellStackView.leadingAnchor
-                .constraint(equalTo: contentView.leadingAnchor, constant: .padding(.standard))
+            cellStackView.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: .padding(.standard)),
+
+            cellStackView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: .padding(.standardInverse)),
+
+            cellStackView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: .padding(.standardInverse)),
+
+            cellStackView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: .padding(.standard))
         ])
 
         NSLayoutConstraint.activate([
             previewImageView.heightAnchor.constraint(equalToConstant: 108),
-            previewImageView.widthAnchor.constraint(equalTo: previewImageView.heightAnchor, multiplier: 1)
+            previewImageView.widthAnchor.constraint(
+                equalTo: previewImageView.heightAnchor,
+                multiplier: 1)
         ])
 
         NSLayoutConstraint.activate([
             removeButton.widthAnchor.constraint(equalToConstant: 44),
-            removeButton.heightAnchor.constraint(equalTo: removeButton.widthAnchor, multiplier: 1)
+            removeButton.heightAnchor.constraint(
+                equalTo: removeButton.widthAnchor,
+                multiplier: 1)
         ])
     }
 
