@@ -82,8 +82,6 @@ class PaySuccessfulViewController: UIViewController {
 extension PaySuccessfulViewController {
     @objc func didTapComplete() {
         dismiss(animated: true) { [weak self] in
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            appDelegate.rootTabBarController?.selectedIndex = 1
             self?.didComplete?()
         }
     }

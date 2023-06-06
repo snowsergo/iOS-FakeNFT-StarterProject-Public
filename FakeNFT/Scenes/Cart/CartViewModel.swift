@@ -69,8 +69,8 @@ final class CartViewModel: NetworkViewModel {
                     var cells: [Nft] = []
                     order.nfts.forEach { id in
                         dispatchGroup.enter()
-                        DispatchQueue.main.async {
-                            self.fetchNft(id: id) { nft in
+                        DispatchQueue.main.async { [weak self] in
+                            self?.fetchNft(id: id) { nft in
                                 cells.append(nft)
                                 dispatchGroup.leave()
                             }
