@@ -98,6 +98,8 @@ extension StatisticsPageViewController: UITableViewDelegate {
         let user = viewModel.users[indexPath.row]
 
         let viewController = StatisticsUserPageViewController(userId: user.id)
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
