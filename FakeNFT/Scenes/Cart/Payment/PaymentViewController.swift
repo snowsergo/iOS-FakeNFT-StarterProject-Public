@@ -200,7 +200,9 @@ class PaymentViewController: UIViewController {
 
                 if let viewController = viewController as? PaySuccessfulViewController {
                     viewController.didComplete = { [weak self] in
-                        self?.navigationController?.popToRootViewController(animated: true)
+                        self?.navigationController?.popToRootViewController(animated: false)
+                        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                        appDelegate.rootTabBarController?.selectedIndex = 1
                     }
                 }
 
