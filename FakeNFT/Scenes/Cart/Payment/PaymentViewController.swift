@@ -164,7 +164,7 @@ class PaymentViewController: UIViewController {
                 let alert = RepeatAlertMaker.make(
                     title: "Упс! У нас ошибка.",
                     message: self.viewModel.errorMessage ?? "") { [weak self] in
-                    self?.viewModel.fetchPaymentMethods()
+                        self?.viewModel.fetchPaymentMethods()
                 }
 
                 self.present(alert, animated: true)
@@ -199,8 +199,8 @@ class PaymentViewController: UIViewController {
                     : PayFailureViewController()
 
                 if let viewController = viewController as? PaySuccessfulViewController {
-                    viewController.didComplete = { [weak self] in
-                        self?.navigationController?.popToRootViewController(animated: false)
+                    viewController.didComplete = {
+                        self.navigationController?.popToRootViewController(animated: false)
                         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
                         appDelegate.rootTabBarController?.selectedIndex = 1
                     }

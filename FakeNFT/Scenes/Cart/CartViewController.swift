@@ -151,8 +151,8 @@ final class CartViewController: UIViewController {
     }
 
     private func setupViewModel() {
-        viewModel.reloadTableViewClosure = { [weak self] in
-            DispatchQueue.main.async {
+        viewModel.reloadTableViewClosure = {
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
                 let isEmpty = self.viewModel.numberOfCells == 0
@@ -163,8 +163,8 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.removeTableCellClosure = { [weak self] (indexPath: IndexPath) in
-            DispatchQueue.main.async {
+        viewModel.removeTableCellClosure = { (indexPath: IndexPath) in
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
                 let isEmpty = self.viewModel.numberOfCells == 0
@@ -177,9 +177,9 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.updateLoadingStatus = { [weak self] in
-            guard let self else { return }
-            DispatchQueue.main.async {
+        viewModel.updateLoadingStatus = {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
                 if self.itemsTableView.refreshControl?.isRefreshing == true {
                     return self.refreshShowLoading(self.viewModel.isLoading)
                 }
@@ -188,10 +188,10 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.showAlertClosure = { [weak self] in
-            guard let self else { return }
+        viewModel.showAlertClosure = {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
 
-            DispatchQueue.main.async {
                 let titleText = "Упс! У нас ошибка."
                 let messageText = self.viewModel.errorMessage ?? "Unknown error"
 
@@ -230,11 +230,10 @@ extension CartViewController {
         let confirmationDeleteViewController = ConfirmationDeleteViewController(order: order, item: item)
         confirmationDeleteViewController.modalPresentationStyle = .overFullScreen
 
-        confirmationDeleteViewController.completeRemoveClosure = { [weak self] (order: Order) in
-            self?.viewModel.order = order
-            confirmationDeleteViewController.dismiss(animated: true)
-
+        confirmationDeleteViewController.completeRemoveClosure = { (order: Order) in
             DispatchQueue.main.async { [weak self] in
+                self?.viewModel.order = order
+                confirmationDeleteViewController.dismiss(animated: true)
                 self?.viewModel.removeCellViewModel(at: indexPath)
             }
         }
