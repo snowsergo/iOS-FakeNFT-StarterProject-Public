@@ -111,7 +111,7 @@ final class CollectionViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .asset(.white)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(collectionCover)
@@ -220,8 +220,9 @@ final class CollectionViewController: UIViewController {
         guard let website = viewModel.nftCollectionAuthor?.website,
               let url = URLEncoder(url: website).encodedURL
         else { return }
+
+        navigationController?.pushViewController(WebViewService(url: url), animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.pushViewController(CollectionsAuthorWebsiteViewController(website: url), animated: true)
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
