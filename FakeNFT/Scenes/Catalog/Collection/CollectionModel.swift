@@ -56,15 +56,15 @@ final class CollectionModel: CollectionModelProtocol {
         }
     }
     
-    func toggleNFTLikeInProfile(id: Int, completion: @escaping (Result<User, Error>) -> Void) {
-        getData(url: "\(Config.baseUrl)/profile/1", type: User.self) { [weak self] result in
+    func toggleNFTLikeInProfile(id: Int, completion: @escaping (Result<Profile, Error>) -> Void) {
+        getData(url: "\(Config.baseUrl)/profile/1", type: Profile.self) { [weak self] result in
             switch result {
             case .success(let data):
                 if data.likes.filter({ $0 == id }).count == 0 {
                     var newProfileLikesContent = data.likes
                     newProfileLikesContent.append(id)
-                    let newProfile = User(avatar: data.avatar, name: data.name, description: data.description, website: data.website, nfts: data.nfts, likes: newProfileLikesContent, id: data.id)
-                    self?.networkClient.send(request: UpdateProfileRequest(profile: newProfile), type: User.self) { result in
+                    let newProfile = Profile(avatar: data.avatar, name: data.name, description: data.description, website: data.website, nfts: data.nfts, likes: newProfileLikesContent, id: data.id)
+                    self?.networkClient.send(request: UpdateProfileRequest(profile: newProfile), type: Profile.self) { result in
                         switch result {
                         case .success(let data):
                             completion(.success(data))
@@ -73,8 +73,8 @@ final class CollectionModel: CollectionModelProtocol {
                         }
                     }
                 } else {
-                    let newProfile = User(avatar: data.avatar, name: data.name, description: data.description, website: data.website, nfts: data.nfts, likes: data.likes.filter({ $0 != id}), id: data.id)
-                    self?.networkClient.send(request: UpdateProfileRequest(profile: newProfile), type: User.self) { result in
+                    let newProfile = Profile(avatar: data.avatar, name: data.name, description: data.description, website: data.website, nfts: data.nfts, likes: data.likes.filter({ $0 != id}), id: data.id)
+                    self?.networkClient.send(request: UpdateProfileRequest(profile: newProfile), type: Profile.self) { result in
                         switch result {
                         case .success(let data):
                             completion(.success(data))

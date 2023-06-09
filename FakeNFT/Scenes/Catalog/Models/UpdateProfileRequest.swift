@@ -5,7 +5,7 @@ struct UpdateProfileRequest: NetworkRequest {
     var httpBody: Data?
     var endpoint: URL?
 
-    init(profile: User) {
+    init(profile: Profile) {
         guard let endpoint = URL(string: "\(Config.baseUrl)/profile/1") else { return }
         self.endpoint = endpoint
 
