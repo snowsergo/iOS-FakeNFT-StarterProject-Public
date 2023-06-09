@@ -12,14 +12,15 @@ final class NFTItemCell: UICollectionViewCell {
             if let url = URLEncoder(url: viewModel.image).encodedURL {
                 nftImage.load(url: url)
             }
-            renderRatingView(view: nftRatingView, value: viewModel.rating)
+            nftRatingView.set(length: viewModel.rating)
+            //renderRatingView(view: nftRatingView, value: viewModel.rating)
             nftName.text = viewModel.name
             nftPrice.text = viewModel.price.removeZerosFromEnd() + " " + CryptoCoin.ETH.rawValue
             
             if viewModel.liked {
-                likeButton.setImage(UIImage(named: "like"), for: .normal)
+                likeButton.setImage(UIImage(named: "likeIcon"), for: .normal)
             } else {
-                likeButton.setImage(UIImage(named: "noLike"), for: .normal)
+                likeButton.setImage(UIImage(named: "noLikeIcon"), for: .normal)
             }
             
             if viewModel.inCart {
@@ -39,11 +40,13 @@ final class NFTItemCell: UICollectionViewCell {
         return view
     }()
     
-    private let nftRatingView: UIStackView = {
+    private let nftRatingView0: UIStackView = {
         let view = UIStackView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    private let nftRatingView = RatingView()
     
     private let nftNameAndPriceView = UIViewAutoLayout()
     
@@ -60,7 +63,7 @@ final class NFTItemCell: UICollectionViewCell {
     
     lazy private var likeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "like"), for: .normal)
+        button.setImage(UIImage(named: "likeIcon"), for: .normal)
         button.imageView?.tintColor = UIColor(hexString: "#F56B6C")
         button.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -77,6 +80,8 @@ final class NFTItemCell: UICollectionViewCell {
         nftNameAndPriceView.addSubview(nftPrice)
         contentView.addSubview(cartButton)
         contentView.addSubview(likeButton)
+        
+        nftRatingView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             nftImage.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -114,30 +119,6 @@ final class NFTItemCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func renderRatingView(view: UIStackView, value: Int) {
-        for view in view.subviews {
-            view.removeFromSuperview()
-        }
-        let val = value < 0 || value > 5 ? 0 : value
-        let grayStarsCount = 5 - val
-        if val > 0 {
-            for _ in 1...val {
-                view.addArrangedSubview(starView(filled: true))
-            }
-        }
-        if grayStarsCount > 0 {
-            for _ in 1...grayStarsCount {
-                view.addArrangedSubview(starView(filled: false))
-            }
-        }
-    }
-
-    private func starView(filled: Bool) -> UIImageView {
-        let star = UIImageView(image: UIImage(named: "star")?.withRenderingMode(.alwaysTemplate))
-        star.tintColor = filled ? UIColor.starYellow : UIColor.starGray
-        return star
     }
     
     func setup(cartTapHandle: (() -> Void)? = nil, likeTapHandle: @escaping (() -> Void)) {
