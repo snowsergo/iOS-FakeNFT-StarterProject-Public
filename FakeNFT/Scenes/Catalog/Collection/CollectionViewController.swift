@@ -58,6 +58,7 @@ final class CollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         nftItemsCollectionView.register(NFTItemCell.self, forCellWithReuseIdentifier: NFTItemCell.reuseIdentifier)
+        nftItemsCollectionView.backgroundColor = .asset(.white)
         nftItemsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         nftItemsCollectionView.dataSource = self
         nftItemsCollectionView.delegate = self
