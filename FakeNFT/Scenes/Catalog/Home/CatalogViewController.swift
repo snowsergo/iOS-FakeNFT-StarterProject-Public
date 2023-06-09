@@ -29,10 +29,18 @@ final class CatalogViewController: UIViewController {
         viewModel.getNFTCollections()
     }
     
+    lazy private var sortButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: .asset(.sort),
+            style: .plain,
+            target: self,
+            action: #selector(showSortingMenu))
+        button.tintColor = .asset(.black)
+        return button
+    }()
+    
     private func setupNavigationBar() {
-        let button = UIBarButtonItem(image: UIImage(named: "Sort"), style: .plain, target: self, action: #selector(showSortingMenu))
-        button.tintColor = .black
-        navigationItem.rightBarButtonItem = button
+        navigationItem.rightBarButtonItem = sortButton
     }
     
     private func setupUI() {
@@ -141,7 +149,7 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        213
+        187
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -161,7 +169,8 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
             converter: FakeConvertService()
         )
         
-        navigationController?.pushViewController(CollectionViewController(viewModel: collectionViewModel), animated: true)
-        
+        let colectionViewController = CollectionViewController(viewModel: collectionViewModel)
+        colectionViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(colectionViewController, animated: true)
     }
 }
