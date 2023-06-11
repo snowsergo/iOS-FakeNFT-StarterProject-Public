@@ -69,7 +69,7 @@ final class ProfileViewController: UIViewController {
         setupNavigationController()
         setupConstraints()
         bind()
-        profileViewModel.profileViewDidLoad()
+        profileViewModel.needUpdate()
     }
 
     // MARK: - Private Funcs
@@ -110,7 +110,7 @@ final class ProfileViewController: UIViewController {
             isProfileUpdatingNow ? UIBlockingProgressHUD.show() : UIBlockingProgressHUD.dismiss()
         }
         profileViewModel.profileReceivingErrorObservable.bind { [weak self] error in
-            self?.showAlertMessage(with: error) { self?.profileViewModel.profileViewDidLoad() }
+            self?.showAlertMessage(with: error) { self?.profileViewModel.needUpdate() }
         }
     }
 

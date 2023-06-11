@@ -47,7 +47,7 @@ final class MyNFTViewController: UIViewController {
         setupConstraints()
         setupController()
         bind()
-        nftsViewModel.nftViewDidLoad()
+        nftsViewModel.needUpdate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,8 +57,10 @@ final class MyNFTViewController: UIViewController {
 
     private func bind() {
         nftsViewModel.nftViewModelsObservable.bind { [weak self] _ in
-            self?.nftTableView.performBatchUpdates {
-                self?.nftTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            guard let self = self else { return }
+            self.nftTableView.performBatchUpdates {
+                self.nftTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+                self.stubLabel.isHidden = self.nftsViewModel.stubLabelIsHidden
             }
         }
         nftsViewModel.isNFTsDownloadingNowObservable.bind { isNFTsDownloadingNow in
@@ -66,7 +68,7 @@ final class MyNFTViewController: UIViewController {
         }
         nftsViewModel.nftsReceivingErrorObservable.bind { [weak self] error in
             self?.showAlertMessage(with: error, tryAgainAction: {
-                self?.nftsViewModel.nftViewDidLoad()
+                self?.nftsViewModel.needUpdate()
             }, cancelAction: {
                 self?.navigationController?.popViewController(animated: true)
             })

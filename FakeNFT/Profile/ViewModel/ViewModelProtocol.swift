@@ -5,4 +5,6 @@
 
 import Foundation
 
-protocol ViewModelProtocol {   }
+protocol ViewModelProtocol {
+    func needUpdate()
+}

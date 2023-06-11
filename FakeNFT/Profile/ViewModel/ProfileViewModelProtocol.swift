@@ -5,7 +5,7 @@
 
 import Foundation
 
-protocol ProfileViewModelProtocol: AnyObject {
+protocol ProfileViewModelProtocol: ViewModelProtocol, AnyObject {
 
     var nameObservable: Observable<String> { get }
     var avatarURLObservable: Observable<URL?> { get }
@@ -16,7 +16,7 @@ protocol ProfileViewModelProtocol: AnyObject {
     var isProfileUpdatingNowObservable: Observable<Bool> { get }
     var profileReceivingErrorObservable: Observable<String> { get }
 
-    func profileViewDidLoad()
+    func needUpdate()
     func labelTextFor(_ profileOption: ProfileOption) -> String
     func didSelect(_ profileOption: ProfileOption) -> ViewModelProtocol
     func didChangeProfile(name: String?,

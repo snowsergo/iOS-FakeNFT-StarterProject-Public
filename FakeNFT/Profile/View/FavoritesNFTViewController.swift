@@ -22,7 +22,8 @@ final class FavoritesNFTViewController: UIViewController {
     }()
 
     private lazy var favoritesNFTCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -44,7 +45,7 @@ final class FavoritesNFTViewController: UIViewController {
         setupController()
         setupConstraints()
         bind()
-        nftsViewModel.nftViewDidLoad()
+        nftsViewModel.needUpdate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,7 +66,7 @@ final class FavoritesNFTViewController: UIViewController {
         }
         nftsViewModel.nftsReceivingErrorObservable.bind { [weak self] error in
             self?.showAlertMessage(with: error, tryAgainAction: {
-                self?.nftsViewModel.nftViewDidLoad()
+                self?.nftsViewModel.needUpdate()
             }, cancelAction: {
                 self?.navigationController?.popViewController(animated: true)
             })

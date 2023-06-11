@@ -11,31 +11,27 @@ enum ProfileOption: Int {
 
 final class ProfileViewModel {
 
+    var nftsViewModel: NFTsViewModelProtocol?
     private let profileStore: ProfileStoreProtocol
 
     @Observable
     private(set) var name: String = ""
-
     @Observable
     private(set) var avatarURL: URL?
-
     @Observable
     private(set) var description: String = ""
-
     @Observable
     private(set) var website: String = ""
-
     @Observable
     private(set) var nfts: [Int] = []
-
     @Observable
     private(set) var likes: [Int] = []
-
     @Observable
     private var isProfileUpdatingNow: Bool = false
-
     @Observable
     private var profileReceivingError: String = ""
+
+    private var profileOption: ProfileOption?
 
     private var avatarURLString: String {
         avatarURL?.absoluteString ?? ""
@@ -60,6 +56,8 @@ final class ProfileViewModel {
         website = profileModel.website
         nfts = profileModel.nfts
         likes = profileModel.likes
+        guard let nftsViewModel = nftsViewModel, let profileOption = profileOption else { return }
+        nftsViewModel.nftsUpdated(newNFTs: profileOption == .myNFT ? nfts : likes)
     }
 
     private func handle(_ error: Error) {
@@ -90,7 +88,7 @@ extension ProfileViewModel: ProfileViewModelProtocol {
     var isProfileUpdatingNowObservable: Observable<Bool> { $isProfileUpdatingNow }
     var profileReceivingErrorObservable: Observable<String> { $profileReceivingError }
 
-    func profileViewDidLoad() {
+    func needUpdate() {
         isProfileUpdatingNow = true
         profileStore.fetchProfile(callback: viewModelCallback)
     }
@@ -125,10 +123,18 @@ extension ProfileViewModel: ProfileViewModelProtocol {
     }
 
     func didSelect(_ profileOption: ProfileOption) -> ViewModelProtocol {
+        self.profileOption = profileOption
         switch profileOption {
-        case .myNFT: return NFTsViewModel(for: nfts)
-        case .favoritesNFT: return NFTsViewModel(for: likes, profileViewModel: self)
-        case .website: return WebsiteViewModel(websiteURLString: website)
+        case .myNFT:
+            let viewModel = NFTsViewModel(for: nfts, profileViewModel: self)
+            nftsViewModel = viewModel
+            return viewModel
+        case .favoritesNFT:
+            let viewModel = NFTsViewModel(for: likes, profileViewModel: self)
+            nftsViewModel = viewModel
+            return viewModel
+        case .website:
+            return WebsiteViewModel(websiteURLString: website)
         }
     }
 }

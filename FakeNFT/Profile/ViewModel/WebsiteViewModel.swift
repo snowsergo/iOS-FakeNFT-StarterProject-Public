@@ -5,7 +5,7 @@
 
 import Foundation
 
-final class WebsiteViewModel: ViewModelProtocol {
+final class WebsiteViewModel {
 
     private let websiteURLString: String
 

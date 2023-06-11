@@ -332,13 +332,13 @@
 			children = (
 				92DB4DA82A1B892800312BC1 /* ProfileViewModel.swift */,
 				92DB4DAA2A1B895500312BC1 /* ProfileViewModelProtocol.swift */,
-				92DB4DB42A1D00F300312BC1 /* ObservableWrapper.swift */,
 				92DB4DE22A23F4DC00312BC1 /* NFTsViewModel.swift */,
 				92DB4DE42A23F50600312BC1 /* NFTsViewModelProtocol.swift */,
 				92DB4DF42A25F45D00312BC1 /* NFTViewModel.swift */,
 				926D84222A32778600367359 /* WebsiteViewModel.swift */,
 				926D84242A3277AC00367359 /* WebsiteViewModelProtocol.swift */,
 				924074472A3320D6005B8397 /* ViewModelProtocol.swift */,
+				92DB4DB42A1D00F300312BC1 /* ObservableWrapper.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";

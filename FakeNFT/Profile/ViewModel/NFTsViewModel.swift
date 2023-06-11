@@ -9,12 +9,12 @@ enum SortingMethod {
     case price, rating, name
 }
 
-final class NFTsViewModel: ViewModelProtocol {
+final class NFTsViewModel {
 
     weak var profileViewModel: ProfileViewModelProtocol?
-
-    private let nftIDs: [Int]
     private let nftStore: NFTStoreProtocol
+
+    private var nftIDs: [Int]
     private var receivedNFTModels: [NFTModel] = []
 
     @Observable
@@ -34,7 +34,6 @@ final class NFTsViewModel: ViewModelProtocol {
     convenience init(for nftsIDs: [Int], profileViewModel: ProfileViewModelProtocol) {
         self.init(for: nftsIDs, nftStore: NFTStore())
         self.profileViewModel = profileViewModel
-
     }
 
     private func setNFTsViewModel(from nftModel: NFTModel) {
@@ -48,7 +47,7 @@ final class NFTsViewModel: ViewModelProtocol {
                              author: Constants.mockAuthorString,
                              price: String($0.price).replacingOccurrences(of: ".", with: ",") + Constants.mockCurrencyString,
                              id: $0.id)
-            }
+            }.sorted { $0.id < $1.id }
         }
     }
 
@@ -74,8 +73,11 @@ extension NFTsViewModel: NFTsViewModelProtocol {
 
     var stubLabelIsHidden: Bool { !nftIDs.isEmpty }
 
-    func nftViewDidLoad() {
-        if nftIDs.isEmpty { return }
+    func needUpdate() {
+        if nftIDs.isEmpty {
+            nftViewModels = []
+            return
+        }
         isNFTsDownloadingNow = true
         receivedNFTModels = []
         nftStore.getNFTs(using: nftIDs) { [weak self] result in
@@ -84,6 +86,11 @@ extension NFTsViewModel: NFTsViewModelProtocol {
             case .failure(let error): self?.handle(error)
             }
         }
+    }
+
+    func nftsUpdated(newNFTs: [Int]) {
+        nftIDs = newNFTs
+        needUpdate()
     }
 
     func myNFTSorted(by sortingMethod: SortingMethod) {
@@ -96,9 +103,10 @@ extension NFTsViewModel: NFTsViewModelProtocol {
     }
 
     func didTapLike(nft: Int, callback: @escaping () -> Void) {
-        nftViewModels.remove(at: nft)
+        var updatedNFTViewModels = nftViewModels
+        updatedNFTViewModels.remove(at: nft)
         var updatedLikes: [Int] = []
-        nftViewModels.forEach { updatedLikes.append(Int($0.id) ?? 0) }
+        updatedNFTViewModels.forEach { updatedLikes.append(Int($0.id) ?? 0) }
         profileViewModel?.didChangeProfile(name: nil,
                                            description: nil,
                                            website: nil,

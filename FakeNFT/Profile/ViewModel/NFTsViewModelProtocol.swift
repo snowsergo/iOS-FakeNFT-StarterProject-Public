@@ -5,7 +5,8 @@
 
 import Foundation
 
-protocol NFTsViewModelProtocol {
+protocol NFTsViewModelProtocol: ViewModelProtocol {
+
     var myNFTsTitle: String { get }
     var favoritesNFTsTitle: String { get }
     var nftViewModels: [NFTViewModel] { get }
@@ -13,7 +14,9 @@ protocol NFTsViewModelProtocol {
     var isNFTsDownloadingNowObservable: Observable<Bool> { get }
     var nftsReceivingErrorObservable: Observable<String> { get }
     var stubLabelIsHidden: Bool { get }
-    func nftViewDidLoad()
+    
+    func needUpdate()
+    func nftsUpdated(newNFTs: [Int])
     func myNFTSorted(by sortingMethod: SortingMethod)
     func didTapLike(nft: Int, callback: @escaping () -> Void)
 }
