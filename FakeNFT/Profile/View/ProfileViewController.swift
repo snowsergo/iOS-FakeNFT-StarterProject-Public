@@ -53,6 +53,7 @@ final class ProfileViewController: UIViewController {
         tableView.register(ProfileTableViewCell.self)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.accessibilityIdentifier = "profileTable"
         return tableView
     }()
 
@@ -197,6 +198,7 @@ extension ProfileViewController: UITableViewDataSource {
         guard let profileOption = ProfileOption(rawValue: indexPath.row) else { return UITableViewCell() }
         let cell: ProfileTableViewCell = tableView.dequeueReusableCell()
         cell.setLabel(text: profileViewModel.labelTextFor(profileOption))
+        cell.accessibilityIdentifier = "cell-\(indexPath.row)"
         return cell
     }
 }

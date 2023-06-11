@@ -28,6 +28,7 @@ final class FavoritesNFTViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(FavoritesNFTCollectionViewCell.self)
+        collectionView.accessibilityIdentifier = "favoritesNFTCollection"
         return collectionView
     }()
 
@@ -121,6 +122,7 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
         let cell: FavoritesNFTCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.delegate = self
         cell.configCell(from: nftsViewModel.nftViewModels[indexPath.row])
+        cell.accessibilityIdentifier = "cell-\(indexPath.row)"
         return cell
     }
 }

@@ -45,6 +45,7 @@ final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
         button.setImage(heartImage?.withTintColor(.redHeartColor, renderingMode: .alwaysOriginal), for: .normal)
         button.contentMode = .center
         button.addTarget(self, action: #selector(likeButtonAction), for: .touchUpInside)
+        button.accessibilityIdentifier = "like"
         return button
     }()
 
