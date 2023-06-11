@@ -12,4 +12,5 @@ struct ProfileModel: Codable {
     let website: String
     let nfts: [Int]
     let likes: [Int]
+    let id: String
 }

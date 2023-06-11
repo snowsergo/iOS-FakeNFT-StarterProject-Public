@@ -9,10 +9,15 @@ enum ProfileOption: Int {
     case myNFT, favoritesNFT, website
 }
 
+enum ProfileReceivingError: Error {
+    case userNotAuthorized
+}
+
 final class ProfileViewModel {
 
     var nftsViewModel: NFTsViewModelProtocol?
     private let profileStore: ProfileStoreProtocol
+    private let userIDStorage: UserIDStorageProtocol
 
     @Observable
     private(set) var name: String = ""
@@ -45,11 +50,17 @@ final class ProfileViewModel {
         }
     }
 
-    init(profileStore: ProfileStoreProtocol = ProfileStore()) {
+    init(profileStore: ProfileStoreProtocol = ProfileStore(),
+         userIDStorage: UserIDStorageProtocol = UserIDStorage()) {
         self.profileStore = profileStore
+        self.userIDStorage = userIDStorage
     }
 
     private func setProfileViewModel(from profileModel: ProfileModel) {
+        guard profileModel.id == userIDStorage.userID else {
+            handle(ProfileReceivingError.userNotAuthorized)
+            return
+        }
         name = profileModel.name
         avatarURL = URL(string: profileModel.avatar)
         description = profileModel.description
@@ -105,7 +116,8 @@ extension ProfileViewModel: ProfileViewModelProtocol {
                                         description: description ?? self.description,
                                         website: website ?? self.website,
                                         nfts: self.nfts,
-                                        likes: likes ?? self.likes)
+                                        likes: likes ?? self.likes,
+                                        id: userIDStorage.userID)
         profileStore.updateProfile(profileModel, viewModelCallback, viewCallback)
     }
 

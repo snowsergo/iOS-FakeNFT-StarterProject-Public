@@ -34,4 +34,7 @@ enum Constants {
     static let closeButtonTitle = NSLocalizedString("closeTitle", comment: "Close button title text")
     static let myNFTStubLabelText = NSLocalizedString("myNFTStub", comment: "My NFTs stub label text")
     static let favoritesNFTStubLabelText = NSLocalizedString("favoritesNFTStub", comment: "Favorites NFTs stub label text")
+
+    // Fake user ID string
+    static let fakeUserIDString = "1"
 }

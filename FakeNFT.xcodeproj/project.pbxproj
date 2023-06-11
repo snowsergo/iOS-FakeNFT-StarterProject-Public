@@ -35,6 +35,8 @@
 		926D84212A326FE500367359 /* WebsiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D84202A326FE500367359 /* WebsiteViewController.swift */; };
 		926D84232A32778600367359 /* WebsiteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D84222A32778600367359 /* WebsiteViewModel.swift */; };
 		926D84252A3277AC00367359 /* WebsiteViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D84242A3277AC00367359 /* WebsiteViewModelProtocol.swift */; };
+		929ECD6C2A35E51D003AA604 /* UserIDStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929ECD6B2A35E51D003AA604 /* UserIDStorage.swift */; };
+		929ECD6E2A35E526003AA604 /* UserIDStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929ECD6D2A35E526003AA604 /* UserIDStorageProtocol.swift */; };
 		92DB4DA22A1B6E6200312BC1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92DB4DA12A1B6E6200312BC1 /* ProfileViewController.swift */; };
 		92DB4DA92A1B892800312BC1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92DB4DA82A1B892800312BC1 /* ProfileViewModel.swift */; };
 		92DB4DAB2A1B895500312BC1 /* ProfileViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92DB4DAA2A1B895500312BC1 /* ProfileViewModelProtocol.swift */; };
@@ -110,6 +112,8 @@
 		926D84202A326FE500367359 /* WebsiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteViewController.swift; sourceTree = "<group>"; };
 		926D84222A32778600367359 /* WebsiteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteViewModel.swift; sourceTree = "<group>"; };
 		926D84242A3277AC00367359 /* WebsiteViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteViewModelProtocol.swift; sourceTree = "<group>"; };
+		929ECD6B2A35E51D003AA604 /* UserIDStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIDStorage.swift; sourceTree = "<group>"; };
+		929ECD6D2A35E526003AA604 /* UserIDStorageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIDStorageProtocol.swift; sourceTree = "<group>"; };
 		92DB4DA12A1B6E6200312BC1 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		92DB4DA82A1B892800312BC1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		92DB4DAA2A1B895500312BC1 /* ProfileViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -365,6 +369,8 @@
 				92DB4DE82A23F57500312BC1 /* NFTStoreProtocol.swift */,
 				92DB4DF02A24962E00312BC1 /* NFTModel.swift */,
 				92DB4DEE2A24937F00312BC1 /* NFTRequest.swift */,
+				929ECD6B2A35E51D003AA604 /* UserIDStorage.swift */,
+				929ECD6D2A35E526003AA604 /* UserIDStorageProtocol.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -565,6 +571,7 @@
 				926D84252A3277AC00367359 /* WebsiteViewModelProtocol.swift in Sources */,
 				92DB4DE92A23F57500312BC1 /* NFTStoreProtocol.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
+				929ECD6E2A35E526003AA604 /* UserIDStorageProtocol.swift in Sources */,
 				92DB4DF52A25F45D00312BC1 /* NFTViewModel.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				9233DB4C2A328A2800187D5B /* FavoritesNFTCellDelegate.swift in Sources */,
@@ -575,6 +582,7 @@
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
 				92DB4DD32A20E2CA00312BC1 /* UITextField+Extensions.swift in Sources */,
 				92DB4DEF2A24937F00312BC1 /* NFTRequest.swift in Sources */,
+				929ECD6C2A35E51D003AA604 /* UserIDStorage.swift in Sources */,
 				92DB4DA92A1B892800312BC1 /* ProfileViewModel.swift in Sources */,
 				9240744E2A33A9D4005B8397 /* UpdateProfileRequest.swift in Sources */,
 				92DB4DF12A24962E00312BC1 /* NFTModel.swift in Sources */,
