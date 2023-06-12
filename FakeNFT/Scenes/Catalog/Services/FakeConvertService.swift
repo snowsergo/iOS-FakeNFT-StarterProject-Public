@@ -14,7 +14,7 @@ final class FakeConvertService: CryptoConverterProtocol {
         case .DOGE:
             return 13.793103448275862 * amount
         case .ETH:
-            return 0.000525533021867 * amount
+            return 1.0 * amount
         case .SHIB:
             return 115740.740740740740741 * amount
         case .SOL:
