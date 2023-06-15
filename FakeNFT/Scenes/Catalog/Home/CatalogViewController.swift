@@ -45,7 +45,7 @@ final class CatalogViewController: UIViewController {
     
     private func setupUI() {
         ProgressHUD.animationType = .circleStrokeSpin
-        ProgressHUD.colorAnimation = UIColor.NFTBlack
+        ProgressHUD.colorAnimation = .asset(.black)
 
         collectionsTableView.backgroundColor = .asset(.white)
         view.backgroundColor = .asset(.white)
@@ -159,7 +159,7 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.tintColor = UIColor.NFTBlack
+        navigationController?.navigationBar.tintColor = .asset(.white)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             
         let collectionViewModel = CollectionViewModel(

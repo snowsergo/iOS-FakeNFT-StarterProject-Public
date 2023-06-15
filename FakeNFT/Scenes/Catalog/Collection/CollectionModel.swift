@@ -63,7 +63,7 @@ final class CollectionModel: CollectionModelProtocol {
                 if data.likes.filter({ $0 == id }).count == 0 {
                     var newProfileLikesContent = data.likes
                     newProfileLikesContent.append(id)
-                    let newProfile = Profile(avatar: data.avatar, name: data.name, description: data.description, website: data.website, nfts: data.nfts, likes: newProfileLikesContent, id: data.id)
+                    let newProfile = ProfileModel(name: data.name, avatar: data.avatar, description: data.description, website: data.website, nfts: data.nfts, likes: newProfileLikesContent, id: data.id)
                     self?.networkClient.send(request: UpdateProfileRequest(profile: newProfile), type: Profile.self) { result in
                         switch result {
                         case .success(let data):
@@ -73,7 +73,7 @@ final class CollectionModel: CollectionModelProtocol {
                         }
                     }
                 } else {
-                    let newProfile = Profile(avatar: data.avatar, name: data.name, description: data.description, website: data.website, nfts: data.nfts, likes: data.likes.filter({ $0 != id}), id: data.id)
+                    let newProfile = ProfileModel(name: data.name, avatar: data.avatar, description: data.description, website: data.website, nfts: data.nfts, likes: data.likes.filter({ $0 != id}), id: data.id)
                     self?.networkClient.send(request: UpdateProfileRequest(profile: newProfile), type: Profile.self) { result in
                         switch result {
                         case .success(let data):
