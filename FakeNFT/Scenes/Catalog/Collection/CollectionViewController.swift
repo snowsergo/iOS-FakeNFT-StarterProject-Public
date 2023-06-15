@@ -23,11 +23,11 @@ final class CollectionViewController: UIViewController {
     }()
     
     private let collectionNameView = UIViewAutoLayout()
-    private let collectionNameLabel = LineHeightedLabel(lineHeight: 28, withFont: UIFont.nftCollectionName, color: UIColor.NFTBlack)
+    private let collectionNameLabel = LineHeightedLabel(lineHeight: 28, withFont: UIFont.nftCollectionName, color: .asset(.black))
     private let authorView = UIViewAutoLayout()
     //private let collectionAuthorLabel = LineHeightedLabel(lineHeight: 18, withFont: UIFont.nftDescription, color: UIColor.NFTBlack, string: "Автор коллекции:")
-    private let collectionAuthorNameLabel = LineHeightedLabel(lineHeight: 20, withFont: UIFont.nftAuthor, color: UIColor.NFTLinkBlue, enabledUserInteraction: true)
-    private let collectionDescriptionLabel = LineHeightedLabel(lineHeight: 3, withFont: UIFont.nftDescription, color: UIColor.NFTBlack, linesCount: 0)
+    private let collectionAuthorNameLabel = LineHeightedLabel(lineHeight: 20, withFont: UIFont.nftAuthor, color: .asset(.blue), enabledUserInteraction: true)
+    private let collectionDescriptionLabel = LineHeightedLabel(lineHeight: 3, withFont: UIFont.nftDescription, color: .asset(.black), linesCount: 0)
     
     private let collectionAuthorLabel: UILabel = {
         let label = UILabel()
@@ -38,7 +38,7 @@ final class CollectionViewController: UIViewController {
         attrString.addAttribute(NSAttributedString.Key.font, value: UIFont.nftDescription, range: NSMakeRange(0, attrString.length))
         label.attributedText = attrString
         
-        label.textColor = UIColor.NFTBlack
+        label.textColor = .asset(.black)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

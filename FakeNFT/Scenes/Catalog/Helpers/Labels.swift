@@ -19,7 +19,7 @@ final class StylizedLabel: UILabel {
             font = UIFont.priceInNFTCell
         }
         
-        textColor = UIColor.NFTBlack
+        textColor = .asset(.black)
     }
     
     required init?(coder: NSCoder) {

@@ -64,7 +64,7 @@ final class NFTItemCell: UICollectionViewCell {
     lazy private var likeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "likeIcon"), for: .normal)
-        button.imageView?.tintColor = UIColor(hexString: "#F56B6C")
+        button.imageView?.tintColor = .asset(.red)
         button.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
