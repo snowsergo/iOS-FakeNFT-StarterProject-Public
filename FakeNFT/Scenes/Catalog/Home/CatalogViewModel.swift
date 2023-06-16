@@ -17,17 +17,17 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     var NFTCollections: [NFTCollection]?
     var NFTCollectionsList: [NFTCollectionListItem]?
     var NFTCollectionsCount: Int?
-    var model: CatalogModelProtocol
+    var networkClient: NetworkClient
     
-    init(model: CatalogModelProtocol) {
-        self.model = model
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
         isLoading = false
     }
     
     func getNFTCollections() {
         isLoading = true
         
-        model.getData(url: "\(Config.baseUrl)/collections", type: [NFTCollection].self) { [weak self] result in
+        networkClient.send(request: NFTCollectionsRequest(), type: [NFTCollection].self) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let data):
@@ -43,7 +43,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         }
     }
     
-    func sortNFTCollections(by: SortAttribute) {
+    func sortNFTCollections(by: NFTCollectionsSortAttributes) {
         switch by {
         case .name:
             NFTCollectionsList?.sort { $0.name < $1.name }
@@ -53,7 +53,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         onNFTCollectionsUpdate?()
     }
     
-    func convert(collection: [NFTCollection]) -> [NFTCollectionListItem] {
+    private func convert(collection: [NFTCollection]) -> [NFTCollectionListItem] {
         var list: [NFTCollectionListItem] = []
         collection.forEach {
             guard let id = Int($0.id) else { return }

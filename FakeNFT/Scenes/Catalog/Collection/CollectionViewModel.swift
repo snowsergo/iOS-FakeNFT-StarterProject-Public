@@ -18,7 +18,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
             updateLoadingStatus?()
         }
     }
-    private(set) var allNFTItems: [NFTItem]? {
+    private(set) var allNFTItems: [Nft]? {
         didSet {
             generateNFTdata()
         }
@@ -38,7 +38,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     var nftCollectionId: Int
     var converter: CryptoConverterProtocol
     private(set) var nftCollection: NFTCollection?
-    private(set) var nftCollectionAuthor: NFTCollectionAuthor?
+    private(set) var nftCollectionAuthor: User?/*NFTCollectionAuthor?*/
     private(set) var nftCollectionItems: [NFTCollectionNFTItem]?
     private(set) var nftCollectionItemsCount: Int?
     
@@ -63,7 +63,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     }
     
     func getNFTCollectionAuthor(id: Int) {
-        model.getData(url: "\(Config.baseUrl)/users/\(id)", type: NFTCollectionAuthor.self) { [weak self] result in
+        model.getData(url: "\(Config.baseUrl)/users/\(id)", type: /*NFTCollectionAuthor.self*/User.self) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.nftCollectionAuthor = data
@@ -110,8 +110,8 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    func getAllNFTs(completion: @escaping (Result<[NFTItem], Error>) -> Void) {
-        model.getData(url: "\(Config.baseUrl)/nft", type: [NFTItem].self) { result in
+    func getAllNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
+        model.getData(url: "\(Config.baseUrl)/nft", type: [Nft].self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))

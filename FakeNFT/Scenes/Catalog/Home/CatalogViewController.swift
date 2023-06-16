@@ -164,7 +164,7 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
             
         let collectionViewModel = CollectionViewModel(
             model: CollectionModel(
-                networkClient: viewModel.model.networkClient
+                networkClient: viewModel.networkClient //model.networkClient
             ),
             nftCollectionId: collectionId,
             converter: FakeConvertService()
