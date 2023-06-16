@@ -3,8 +3,13 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController {
     var viewModel: CatalogViewModelProtocol
-    private let navBar = UINavigationBar()
     private let collectionsTableView = ContentSizedTableView()
+    
+    lazy private var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(loadNFTCollections), for: .valueChanged)
+        return refreshControl
+    }()
     
     init(viewModel: CatalogViewModelProtocol) {
         self.viewModel = viewModel
@@ -21,12 +26,12 @@ final class CatalogViewController: UIViewController {
         configureTable()
         setupConstraints()
         bind()
-        viewModel.getNFTCollections()
+        loadNFTCollections()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.getNFTCollections()
+        refreshControl.endRefreshing()
     }
     
     lazy private var sortButton: UIBarButtonItem = {
@@ -48,8 +53,9 @@ final class CatalogViewController: UIViewController {
         ProgressHUD.colorAnimation = .asset(.black)
 
         collectionsTableView.backgroundColor = .asset(.white)
+        collectionsTableView.refreshControl = refreshControl
         view.backgroundColor = .asset(.white)
-        view.addSubview(navBar)
+        navigationController?.navigationBar.tintColor = .asset(.black)
         view.addSubview(collectionsTableView)
     }
     
@@ -76,6 +82,7 @@ final class CatalogViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async { [weak self] in
                 self?.collectionsTableView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
         }
         
@@ -101,6 +108,7 @@ final class CatalogViewController: UIViewController {
                         
                     }, cancelHandle: { [weak self] in
                         self?.viewModel.isLoading = false
+                        self?.refreshControl.endRefreshing()
                     }
                 )
                 
@@ -132,6 +140,10 @@ final class CatalogViewController: UIViewController {
 
         view.isUserInteractionEnabled = !isLoading
     }
+    
+    @objc private func loadNFTCollections() {
+        viewModel.getNFTCollections()
+    }
 }
 
 extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
@@ -161,11 +173,9 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.tintColor = .asset(.white)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            
+        
         let collectionViewModel = CollectionViewModel(
-            model: CollectionModel(
-                networkClient: viewModel.networkClient //model.networkClient
-            ),
+            networkClient: viewModel.networkClient,
             nftCollectionId: collectionId,
             converter: FakeConvertService()
         )

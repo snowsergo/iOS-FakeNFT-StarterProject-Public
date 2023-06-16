@@ -25,7 +25,6 @@ final class CollectionViewController: UIViewController {
     private let collectionNameView = UIViewAutoLayout()
     private let collectionNameLabel = LineHeightedLabel(lineHeight: 28, withFont: UIFont.nftCollectionName, color: .asset(.black))
     private let authorView = UIViewAutoLayout()
-    //private let collectionAuthorLabel = LineHeightedLabel(lineHeight: 18, withFont: UIFont.nftDescription, color: UIColor.NFTBlack, string: "Автор коллекции:")
     private let collectionAuthorNameLabel = LineHeightedLabel(lineHeight: 20, withFont: UIFont.nftAuthor, color: .asset(.blue), enabledUserInteraction: true)
     private let collectionDescriptionLabel = LineHeightedLabel(lineHeight: 3, withFont: UIFont.nftDescription, color: .asset(.black), linesCount: 0)
     
@@ -82,6 +81,7 @@ final class CollectionViewController: UIViewController {
         viewModel.onNFTItemsUpdate = { [weak self] in
             guard let self = self else { return }
             self.updateNFTCollectionItems()
+            self.viewModel.isLoading = false
         }
         viewModel.updateLoadingStatus = {
             DispatchQueue.main.async { [weak self] in
@@ -224,6 +224,7 @@ final class CollectionViewController: UIViewController {
 
         navigationController?.pushViewController(WebViewService(url: url), animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .asset(.black)
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
