@@ -32,7 +32,7 @@ final class CollectionViewController: UIViewController {
         let label = UILabel()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 18
-        let attrString = NSMutableAttributedString(string: "Автор коллекции:")
+        let attrString = NSMutableAttributedString(string: Strings.nftCollectionAuthor)
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range: NSMakeRange(0, attrString.length))
         attrString.addAttribute(NSAttributedString.Key.font, value: UIFont.nftDescription, range: NSMakeRange(0, attrString.length))
         label.attributedText = attrString
@@ -91,14 +91,11 @@ final class CollectionViewController: UIViewController {
         }
         viewModel.showAlertClosure = {
             DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-
-                let titleText = "Упс! У нас ошибка."
-                let messageText = self.viewModel.errorMessage ?? "Unknown error"
+                guard let self = self else { return }
 
                 let alert = RepeatAlertMaker.make(
-                    title: titleText,
-                    message: messageText,
+                    title: Strings.errorMessageTitle,
+                    message: self.viewModel.errorMessage ?? Strings.unknownError,
                     repeatHandle: { [weak self] in
                         self?.viewModel.getNFTCollectionInfo()
                     }, cancelHandle: { [weak self] in
@@ -228,10 +225,12 @@ final class CollectionViewController: UIViewController {
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
-        if isLoading {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
+        DispatchQueue.main.async {
+            if isLoading {
+                ProgressHUD.show()
+            } else {
+                ProgressHUD.dismiss()
+            }
         }
 
         view.isUserInteractionEnabled = !isLoading

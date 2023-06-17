@@ -28,6 +28,7 @@
 		947A38512A3C3F23000B9111 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947A38502A3C3F23000B9111 /* UserRequest.swift */; };
 		947A38532A3C41AF000B9111 /* AllNFTsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947A38522A3C41AF000B9111 /* AllNFTsRequest.swift */; };
 		947A38552A3CC917000B9111 /* UpdateProfileLikesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947A38542A3CC917000B9111 /* UpdateProfileLikesRequest.swift */; };
+		947A38572A3D5B88000B9111 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947A38562A3D5B88000B9111 /* Strings.swift */; };
 		94CDAAFB2A32FFE000274768 /* FakeConvertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDAAFA2A32FFE000274768 /* FakeConvertService.swift */; };
 		94CDAB012A33000100274768 /* CatalogViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDAAFC2A33000100274768 /* CatalogViewModelProtocol.swift */; };
 		94CDAB042A33000100274768 /* CryptoConverterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDAAFF2A33000100274768 /* CryptoConverterProtocol.swift */; };
@@ -181,6 +182,7 @@
 		947A38502A3C3F23000B9111 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
 		947A38522A3C41AF000B9111 /* AllNFTsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNFTsRequest.swift; sourceTree = "<group>"; };
 		947A38542A3CC917000B9111 /* UpdateProfileLikesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileLikesRequest.swift; sourceTree = "<group>"; };
+		947A38562A3D5B88000B9111 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		94CDAAFA2A32FFE000274768 /* FakeConvertService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeConvertService.swift; sourceTree = "<group>"; };
 		94CDAAFC2A33000100274768 /* CatalogViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatalogViewModelProtocol.swift; sourceTree = "<group>"; };
 		94CDAAFF2A33000100274768 /* CryptoConverterProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoConverterProtocol.swift; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 				94CDAB2A2A33007400274768 /* CryptoCoin.swift */,
 				94CDAB2B2A33007400274768 /* LabelStyles.swift */,
 				94CDAB2C2A33007400274768 /* NFTCollectionsSortAttributes.swift */,
+				947A38562A3D5B88000B9111 /* Strings.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1006,6 +1009,7 @@
 				94CDAB052A33000100274768 /* CollectionViewModelProtocol.swift in Sources */,
 				94CDAAFB2A32FFE000274768 /* FakeConvertService.swift in Sources */,
 				FB30E4ED5583500D543A7A1F /* UserViewCell.swift in Sources */,
+				947A38572A3D5B88000B9111 /* Strings.swift in Sources */,
 				947A384F2A3C3B5C000B9111 /* NFTCollectionRequest.swift in Sources */,
 				FB30E618BA95D5575FBAA74D /* StatisticsPageModel.swift in Sources */,
 				94CDAB362A33009200274768 /* CollectionViewModel.swift in Sources */,

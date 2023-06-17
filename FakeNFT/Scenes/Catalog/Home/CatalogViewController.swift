@@ -95,14 +95,11 @@ final class CatalogViewController: UIViewController {
         
         viewModel.showAlertClosure = {
             DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
+                guard let self = self else { return }
 
-                let titleText = "Упс! У нас ошибка."
-                let messageText = self.viewModel.errorMessage ?? "Unknown error"
-                
                 let alert = RepeatAlertMaker.make(
-                    title: titleText,
-                    message: messageText,
+                    title: Strings.errorMessageTitle,
+                    message: self.viewModel.errorMessage ?? Strings.unknownError,
                     repeatHandle: { [weak self] in
                         self?.viewModel.getNFTCollections()
                         
@@ -118,24 +115,26 @@ final class CatalogViewController: UIViewController {
     }
     
     @objc private func showSortingMenu() {
-        let sortMenu = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        let sortMenu = UIAlertController(title: Strings.sorting, message: nil, preferredStyle: .actionSheet)
         
-        sortMenu.addAction(UIAlertAction(title: "По названию", style: .default , handler:{ [weak self] (UIAlertAction) in
+        sortMenu.addAction(UIAlertAction(title: Strings.sortByName, style: .default , handler:{ [weak self] (UIAlertAction) in
             self?.viewModel.sortNFTCollections(by: .name)
             }))
-        sortMenu.addAction(UIAlertAction(title: "По количеству NFT", style: .default , handler:{ [weak self] (UIAlertAction) in
+        sortMenu.addAction(UIAlertAction(title: Strings.sortByNFTCount, style: .default , handler:{ [weak self] (UIAlertAction) in
             self?.viewModel.sortNFTCollections(by: .nftCount)
             }))
-        sortMenu.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
+        sortMenu.addAction(UIAlertAction(title: Strings.close, style: .cancel))
 
         present(sortMenu, animated: true)
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
-        if isLoading {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
+        DispatchQueue.main.async {
+            if isLoading {
+                ProgressHUD.show()
+            } else {
+                ProgressHUD.dismiss()
+            }
         }
 
         view.isUserInteractionEnabled = !isLoading

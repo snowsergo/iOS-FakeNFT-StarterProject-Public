@@ -39,7 +39,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     var nftCollectionId: Int
     var converter: CryptoConverterProtocol
     private(set) var nftCollection: NFTCollection?
-    private(set) var nftCollectionAuthor: User?/*NFTCollectionAuthor?*/
+    private(set) var nftCollectionAuthor: User?
     private(set) var nftCollectionItems: [NFTCollectionNFTItem]?
     private(set) var nftCollectionItemsCount: Int?
     
@@ -111,7 +111,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    func getAllNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
+    private func getAllNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
         networkClient.send(request: AllNFTsRequest(), type: [Nft].self)  { result in
             switch result {
             case .success(let data):
@@ -122,7 +122,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    func getLikedNFTs(completion: @escaping (Result<NFTLiked, Error>) -> Void) {
+    private func getLikedNFTs(completion: @escaping (Result<NFTLiked, Error>) -> Void) {
         networkClient.send(request: ProfileRequest(), type: NFTLiked.self)  { result in
             switch result {
             case .success(let data):
@@ -133,8 +133,8 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    func getNFTsInCart(completion: @escaping (Result<NFTsInCart, Error>) -> Void) {
-        networkClient.send(request: OrderRequest(id: "1"), type: NFTsInCart.self)  { result in
+    private func getNFTsInCart(completion: @escaping (Result<NFTsInCart, Error>) -> Void) {
+        networkClient.send(request: OrderRequest(id: Strings.orderNumber), type: NFTsInCart.self)  { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
@@ -146,7 +146,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     
     func toggleCart(id: Int) {
         isLoading = true
-        networkClient.send(request: OrderRequest(id: "1"), type: NFTsInCart.self)  { [weak self] result in
+        networkClient.send(request: OrderRequest(id: Strings.orderNumber), type: NFTsInCart.self)  { [weak self] result in
             switch result {
             case .success(let data):
                 var nfts = data.nfts
@@ -155,7 +155,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 } else {
                     nfts.append(id)
                 }
-                let newOrder = Order(nfts: nfts, id: "1")
+                let newOrder = Order(nfts: nfts, id: Strings.orderNumber)
                 self?.networkClient.send(request: UpdateOrderRequest(order: newOrder), type: Order.self) { result in
                     switch result {
                     case .success(let data):
