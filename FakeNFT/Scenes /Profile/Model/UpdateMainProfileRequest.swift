@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct UpdateProfileRequest: NetworkRequest {
+struct UpdateMainProfileRequest: NetworkRequest {
     let endpoint: URL?
     let httpMethod: HttpMethod
     let httpBody: Data?

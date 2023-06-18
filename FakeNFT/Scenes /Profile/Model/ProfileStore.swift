@@ -30,7 +30,7 @@ extension ProfileStore: ProfileStoreProtocol {
                        _ childViewModelCompletion: @escaping (() -> Void),
                        _ viewCompletion: @escaping (() -> Void)) {
         networkTask?.cancel()
-        let updateProfileRequest = UpdateProfileRequest(profile: profileModel)
+        let updateProfileRequest = UpdateMainProfileRequest(profile: profileModel)
         networkTask = networkClient.send(request: updateProfileRequest, type: ProfileModel.self) { result in
             DispatchQueue.main.async {
                 viewCompletion()
