@@ -25,7 +25,9 @@ final class StatisticsPageViewController: UIViewController {
         navigationItem.rightBarButtonItem = menuButton
         let model = StatisticsPageModel()
         viewModel = StatisticsPageViewModel(model: model)
-        viewModel.onChange = updateTable
+        viewModel.onChange = { [weak self] in
+            self?.updateTable()
+              }
         viewModel.getUsers(showLoader: showLoader)
     }
 

@@ -18,7 +18,10 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
         super.viewDidLoad()
         let model = StatisticsUserCollectionModel()
         viewModel = StatisticsUserCollectionPageViewModel(model: model)
-        viewModel.onChange = change
+        viewModel.onChange = { [weak self] in
+            self?.change()
+              }
+//        viewModel.onChange = change
         viewModel.getUserNfts(ids: nfts ?? [], showLoader: showLoader)
         view.backgroundColor = .asset(.white)
         setupCollectionView()

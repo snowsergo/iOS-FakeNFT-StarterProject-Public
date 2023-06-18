@@ -12,6 +12,9 @@ final class StatisticsUserPageViewController: UIViewController {
         let model = StatisticsUserPageModel()
         viewModel = StatisticsUserPageViewModel(model: model)
         viewModel.onChange = configure
+        viewModel.onChange = { [weak self] in
+            self?.configure()
+        }
         viewModel.getUser(userId: userId)
         setupAppearance()
         view.backgroundColor = .asset(.white)
