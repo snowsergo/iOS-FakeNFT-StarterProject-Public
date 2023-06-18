@@ -5,7 +5,7 @@
 
 import UIKit
 
-final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
+final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying, RatingStringMaker {
 
     weak var delegate: FavoritesNFTCellDelegate?
 
@@ -42,7 +42,7 @@ final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
 
     private lazy var likeButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 54, y: 6, width: 21, height: 18))
-        button.setImage(heartImage?.withTintColor(.asset(.red), renderingMode: .alwaysOriginal), for: .normal)
+        button.setImage(heartImage?.withTintColor(.redHeartColor, renderingMode: .alwaysOriginal), for: .normal)
         button.contentMode = .center
         button.addTarget(self, action: #selector(likeButtonAction), for: .touchUpInside)
         button.accessibilityIdentifier = "like"
@@ -55,7 +55,7 @@ final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.textColor = .asset(.black)
+        label.textColor = .textColorBlack
         return label
     }()
 
@@ -69,7 +69,7 @@ final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = .asset(.black)
+        label.textColor = .textColorBlack
         return label
     }()
 
@@ -85,7 +85,7 @@ final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
     override func prepareForReuse() {
         super.prepareForReuse()
         nftImageView.kf.cancelDownloadTask()
-        likeButton.setImage(heartImage?.withTintColor(.asset(.red), renderingMode: .alwaysOriginal), for: .normal)
+        likeButton.setImage(heartImage?.withTintColor(.redHeartColor, renderingMode: .alwaysOriginal), for: .normal)
     }
 
     @objc private func likeButtonAction() {
@@ -101,22 +101,6 @@ final class FavoritesNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
             nftImageView.widthAnchor.constraint(equalToConstant: 80),
             nftImageView.heightAnchor.constraint(equalToConstant: 80)
         ])
-    }
-
-    private func makeRatingString(from rating: Int) -> NSAttributedString {
-        let fullString = NSMutableAttributedString(string: "")
-        for count in 1...5 {
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.bounds = CGRect(origin: .zero, size: CGSize(width: 14, height: 13))
-            if count <= rating && rating != 0 {
-                imageAttachment.image = UIImage(systemName: "star.fill")?.withTintColor(.asset(.yellow))
-                fullString.append(NSAttributedString(attachment: imageAttachment))
-            } else {
-                imageAttachment.image = UIImage(systemName: "star.fill")?.withTintColor(.asset(.lightGray))
-                fullString.append(NSAttributedString(attachment: imageAttachment))
-            }
-        }
-        return fullString
     }
 
     func configCell(from nftViewModel: NFTViewModel) {

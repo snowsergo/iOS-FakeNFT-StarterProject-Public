@@ -2,8 +2,6 @@
 //  UITextField+Extensions.swift
 //  FakeNFT
 //
-//  Created by Юрий Демиденко on 26.05.2023.
-//
 
 import UIKit
 

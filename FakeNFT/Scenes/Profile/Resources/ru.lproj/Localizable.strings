@@ -6,6 +6,7 @@
   
 */
 
+profile = "Профиль";
 myNFTsWithCount = "Мои NFT (%d)";
 myNFTs = "Мои NFT";
 favoritesNFTsWithCount = "Избранные NFT (%d)";
@@ -32,3 +33,10 @@ sortByName = "По названию";
 closeTitle = "Закрыть";
 myNFTStub = "У Вас ещё нет NFT";
 favoritesNFTStub = "У Вас ещё нет избранных NFT";
+validationAlertTitle = "Предупреждение";
+validationAlertMessage = "Неверный адрес сайта";
+editWebsiteTitle = "Изменить адрес";
+continueAnywayTitle = "Продолжить";
+editProfileTitle = "Редактирование профиля";
+emptyProfileField = "Необходимо заполнить все поля в профиле";
+editProfileAlertTitle = "Редактировать профиль";

@@ -10,7 +10,7 @@ final class WebsiteViewModel {
     private let websiteURLString: String
 
     @Observable
-    private var progressValue: Float = 0
+    private var progressValue: Float
 
     private var websiteURL: URL {
         guard let url = URL(string: websiteURLString) else {
@@ -21,6 +21,7 @@ final class WebsiteViewModel {
 
     init(websiteURLString: String) {
         self.websiteURLString = websiteURLString
+        self.progressValue = 0
     }
 }
 

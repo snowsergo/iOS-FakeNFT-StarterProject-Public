@@ -11,49 +11,42 @@ enum SortingMethod {
 
 final class NFTsViewModel {
 
-    weak var profileViewModel: ProfileViewModelProtocol?
     private let nftStore: NFTStoreProtocol
+    private weak var profileViewModel: ProfileViewModelProtocol?
 
     private var nftIDs: [Int]
-    private var receivedNFTModels: [Nft] = []
 
     @Observable
-    private(set) var nftViewModels: [NFTViewModel] = []
-
+    private(set) var nftViewModels: [NFTViewModel]
     @Observable
-    private var isNFTsDownloadingNow: Bool = false
-
+    private var isNFTsDownloadingNow: Bool
     @Observable
-    private var nftsReceivingError: String = ""
+    private var nftsReceivingError: String
 
-    init(for nftsIDs: [Int], nftStore: NFTStoreProtocol = NFTStore()) {
-        self.nftIDs = nftsIDs
-        self.nftStore = nftStore
-    }
-
-    convenience init(for nftsIDs: [Int], profileViewModel: ProfileViewModelProtocol) {
-        self.init(for: nftsIDs, nftStore: NFTStore())
+    init(for nftIDs: [Int],
+         profileViewModel: ProfileViewModelProtocol,
+         nftStore: NFTStoreProtocol = NFTStore()) {
+        self.nftIDs = nftIDs
         self.profileViewModel = profileViewModel
+        self.nftStore = nftStore
+        self.nftViewModels = []
+        self.isNFTsDownloadingNow = false
+        self.nftsReceivingError = ""
     }
 
-    private func setNFTsViewModel(from nftModel: Nft) {
-        receivedNFTModels.append(nftModel)
-        if receivedNFTModels.count == nftIDs.count {
-            isNFTsDownloadingNow = false
-            nftViewModels = receivedNFTModels.map {
-                NFTViewModel(name: $0.name,
-                             image: URL(string: $0.images.first ?? ""),
-                             rating: $0.rating,
-                             author: Constants.mockAuthorString,
-                             price: String($0.price).replacingOccurrences(of: ".", with: ",") + Constants.mockCurrencyString,
-                             id: $0.id)
-            }.sorted { $0.id < $1.id }
-        }
+    private func setNFTsViewModel(from nftModels: [NFTModel]) {
+        nftViewModels = nftModels.map {
+            NFTViewModel(name: $0.name,
+                         image: URL(string: $0.images.first ?? ""),
+                         rating: $0.rating,
+                         author: Constants.mockAuthorString,
+                         price: String($0.price).replacingOccurrences(of: ".", with: ",") + Constants.mockCurrencyString,
+                         id: $0.id)
+        }.sorted { $0.id < $1.id }
     }
 
     private func handle(_ error: Error) {
-        isNFTsDownloadingNow = false
-        nftsReceivingError = String(format: NSLocalizedString("nftsReceivingError", comment: "Message when receiving error while NFTs data downloading"), error as CVarArg)
+        nftsReceivingError = String(format: L10n.nftsReceivingError, error as CVarArg)
     }
 }
 
@@ -61,9 +54,9 @@ final class NFTsViewModel {
 
 extension NFTsViewModel: NFTsViewModelProtocol {
 
-    var myNFTsTitle: String { String(NSLocalizedString("myNFTs", comment: "My NFT screen title")) }
+    var myNFTsTitle: String { L10n.myNFTsTitle }
 
-    var favoritesNFTsTitle: String { NSLocalizedString("favoritesNFT", comment: "Favorites NFT screen title") }
+    var favoritesNFTsTitle: String { L10n.favoritesNFTsTitle }
 
     var nftViewModelsObservable: Observable<[NFTViewModel]> { $nftViewModels }
 
@@ -79,12 +72,16 @@ extension NFTsViewModel: NFTsViewModelProtocol {
             return
         }
         isNFTsDownloadingNow = true
-        receivedNFTModels = []
-        nftStore.getNFTs(using: nftIDs) { [weak self] result in
-            switch result {
-            case .success(let nftModel): self?.setNFTsViewModel(from: nftModel)
-            case .failure(let error): self?.handle(error)
+        nftStore.getNFTs(using: nftIDs) { [weak self] results in
+            var nftModels: [NFTModel] = []
+            results.forEach { result in
+                switch result {
+                case .success(let nftModel): nftModels.append(nftModel)
+                case .failure(let error): self?.handle(error)
+                }
             }
+            self?.setNFTsViewModel(from: nftModels)
+            self?.isNFTsDownloadingNow = false
         }
     }
 
@@ -102,7 +99,8 @@ extension NFTsViewModel: NFTsViewModelProtocol {
         }
     }
 
-    func didTapLike(nft: Int, callback: @escaping () -> Void) {
+    func didTapLike(nft: Int, completion: @escaping () -> Void) {
+        isNFTsDownloadingNow = true
         var updatedNFTViewModels = nftViewModels
         updatedNFTViewModels.remove(at: nft)
         var updatedLikes: [Int] = []
@@ -110,8 +108,9 @@ extension NFTsViewModel: NFTsViewModelProtocol {
         profileViewModel?.didChangeProfile(name: nil,
                                            description: nil,
                                            website: nil,
-                                           avatar: nil,
                                            likes: updatedLikes,
-                                           viewCallback: callback)
+                                           viewCompletion: completion) { [weak self] in
+            self?.isNFTsDownloadingNow = false
+        }
     }
 }
