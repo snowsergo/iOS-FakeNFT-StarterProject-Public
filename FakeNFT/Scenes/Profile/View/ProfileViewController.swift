@@ -62,10 +62,15 @@ final class ProfileViewController: UIViewController {
 
     // MARK: - LifeCycle
 
-    required init?(coder: NSCoder) {
-        self.profileViewModel = ProfileViewModel()
+    init(profileViewModel: ProfileViewModelProtocol = ProfileViewModel(),
+         errorAlertPresenter: ErrorAlertPresenter = ErrorAlertPresenter()) {
+        self.profileViewModel = profileViewModel
         self.errorAlertPresenter = ErrorAlertPresenter()
-        super.init(coder: coder)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
