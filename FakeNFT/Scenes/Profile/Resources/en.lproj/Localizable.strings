@@ -6,6 +6,7 @@
   
 */
 
+profile = "Profile";
 myNFTsWithCount = "My NFT (%d)";
 myNFTs = "My NFT";
 favoritesNFTsWithCount = "Favorites NFT (%d)";
@@ -32,3 +33,10 @@ sortByName = "By name";
 closeTitle = "Close";
 myNFTStub = "You don't have NFT yet";
 favoritesNFTStub = "You don't have any NFT favorites yet";
+validationAlertTitle = "Warning";
+validationAlertMessage = "Invalid site address";
+editWebsiteTitle = "Edit address";
+continueAnywayTitle = "Continue";
+editProfileTitle = "Profile editing";
+emptyProfileField = "Need to fill all fields in profile";
+editProfileAlertTitle = "Edit profile";

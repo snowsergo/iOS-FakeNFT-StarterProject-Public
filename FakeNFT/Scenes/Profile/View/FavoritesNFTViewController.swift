@@ -10,11 +10,12 @@ import ProgressHUD
 final class FavoritesNFTViewController: UIViewController {
 
     private let nftsViewModel: NFTsViewModelProtocol
+    private let errorAlertPresenter: ErrorAlertPresenter
 
     private lazy var stubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = Constants.favoritesNFTStubLabelText
+        label.text = L10n.favoritesNFTStubLabelText
         label.font = UIFont.systemFont(ofSize: 17, weight:  .bold)
         label.textColor = .asset(.black)
         label.isHidden = nftsViewModel.stubLabelIsHidden
@@ -35,6 +36,7 @@ final class FavoritesNFTViewController: UIViewController {
 
     init(nftsViewModel: NFTsViewModelProtocol) {
         self.nftsViewModel = nftsViewModel
+        self.errorAlertPresenter = ErrorAlertPresenter()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -44,6 +46,7 @@ final class FavoritesNFTViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        errorAlertPresenter.viewController = self
         setupController()
         setupConstraints()
         bind()
@@ -57,21 +60,24 @@ final class FavoritesNFTViewController: UIViewController {
 
     private func bind() {
         nftsViewModel.nftViewModelsObservable.bind { [weak self] _ in
-            guard let self = self else { return }
-            self.favoritesNFTCollectionView.performBatchUpdates({
+            self?.favoritesNFTCollectionView.performBatchUpdates { [weak self] in
+                guard let self = self else { return }
                 self.favoritesNFTCollectionView.reloadSections(IndexSet(integer: 0))
                 self.stubLabel.isHidden = self.nftsViewModel.stubLabelIsHidden
-            })
+            }
         }
         nftsViewModel.isNFTsDownloadingNowObservable.bind { isNFTsDownloadingNow in
             isNFTsDownloadingNow ? UIBlockingProgressHUD.show() : UIBlockingProgressHUD.dismiss()
         }
         nftsViewModel.nftsReceivingErrorObservable.bind { [weak self] error in
-            self?.showAlertMessage(with: error, tryAgainAction: {
+            self?.errorAlertPresenter.showAlert(title: L10n.networkErrorAlertTitle,
+                            message: String(format: L10n.networkErrorAlertMessage, error),
+                            firstActionTitle: L10n.networkErrorAlertFirstActionTitle,
+                            secondActionTitle: L10n.networkErrorAlertSecondActionTitle) {
                 self?.nftsViewModel.needUpdate()
-            }, cancelAction: {
+            } secondAction: {
                 self?.navigationController?.popViewController(animated: true)
-            })
+            }
         }
     }
 
@@ -134,10 +140,8 @@ extension FavoritesNFTViewController: FavoritesNFTCellDelegate {
 
     func didTapLike(_ cell: FavoritesNFTCollectionViewCell) {
         guard let indexPath = favoritesNFTCollectionView.indexPath(for: cell) else { return }
-        UIBlockingProgressHUD.show()
         nftsViewModel.didTapLike(nft: indexPath.item) {
             cell.changeLikeButtonImage()
-            UIBlockingProgressHUD.dismiss()
         }
     }
 }

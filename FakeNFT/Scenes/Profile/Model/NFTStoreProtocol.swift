@@ -6,5 +6,5 @@
 import Foundation
 
 protocol NFTStoreProtocol {
-    func getNFTs(using nftIDs: [Int], callback: @escaping (Result<Nft, Error>) -> Void)
+    func getNFTs(using nftIDs: [Int], completion: @escaping (([Result<NFTModel, Error>]) -> Void))
 }

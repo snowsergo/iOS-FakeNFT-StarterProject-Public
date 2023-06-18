@@ -7,17 +7,17 @@ import Foundation
 
 final class UserIDStorage: UserIDStorageProtocol {
 
-    private let userDefaults = UserDefaults.standard
-
     private enum Keys: String {
         case userID
     }
 
-    private(set) var userID: String {
+    private let userDefaults: UserDefaults
+
+    private(set) var userID: String? {
         get {
             guard let userID = userDefaults.string(forKey: Keys.userID.rawValue) else {
                 print("Unable to get userID value from local storage")
-                return .init()
+                return nil
             }
             return userID
         }
@@ -27,6 +27,7 @@ final class UserIDStorage: UserIDStorageProtocol {
     }
 
     init() {
+        self.userDefaults = UserDefaults.standard
         self.set(userID: Constants.fakeUserIDString)
     }
 

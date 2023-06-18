@@ -18,5 +18,5 @@ protocol NFTsViewModelProtocol: ViewModelProtocol {
     func needUpdate()
     func nftsUpdated(newNFTs: [Int])
     func myNFTSorted(by sortingMethod: SortingMethod)
-    func didTapLike(nft: Int, callback: @escaping () -> Void)
+    func didTapLike(nft: Int, completion: @escaping () -> Void)
 }

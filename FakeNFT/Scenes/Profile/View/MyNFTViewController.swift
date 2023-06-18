@@ -10,11 +10,12 @@ import Kingfisher
 final class MyNFTViewController: UIViewController {
 
     private let nftsViewModel: NFTsViewModelProtocol
+    private let errorAlertPresenter: ErrorAlertPresenter
 
     private lazy var stubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = Constants.myNFTStubLabelText
+        label.text = L10n.myNFTStubLabelText
         label.font = UIFont.systemFont(ofSize: 17, weight:  .bold)
         label.textColor = .asset(.black)
         label.isHidden = nftsViewModel.stubLabelIsHidden
@@ -26,7 +27,6 @@ final class MyNFTViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.register(MyNFTTableViewCell.self)
-        tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsSelection = false
         tableView.backgroundColor = .asset(.white)
@@ -35,6 +35,7 @@ final class MyNFTViewController: UIViewController {
 
     init(nftsViewModel: NFTsViewModelProtocol) {
         self.nftsViewModel = nftsViewModel
+        self.errorAlertPresenter = ErrorAlertPresenter()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -44,6 +45,7 @@ final class MyNFTViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        errorAlertPresenter.viewController = self
         setupNavigationController()
         setupConstraints()
         setupController()
@@ -68,11 +70,14 @@ final class MyNFTViewController: UIViewController {
             isNFTsDownloadingNow ? UIBlockingProgressHUD.show() : UIBlockingProgressHUD.dismiss()
         }
         nftsViewModel.nftsReceivingErrorObservable.bind { [weak self] error in
-            self?.showAlertMessage(with: error, tryAgainAction: {
+            self?.errorAlertPresenter.showAlert(title: L10n.networkErrorAlertTitle,
+                                                message: String(format: L10n.networkErrorAlertMessage, error),
+                                                firstActionTitle: L10n.networkErrorAlertFirstActionTitle,
+                                                secondActionTitle: L10n.networkErrorAlertSecondActionTitle) {
                 self?.nftsViewModel.needUpdate()
-            }, cancelAction: {
+            } secondAction: {
                 self?.navigationController?.popViewController(animated: true)
-            })
+            }
         }
     }
 
@@ -90,17 +95,17 @@ final class MyNFTViewController: UIViewController {
     }
 
     @objc private func sortMyNFTAction() {
-        let sortAlert = UIAlertController(title: nil, message: Constants.sortingAlertTitle, preferredStyle: .actionSheet)
-        let sortByPriceAction = UIAlertAction(title: Constants.sortByPriceString, style: .default) { [weak self] _ in
+        let sortAlert = UIAlertController(title: nil, message: L10n.sortingAlertTitle, preferredStyle: .actionSheet)
+        let sortByPriceAction = UIAlertAction(title: L10n.sortByPriceString, style: .default) { [weak self] _ in
             self?.nftsViewModel.myNFTSorted(by: .price)
         }
-        let sortByRatingAction = UIAlertAction(title: Constants.sortByRatingString, style: .default) { [weak self] _ in
+        let sortByRatingAction = UIAlertAction(title: L10n.sortByRatingString, style: .default) { [weak self] _ in
             self?.nftsViewModel.myNFTSorted(by: .rating)
         }
-        let sortByNameAction = UIAlertAction(title: Constants.sortByNameString, style: .default) { [weak self] _ in
+        let sortByNameAction = UIAlertAction(title: L10n.sortByNameString, style: .default) { [weak self] _ in
             self?.nftsViewModel.myNFTSorted(by: .name)
         }
-        let closeAction = UIAlertAction(title: Constants.closeButtonTitle, style: .cancel)
+        let closeAction = UIAlertAction(title: L10n.closeButtonTitle, style: .cancel)
         [sortByPriceAction, sortByRatingAction, sortByNameAction, closeAction].forEach { sortAlert.addAction($0) }
         present(sortAlert, animated: true)
     }
@@ -118,10 +123,6 @@ final class MyNFTViewController: UIViewController {
         ])
     }
 }
-
-// MARK: - UITableViewDelegate
-
-extension MyNFTViewController: UITableViewDelegate {   }
 
 // MARK: - UITableViewDataSource
 
