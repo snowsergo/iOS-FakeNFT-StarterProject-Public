@@ -6,17 +6,21 @@ final class StatisticsUserCollectionPageViewModel {
 
     var onChange: (() -> Void)?
 
+    private(set) var nftsIds: [Int]?
+    
     private(set) var nfts: [Nft]=[] {
         didSet {
             onChange?()
         }
     }
 
-    init(model: StatisticsUserCollectionModel) {
+    init(model: StatisticsUserCollectionModel, ids: [Int]? ) {
         self.model = model
+        self.nftsIds = ids
     }
 
-    func getUserNfts(ids: [Int], showLoader: @escaping (_ active: Bool) -> Void ) {
+    func getUserNfts(showLoader: @escaping (_ active: Bool) -> Void ) {
+        guard let ids = nftsIds, !ids.isEmpty else { return }
         showLoader(true)
                 model.fetchNfts(ids: ids) { [weak self] result in
                     guard let self = self else { return }

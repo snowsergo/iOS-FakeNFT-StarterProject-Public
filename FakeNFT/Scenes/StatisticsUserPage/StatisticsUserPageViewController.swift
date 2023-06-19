@@ -144,7 +144,9 @@ final class StatisticsUserPageViewController: UIViewController {
 
     @objc
     private func openNFTCollection() {
-        let viewController = StatisticsUserCollectionPageViewController(nfts: viewModel.user?.nfts)
+        let collectionModel = StatisticsUserCollectionModel()
+        let collectionViewModel = StatisticsUserCollectionPageViewModel(model: collectionModel, ids: viewModel.user?.nfts)
+        let viewController = StatisticsUserCollectionPageViewController(viewModel: collectionViewModel)
         viewController.title = "Коллекция NFT"
         let backButton = UIBarButtonItem()
         backButton.title = ""

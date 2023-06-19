@@ -3,7 +3,6 @@ import ProgressHUD
 
 final class StatisticsUserCollectionPageViewController: UIViewController {
     private var viewModel: StatisticsUserCollectionPageViewModel!
-    private var nfts: [Int]?
 
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -14,22 +13,22 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
         return collectionView
     }()
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let model = StatisticsUserCollectionModel()
-        viewModel = StatisticsUserCollectionPageViewModel(model: model)
         viewModel.onChange = { [weak self] in
             self?.change()
               }
-//        viewModel.onChange = change
-        viewModel.getUserNfts(ids: nfts ?? [], showLoader: showLoader)
+        viewModel.getUserNfts { [weak self] active in
+                 self?.showLoader(isShow: active)
+             }
         view.backgroundColor = .asset(.white)
         setupCollectionView()
     }
 
-    init(nfts: [Int]?) {
-        self.nfts = nfts
+    init(viewModel: StatisticsUserCollectionPageViewModel) {
         super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
     }
 
     required init?(coder: NSCoder) {
@@ -56,6 +55,21 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
+
+        if viewModel.nftsIds == nil || viewModel.nftsIds?.isEmpty == true {
+               let emptyLabel = UILabel()
+               emptyLabel.text = "Коллекция пуста"
+               emptyLabel.textColor = .asset(.black)
+               emptyLabel.font = .bodyRegular
+               emptyLabel.textAlignment = .center
+               emptyLabel.translatesAutoresizingMaskIntoConstraints = false
+               collectionView.addSubview(emptyLabel)
+
+               NSLayoutConstraint.activate([
+                   emptyLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+                   emptyLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+               ])
+           }
     }
 
     func showLoader(isShow: Bool) {
