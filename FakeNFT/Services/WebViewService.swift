@@ -71,7 +71,7 @@ final class WebViewService: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        observation = webView.observe(\WKWebView.estimatedProgress, options: .new) { _, change in
+        observation = webView.observe(\WKWebView.estimatedProgress, options: .new) { [weak self] _, change in
             DispatchQueue.main.async { [weak self] in
                 let progressValue = fabs(change.newValue ?? 0.0)
                 self?.progressView.progress = Float(progressValue)

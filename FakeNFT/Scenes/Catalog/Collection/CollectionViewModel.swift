@@ -144,18 +144,22 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
+    private func toggleArrayItem<E: Equatable>(array: [E], item: E) -> [E] {
+        var newArray = array
+        if let index = array.firstIndex(where: { $0 == item }) {
+            newArray.remove(at: index)
+        } else {
+            newArray.append(item)
+        }
+        return newArray
+    }
+    
     func toggleCart(id: Int) {
         isLoading = true
         networkClient.send(request: OrderRequest(id: Strings.orderNumber), type: NFTsInCart.self)  { [weak self] result in
             switch result {
             case .success(let data):
-                var nfts = data.nfts
-                if let index = nfts.firstIndex(where: { $0 == id }) {
-                    nfts.remove(at: index)
-                } else {
-                    nfts.append(id)
-                }
-                let newOrder = Order(nfts: nfts, id: Strings.orderNumber)
+                let newOrder = Order(nfts: self?.toggleArrayItem(array: data.nfts, item: id) ?? [], id: Strings.orderNumber)
                 self?.networkClient.send(request: UpdateOrderRequest(order: newOrder), type: Order.self) { result in
                     switch result {
                     case .success(let data):
@@ -176,13 +180,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         networkClient.send(request: ProfileRequest(), type: NFTLiked.self)  { [weak self] result in
             switch result {
             case .success(let data):
-                var likes = data.likes
-                if let index = likes.firstIndex(where: { $0 == id }) {
-                    likes.remove(at: index)
-                } else {
-                    likes.append(id)
-                }
-                let newLikesInProfile = NFTLiked(likes: likes)
+                let newLikesInProfile = NFTLiked(likes: self?.toggleArrayItem(array: data.likes, item: id) ?? [])
                 self?.networkClient.send(request: UpdateProfileLikesRequest(id: 1, likes: newLikesInProfile), type: NFTLiked.self) { result in
                     switch result {
                     case .success(let data):

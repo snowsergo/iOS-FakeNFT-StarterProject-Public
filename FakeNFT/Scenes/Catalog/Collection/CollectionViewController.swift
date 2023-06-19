@@ -42,7 +42,6 @@ final class CollectionViewController: UIViewController {
         return label
     }()
     
-    
     private let nftItemsCollectionView = ContentSizedCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     init(viewModel: CollectionViewModelProtocol) {
@@ -83,13 +82,13 @@ final class CollectionViewController: UIViewController {
             self.updateNFTCollectionItems()
             self.viewModel.isLoading = false
         }
-        viewModel.updateLoadingStatus = {
+        viewModel.updateLoadingStatus = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.defaultShowLoading(self.viewModel.isLoading)
             }
         }
-        viewModel.showAlertClosure = {
+        viewModel.showAlertClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
 
@@ -267,6 +266,9 @@ extension CollectionViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width / 3) - 6, height: 172)
+        let screenHeight = view.frame.height
+        let calculatedCellHeight = screenHeight * 0.21 > 192 ? 192 : screenHeight * 0.21
+        let cellHeight = calculatedCellHeight < 172 ? 172 : calculatedCellHeight
+        return CGSize(width: (collectionView.bounds.width / 3) - 6, height: cellHeight)
     }
 }

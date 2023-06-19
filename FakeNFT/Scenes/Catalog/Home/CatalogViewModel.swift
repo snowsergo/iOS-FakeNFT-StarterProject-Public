@@ -18,6 +18,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     var NFTCollectionsList: [NFTCollectionListItem]?
     var NFTCollectionsCount: Int?
     var networkClient: NetworkClient
+    let storeService = StoreService()
     
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
@@ -35,6 +36,13 @@ final class CatalogViewModel: CatalogViewModelProtocol {
                 self.NFTCollections = data
                 self.NFTCollectionsCount = data.count
                 self.NFTCollectionsList = self.convert(collection: data)
+                if let sortAttribute = self.storeService.getValue(for: .nftCollectionsSortAttribute, type: .string) as? String {
+                    if sortAttribute == "name" {
+                        self.sortNFTCollections(by: .name)
+                    } else if sortAttribute == "nftCount" {
+                        self.sortNFTCollections(by: .nftCount)
+                    }
+                }
                 self.onNFTCollectionsUpdate?()
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
@@ -50,6 +58,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         case .nftCount:
             NFTCollectionsList?.sort { $0.nftsCount < $1.nftsCount }
         }
+        storeService.store(key: .nftCollectionsSortAttribute, value: by.rawValue)
         onNFTCollectionsUpdate?()
     }
     
