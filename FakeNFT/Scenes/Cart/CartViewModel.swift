@@ -35,6 +35,7 @@ final class CartViewModel: NetworkViewModel {
         return IndexPath(row: row!, section: 0)
     }
 
+    // TODO: Сортировку лучше вынести отдельно, но пора сдавать
     func sort(by: CartSortType) {
         cellViewModels.sort { (lhs: Nft, rhs: Nft) -> Bool in
             switch by {
