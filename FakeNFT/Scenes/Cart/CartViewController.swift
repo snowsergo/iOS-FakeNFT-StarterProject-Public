@@ -267,7 +267,7 @@ extension CartViewController {
         CartSortType.allCases.forEach { type in
             alertController.addAction(
                 UIAlertAction(title: type.rawValue, style: .default) { [weak self] _ in
-                    self?.viewModel.sort(by: type)
+                    self?.viewModel.sortAndReload(by: type)
                 }
             )
         }
