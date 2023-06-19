@@ -163,7 +163,7 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.removeTableCellClosure = { (indexPath: IndexPath) in
+        viewModel.removeTableCellClosure = { [weak self] (indexPath: IndexPath) in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
@@ -177,7 +177,7 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.updateLoadingStatus = {
+        viewModel.updateLoadingStatus = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 if self.itemsTableView.refreshControl?.isRefreshing == true {
@@ -188,7 +188,7 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.showAlertClosure = {
+        viewModel.showAlertClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
