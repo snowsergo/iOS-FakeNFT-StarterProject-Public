@@ -3,7 +3,6 @@ import Kingfisher
 
 final class StatisticsUserPageViewController: UIViewController {
     private var viewModel: StatisticsUserPageViewModel!
-    private let labelView: UILabel = UILabel()
     private let submitButton = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
     private let userId: String
 
@@ -14,6 +13,14 @@ final class StatisticsUserPageViewController: UIViewController {
         viewModel.onChange = configure
         viewModel.onChange = { [weak self] in
             self?.configure()
+        }
+        viewModel.onError = { [weak self] error, retryAction in
+            let alert = UIAlertController(title: "Ошибка при загрузке данных пользователя", message: error.localizedDescription, preferredStyle: .alert)
+               alert.addAction(UIAlertAction(title: "Попробовать снова", style: .default) { _ in
+                   retryAction()
+               })
+               alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+               self?.present(alert, animated: true, completion: nil)
         }
         viewModel.getUser(userId: userId)
         setupAppearance()
@@ -125,7 +132,25 @@ final class StatisticsUserPageViewController: UIViewController {
             .transition(.fade(1)),
             .cacheOriginalImage
         ]
-        avatarView.kf.setImage(with: validUrl, placeholder: UIImage(named: "avatar")?.kf.resize(to: placeholderSize), options: options)
+
+        avatarView.kf.setImage(with: validUrl, placeholder: UIImage(named: "avatar")?.kf.resize(to: placeholderSize), options: options) { result in
+             switch result {
+             case .success(let value):
+                 DispatchQueue.main.async { [weak self] in
+                     self?.avatarView.image = value.image
+                     self?.avatarView.layer.cornerRadius = imageSize.width / 2
+                     self?.avatarView.layer.masksToBounds = true
+                 }
+             case .failure(let error):
+                 print("Image download failed: \(error)")
+                 let alert = UIAlertController(title: "Ошибка при загрузке аватара", message: error.localizedDescription, preferredStyle: .alert)
+                   alert.addAction(UIAlertAction(title: "Попробовать снова", style: .default) { _ in
+                       self.viewModel.getUser(userId: self.userId)
+                   })
+                   alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+                   self.present(alert, animated: true, completion: nil)
+             }
+         }
         nameView.text = user.name
         descriptionView.text = user.description
         collectionButtonLabel.text = "Коллекция NFT (\(user.nfts.count))"
@@ -163,6 +188,9 @@ final class StatisticsUserPageViewController: UIViewController {
         view.addSubview(siteButton)
         view.addSubview(collectionButton)
 
+        avatarView.layer.cornerRadius = avatarView.frame.width / 2
+        avatarView.layer.masksToBounds = true
+        
         NSLayoutConstraint.activate([
             avatarView.widthAnchor.constraint(equalToConstant: 70),
             avatarView.heightAnchor.constraint(equalTo: avatarView.widthAnchor),

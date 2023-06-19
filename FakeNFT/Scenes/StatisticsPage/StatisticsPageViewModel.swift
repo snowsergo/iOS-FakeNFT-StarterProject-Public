@@ -9,14 +9,17 @@ final class StatisticsPageViewModel {
     private let model: StatisticsPageModel
 
     var onChange: (() -> Void)?
-
+    var onError: ((_ error: Error, _ retryAction: @escaping () -> Void) -> Void)?
+    
     private(set) var users: [User] = [] {
         didSet {
             onChange?()
         }
     }
+
     var sortType: SortType? {
         didSet {
+            saveSortType()
             sortUsers()
             onChange?()
         }
@@ -24,6 +27,22 @@ final class StatisticsPageViewModel {
 
     init(model: StatisticsPageModel) {
         self.model = model
+        loadSortType()
+    }
+
+    func saveSortType() {
+        guard let sortType = sortType else {
+            UserDefaults.standard.removeObject(forKey: Config.usersSortTypeKey)
+            return
+        }
+        UserDefaults.standard.set(sortType.rawValue, forKey: Config.usersSortTypeKey)
+    }
+
+    func loadSortType() {
+        if let sortTypeRawValue = UserDefaults.standard.string(forKey: Config.usersSortTypeKey),
+           let savedSortType = SortType(rawValue: sortTypeRawValue) {
+            sortType = savedSortType
+        }
     }
 
     func getUsers(showLoader: @escaping (_ active: Bool) -> Void) {
@@ -31,16 +50,18 @@ final class StatisticsPageViewModel {
 
         model.getUsers { [weak self] result in
             guard let self = self else { return }
-            showLoader(false)
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):
                     self.users = users
                     self.sortUsers()
                 case .failure(let error):
-                    print("Error: \(error)")
+                    self.onError?(error) { [weak self] in
+                        self?.getUsers(showLoader: showLoader)
+                    }
                     self.users = []
                 }
+                showLoader(false)
             }
         }
     }
@@ -55,10 +76,12 @@ final class StatisticsPageViewModel {
     }
 
     func setSortedByName() {
+        UserDefaults.standard.set(SortType.byName.rawValue, forKey: "usersSortType")
         sortType = .byName
     }
 
     func setSortedByCount() {
+        UserDefaults.standard.set(SortType.byCount.rawValue, forKey: "usersSortType")
         sortType = .byCount
     }
 
@@ -69,3 +92,4 @@ final class StatisticsPageViewModel {
         users = getSorted(users: users, by: sortType)
     }
 }
+
