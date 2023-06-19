@@ -151,7 +151,7 @@ final class CartViewController: UIViewController {
     }
 
     private func setupViewModel() {
-        viewModel.reloadTableViewClosure = {
+        viewModel.reloadTableViewClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
