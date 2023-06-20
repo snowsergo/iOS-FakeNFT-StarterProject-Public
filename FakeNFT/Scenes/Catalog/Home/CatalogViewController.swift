@@ -3,8 +3,13 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController {
     var viewModel: CatalogViewModelProtocol
-    private let navBar = UINavigationBar()
     private let collectionsTableView = ContentSizedTableView()
+    
+    lazy private var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(loadNFTCollections), for: .valueChanged)
+        return refreshControl
+    }()
     
     init(viewModel: CatalogViewModelProtocol) {
         self.viewModel = viewModel
@@ -21,12 +26,12 @@ final class CatalogViewController: UIViewController {
         configureTable()
         setupConstraints()
         bind()
-        viewModel.getNFTCollections()
+        loadNFTCollections()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.getNFTCollections()
+        refreshControl.endRefreshing()
     }
     
     lazy private var sortButton: UIBarButtonItem = {
@@ -48,15 +53,17 @@ final class CatalogViewController: UIViewController {
         ProgressHUD.colorAnimation = .asset(.black)
 
         collectionsTableView.backgroundColor = .asset(.white)
+        collectionsTableView.refreshControl = refreshControl
+        
         view.backgroundColor = .asset(.white)
-        view.addSubview(navBar)
+        navigationController?.navigationBar.tintColor = .asset(.black)
         view.addSubview(collectionsTableView)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            collectionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            collectionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            collectionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             collectionsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
@@ -76,6 +83,7 @@ final class CatalogViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async { [weak self] in
                 self?.collectionsTableView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
         }
         
@@ -88,19 +96,17 @@ final class CatalogViewController: UIViewController {
         
         viewModel.showAlertClosure = {
             DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
+                guard let self = self else { return }
 
-                let titleText = "Упс! У нас ошибка."
-                let messageText = self.viewModel.errorMessage ?? "Unknown error"
-                
                 let alert = RepeatAlertMaker.make(
-                    title: titleText,
-                    message: messageText,
+                    title: Strings.errorMessageTitle,
+                    message: self.viewModel.errorMessage ?? Strings.unknownError,
                     repeatHandle: { [weak self] in
                         self?.viewModel.getNFTCollections()
                         
                     }, cancelHandle: { [weak self] in
                         self?.viewModel.isLoading = false
+                        self?.refreshControl.endRefreshing()
                     }
                 )
                 
@@ -110,27 +116,33 @@ final class CatalogViewController: UIViewController {
     }
     
     @objc private func showSortingMenu() {
-        let sortMenu = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        let sortMenu = UIAlertController(title: Strings.sorting, message: nil, preferredStyle: .actionSheet)
         
-        sortMenu.addAction(UIAlertAction(title: "По названию", style: .default , handler:{ [weak self] (UIAlertAction) in
+        sortMenu.addAction(UIAlertAction(title: Strings.sortByName, style: .default , handler:{ [weak self] (UIAlertAction) in
             self?.viewModel.sortNFTCollections(by: .name)
             }))
-        sortMenu.addAction(UIAlertAction(title: "По количеству NFT", style: .default , handler:{ [weak self] (UIAlertAction) in
+        sortMenu.addAction(UIAlertAction(title: Strings.sortByNFTCount, style: .default , handler:{ [weak self] (UIAlertAction) in
             self?.viewModel.sortNFTCollections(by: .nftCount)
             }))
-        sortMenu.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
+        sortMenu.addAction(UIAlertAction(title: Strings.close, style: .cancel))
 
         present(sortMenu, animated: true)
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
-        if isLoading {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
+        DispatchQueue.main.async {
+            if isLoading {
+                ProgressHUD.show()
+            } else {
+                ProgressHUD.dismiss()
+            }
         }
 
         view.isUserInteractionEnabled = !isLoading
+    }
+    
+    @objc private func loadNFTCollections() {
+        viewModel.getNFTCollections()
     }
 }
 
@@ -161,11 +173,9 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.tintColor = .asset(.white)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            
+        
         let collectionViewModel = CollectionViewModel(
-            model: CollectionModel(
-                networkClient: viewModel.model.networkClient
-            ),
+            networkClient: viewModel.networkClient,
             nftCollectionId: collectionId,
             converter: FakeConvertService()
         )

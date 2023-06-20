@@ -46,13 +46,13 @@ final class CatalogCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             collectionImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            collectionImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            collectionImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            collectionImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             collectionImage.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: 140),
             
             collectionNameView.topAnchor.constraint(equalTo: collectionImage.bottomAnchor, constant: 4),
-            collectionNameView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionNameView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor),
+            collectionNameView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            collectionNameView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
             collectionNameView.bottomAnchor.constraint(equalTo: collectionImage.bottomAnchor, constant: 28),
             
             collectionName.leadingAnchor.constraint(equalTo: collectionNameView.leadingAnchor),
@@ -71,5 +71,6 @@ final class CatalogCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         collectionImage.kf.cancelDownloadTask()
+        collectionImage.image = nil
     }
 }

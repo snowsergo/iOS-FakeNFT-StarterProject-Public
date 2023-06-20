@@ -13,7 +13,6 @@ final class NFTItemCell: UICollectionViewCell {
                 nftImage.load(url: url)
             }
             nftRatingView.set(length: viewModel.rating)
-            //renderRatingView(view: nftRatingView, value: viewModel.rating)
             nftName.text = viewModel.name
             nftPrice.text = viewModel.price.removeZerosFromEnd() + " " + CryptoCoin.ETH.rawValue
             
@@ -119,6 +118,12 @@ final class NFTItemCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nftImage.kf.cancelDownloadTask()
+        nftImage.image = nil
     }
     
     func setup(cartTapHandle: (() -> Void)? = nil, likeTapHandle: @escaping (() -> Void)) {
