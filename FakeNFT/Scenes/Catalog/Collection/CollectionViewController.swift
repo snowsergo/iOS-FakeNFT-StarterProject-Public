@@ -25,7 +25,6 @@ final class CollectionViewController: UIViewController {
     private let collectionNameView = UIViewAutoLayout()
     private let collectionNameLabel = LineHeightedLabel(lineHeight: 28, withFont: UIFont.nftCollectionName, color: .asset(.black))
     private let authorView = UIViewAutoLayout()
-    //private let collectionAuthorLabel = LineHeightedLabel(lineHeight: 18, withFont: UIFont.nftDescription, color: UIColor.NFTBlack, string: "Автор коллекции:")
     private let collectionAuthorNameLabel = LineHeightedLabel(lineHeight: 20, withFont: UIFont.nftAuthor, color: .asset(.blue), enabledUserInteraction: true)
     private let collectionDescriptionLabel = LineHeightedLabel(lineHeight: 3, withFont: UIFont.nftDescription, color: .asset(.black), linesCount: 0)
     
@@ -33,7 +32,7 @@ final class CollectionViewController: UIViewController {
         let label = UILabel()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 18
-        let attrString = NSMutableAttributedString(string: "Автор коллекции:")
+        let attrString = NSMutableAttributedString(string: Strings.nftCollectionAuthor)
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range: NSMakeRange(0, attrString.length))
         attrString.addAttribute(NSAttributedString.Key.font, value: UIFont.nftDescription, range: NSMakeRange(0, attrString.length))
         label.attributedText = attrString
@@ -42,7 +41,6 @@ final class CollectionViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
     
     private let nftItemsCollectionView = ContentSizedCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
@@ -82,23 +80,21 @@ final class CollectionViewController: UIViewController {
         viewModel.onNFTItemsUpdate = { [weak self] in
             guard let self = self else { return }
             self.updateNFTCollectionItems()
+            self.viewModel.isLoading = false
         }
-        viewModel.updateLoadingStatus = {
+        viewModel.updateLoadingStatus = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.defaultShowLoading(self.viewModel.isLoading)
             }
         }
-        viewModel.showAlertClosure = {
+        viewModel.showAlertClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-
-                let titleText = "Упс! У нас ошибка."
-                let messageText = self.viewModel.errorMessage ?? "Unknown error"
+                guard let self = self else { return }
 
                 let alert = RepeatAlertMaker.make(
-                    title: titleText,
-                    message: messageText,
+                    title: Strings.errorMessageTitle,
+                    message: self.viewModel.errorMessage ?? Strings.unknownError,
                     repeatHandle: { [weak self] in
                         self?.viewModel.getNFTCollectionInfo()
                     }, cancelHandle: { [weak self] in
@@ -224,13 +220,16 @@ final class CollectionViewController: UIViewController {
 
         navigationController?.pushViewController(WebViewService(url: url), animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .asset(.black)
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
-        if isLoading {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
+        DispatchQueue.main.async {
+            if isLoading {
+                ProgressHUD.show()
+            } else {
+                ProgressHUD.dismiss()
+            }
         }
 
         view.isUserInteractionEnabled = !isLoading
@@ -267,6 +266,9 @@ extension CollectionViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width / 3) - 6, height: 172)
+        let screenHeight = view.frame.height
+        let calculatedCellHeight = screenHeight * 0.21 > 192 ? 192 : screenHeight * 0.21
+        let cellHeight = calculatedCellHeight < 172 ? 172 : calculatedCellHeight
+        return CGSize(width: (collectionView.bounds.width / 3) - 6, height: cellHeight)
     }
 }

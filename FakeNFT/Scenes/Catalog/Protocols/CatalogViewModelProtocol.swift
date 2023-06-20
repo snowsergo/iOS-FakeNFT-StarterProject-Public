@@ -8,9 +8,9 @@ protocol CatalogViewModelProtocol {
     var isLoading: Bool { get set }
     var NFTCollections: [NFTCollection]? { get }
     var NFTCollectionsList: [NFTCollectionListItem]? { get }
-    var model: CatalogModelProtocol { get }
+    var networkClient: NetworkClient { get }
     var NFTCollectionsCount: Int? { get }
     func getNFTCollections()
     func getCellViewModel(at indexPath: IndexPath) -> NFTCollectionListItem?
-    func sortNFTCollections(by: SortAttribute)
+    func sortNFTCollections(by: NFTCollectionsSortAttributes)
 }
