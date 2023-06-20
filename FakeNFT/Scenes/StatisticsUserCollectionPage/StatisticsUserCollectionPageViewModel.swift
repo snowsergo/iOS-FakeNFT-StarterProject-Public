@@ -6,9 +6,9 @@ final class StatisticsUserCollectionPageViewModel {
 
     var onChange: (() -> Void)?
     var onError: ((_ error: Error, _ retryAction: @escaping () -> Void) -> Void)?
-    
+
     private(set) var nftsIds: [Int]?
-    
+
     private(set) var nfts: [Nft]=[] {
         didSet {
             onChange?()

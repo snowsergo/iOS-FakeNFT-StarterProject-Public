@@ -6,24 +6,31 @@ final class StatisticsUserCollectionModel {
     func fetchNfts(ids: [Int], completion: @escaping (Result<[Nft], Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var resultNfts: [Nft] = []
+        var savedError: Error? = nil
 
         for id in ids {
             dispatchGroup.enter()
 
             let request = Request(endpoint: URL(string: Config.baseUrl + "/nft" + "/\(id)"), httpMethod: .get)
-            defaultNetworkClient.send(request: request, type: Nft.self) { result in
+            defaultNetworkClient.send(request: request, type: Nft.self) { [weak self] result in
                 switch result {
                 case .success(let nft):
                     resultNfts.append(nft)
                 case .failure(let error):
-                    print("Error: \(error)")
+                    savedError = error
                 }
                 dispatchGroup.leave()
             }
         }
 
-        dispatchGroup.notify(queue: .main) {
-            completion(.success(resultNfts))
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+
+            if let error = savedError {
+                completion(.failure(error))
+            } else {
+                completion(.success(resultNfts))
+            }
         }
     }
 }

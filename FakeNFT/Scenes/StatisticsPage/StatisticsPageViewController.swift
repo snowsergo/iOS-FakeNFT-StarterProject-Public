@@ -33,6 +33,7 @@ final class StatisticsPageViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "Попробовать снова", style: .default, handler: { _ in
                 retryAction()
             }))
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
             self?.present(alert, animated: true, completion: nil)
         }
         viewModel.getUsers(showLoader: showLoader)

@@ -24,6 +24,9 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "Попробовать снова", style: .default, handler: { _ in
                 retryAction()
             }))
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: { _ in
+                self?.showLoader(isShow: false)
+            }))
             self?.present(alert, animated: true, completion: nil)
         }
         viewModel.getUserNfts { [weak self] active in
@@ -80,7 +83,9 @@ final class StatisticsUserCollectionPageViewController: UIViewController {
     }
     
     func showLoader(isShow: Bool) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
             if isShow {
                 self.view.isUserInteractionEnabled = false
                 ProgressHUD.show()
