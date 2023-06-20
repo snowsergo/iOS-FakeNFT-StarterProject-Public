@@ -2,6 +2,8 @@ import UIKit
 import Kingfisher
 
 final class UserViewCell: UITableViewCell {
+    private var viewModel: UserViewCellViewModel?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupAppearance()
@@ -11,31 +13,31 @@ final class UserViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(index: String? = nil, label: String? = nil, count: String? = nil, url: String? = nil) {
-        indexView.text = index
-        labelView.text = label
-        countView.text = count
 
-        guard let url = url, let validUrl = URL(string: url) else {return}
-        let imageSize = CGSize(width: 28, height: 28)
-        let placeholderSize = CGSize(width: 28, height: 28)
-        let processor = RoundCornerImageProcessor(cornerRadius: imageSize.width / 2)
-        let options: KingfisherOptionsInfo = [
-            .processor(processor),
-            .scaleFactor(UIScreen.main.scale),
-            .transition(.fade(1)),
-            .cacheOriginalImage
-        ]
-        avatarView.kf.setImage(with: validUrl, placeholder: UIImage(named: "avatar")?
-            .kf.resize(to: placeholderSize), options: options)
+    func configure(with viewModel: UserViewCellViewModel) {
+        self.viewModel = viewModel
+        indexView.text = viewModel.index
+        nameView.text = viewModel.name
+        countView.text = viewModel.count
+
+        if let avatarURL = viewModel.avatarURL {
+            let placeholderImage = UIImage(named: "avatar")
+            avatarView.kf.setImage(with: avatarURL, placeholder: placeholderImage)
+        } else {
+            avatarView.image = UIImage(named: "avatar")
+        }
+
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        configure()
+        avatarView.image = nil
+        indexView.text = nil
+        nameView.text = nil
+        countView.text = nil
     }
 
-    private lazy var labelView: UILabel = {
+    private lazy var nameView: UILabel = {
         let label = UILabel()
         label.textColor = .asset(.black)
         label.font = .headline3
@@ -92,7 +94,7 @@ private extension UserViewCell {
         selectionStyle = .none
 
         addSubview(indexView)
-        addSubview(labelView)
+        addSubview(nameView)
         addSubview(countView)
         addSubview(avatarView)
         insertSubview(backView, at: 0)
@@ -111,10 +113,10 @@ private extension UserViewCell {
             avatarView.centerYAnchor.constraint(equalTo: centerYAnchor),
             avatarView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 16),
 
-            labelView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            labelView.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 16),
-            labelView.topAnchor.constraint(equalTo: topAnchor, constant: 26.5),
-            labelView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26.5),
+            nameView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            nameView.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 16),
+            nameView.topAnchor.constraint(equalTo: topAnchor, constant: 26.5),
+            nameView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26.5),
 
             countView.centerYAnchor.constraint(equalTo: centerYAnchor),
             countView.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -16),

@@ -5,7 +5,7 @@
 	};
 	objectVersion = 56;
 	objects = {
-
+  
 /* Begin PBXBuildFile section */
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
@@ -765,6 +765,7 @@
 			isa = PBXGroup;
 			children = (
 				FB30E538AD859EF58CBC4C11 /* UserViewCell.swift */,
+				D56468D52A410EC900DA2E8E /* UserViewCellViewModel.swift */,
 				FB30EEDA299383608B61F96C /* StatisticsPageModel.swift */,
 				FB30EE426BFEDDB9EAD6535A /* StatisticsPageViewModel.swift */,
 				FB30E362602D6BF131D52CB1 /* StatisticsPageViewController.swift */,
@@ -1073,6 +1074,7 @@
 				FB30E2B13964D9FFC27F34B2 /* StatisticsUserModel.swift in Sources */,
 				FB30EE3650925157DD4EF30C /* StatisticsUserPageViewModel.swift in Sources */,
 				FB30E5E3DF663AF96F3973F7 /* StatisticsUserPageViewController.swift in Sources */,
+				D56468D62A410EC900DA2E8E /* UserViewCellViewModel.swift in Sources */,
 				FB30E6CF84D063D85A002314 /* StatisticNavigationController.swift in Sources */,
 				FB30EDD0BBC831551CF58F09 /* MyNFTTableViewCell.swift in Sources */,
 				FB30E13A7FE405960CBEA230 /* MyNFTViewController.swift in Sources */,
