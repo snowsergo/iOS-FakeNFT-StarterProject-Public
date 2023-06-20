@@ -4,6 +4,7 @@ final class StatisticsUserPageViewModel {
     private let model: StatisticsUserPageModel
 
     var onChange: (() -> Void)?
+    var onError: ((_ error: Error, _ retryAction: @escaping () -> Void) -> Void)?
 
     private(set) var user: User? {
         didSet {
@@ -23,7 +24,9 @@ final class StatisticsUserPageViewModel {
                 case .success(let user):
                     self.user = user
                 case .failure(let error):
-                    print("Error: \(error)")
+                    self.onError?(error) { [weak self] in
+                        self?.getUser(userId: userId)
+                    }
                     self.user = nil
                 }
             }

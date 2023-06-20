@@ -6,6 +6,6 @@
 import Foundation
 
 protocol UserIDStorageProtocol {
-    var userID: String { get }
+    var userID: String? { get }
     func set(userID: String)
 }

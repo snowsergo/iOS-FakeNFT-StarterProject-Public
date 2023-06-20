@@ -7,32 +7,35 @@ import Foundation
 
 final class ProfileStore {
 
-    var networkClient: NetworkClient?
+    private let networkClient: NetworkClient
     private var networkTask: NetworkTask?
 
-    init(networkClient: NetworkClient = ProfileNetworkClient()) {
+    init(networkClient: NetworkClient = CustomNetworkClient()) {
         self.networkClient = networkClient
     }
 }
 
 extension ProfileStore: ProfileStoreProtocol {
-    func fetchProfile(callback: @escaping (Result<ProfileModel, Error>) -> Void) {
+
+    func fetchProfile(completion: @escaping ((Result<ProfileModel, Error>) -> Void)) {
         networkTask?.cancel()
         let profileRequest = ProfileRequest()
-        networkTask = networkClient?.send(request: profileRequest, type: ProfileModel.self) { result in
-            DispatchQueue.main.async { callback(result) }
+        networkTask = networkClient.send(request: profileRequest, type: ProfileModel.self) { result in
+            DispatchQueue.main.async { completion(result) }
         }
     }
 
     func updateProfile(_ profileModel: ProfileModel,
-                       _ viewModelCallback: @escaping (Result<ProfileModel, Error>) -> Void,
-                       _ viewCallback: (() -> Void)?) {
+                       _ viewModelCompletion: @escaping (Result<ProfileModel, Error>) -> Void,
+                       _ childViewModelCompletion: @escaping (() -> Void),
+                       _ viewCompletion: @escaping (() -> Void)) {
         networkTask?.cancel()
-        let updateProfileRequest = UpdateProfileRequest(profile: profileModel)
-        networkTask = networkClient?.send(request: updateProfileRequest, type: ProfileModel.self) { result in
+        let updateProfileRequest = UpdateMainProfileRequest(profile: profileModel)
+        networkTask = networkClient.send(request: updateProfileRequest, type: ProfileModel.self) { result in
             DispatchQueue.main.async {
-                viewCallback?()
-                viewModelCallback(result)
+                viewCompletion()
+                childViewModelCompletion()
+                viewModelCompletion(result)
             }
         }
     }

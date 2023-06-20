@@ -151,7 +151,7 @@ final class CartViewController: UIViewController {
     }
 
     private func setupViewModel() {
-        viewModel.reloadTableViewClosure = {
+        viewModel.reloadTableViewClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
@@ -163,7 +163,7 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.removeTableCellClosure = { (indexPath: IndexPath) in
+        viewModel.removeTableCellClosure = { [weak self] (indexPath: IndexPath) in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
@@ -177,7 +177,7 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.updateLoadingStatus = {
+        viewModel.updateLoadingStatus = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 if self.itemsTableView.refreshControl?.isRefreshing == true {
@@ -188,7 +188,7 @@ final class CartViewController: UIViewController {
             }
         }
 
-        viewModel.showAlertClosure = {
+        viewModel.showAlertClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
@@ -267,7 +267,7 @@ extension CartViewController {
         CartSortType.allCases.forEach { type in
             alertController.addAction(
                 UIAlertAction(title: type.rawValue, style: .default) { [weak self] _ in
-                    self?.viewModel.sort(by: type)
+                    self?.viewModel.sortAndReload(by: type)
                 }
             )
         }

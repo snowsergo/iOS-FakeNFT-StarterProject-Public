@@ -21,20 +21,9 @@ enum Constants {
     // Avatar placeholder file name
     static let avatarPlaceholder = "AvatarPlaceholder"
 
-    // Buttons and labels constant strings
-    static let changeAvatarButtonTitle = NSLocalizedString("changePhoto", comment: "Change avatar button label text")
-    static let nameLabelText = NSLocalizedString("name", comment: "User name label")
-    static let descriptionLabelText = NSLocalizedString("description", comment: "User description label")
-    static let websiteLabelText = NSLocalizedString("website", comment: "User website label")
-    static let loadNewAvatarButtonTitle = NSLocalizedString("uploadImage", comment: "Upload new avatar label")
-    static let sortingAlertTitle = NSLocalizedString("sorting", comment: "Sorting alert title")
-    static let sortByPriceString = NSLocalizedString("sortByPrice", comment: "Sort by price button text")
-    static let sortByRatingString = NSLocalizedString("sortByRating", comment: "Sort by rating button text")
-    static let sortByNameString = NSLocalizedString("sortByName", comment: "Sort by name button text")
-    static let closeButtonTitle = NSLocalizedString("closeTitle", comment: "Close button title text")
-    static let myNFTStubLabelText = NSLocalizedString("myNFTStub", comment: "My NFTs stub label text")
-    static let favoritesNFTStubLabelText = NSLocalizedString("favoritesNFTStub", comment: "Favorites NFTs stub label text")
-
     // Fake user ID string
     static let fakeUserIDString = "1"
+
+    // URL validation string
+    static let urlRegEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
 }

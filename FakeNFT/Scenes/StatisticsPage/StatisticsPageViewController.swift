@@ -3,21 +3,21 @@ import ProgressHUD
 
 final class StatisticsPageViewController: UIViewController {
     private var viewModel: StatisticsPageViewModel!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .asset(.white)
         view.addSubview(tableView)
-
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-
+        
         let navigationController = UINavigationController(rootViewController: StatisticsPageViewController())
-
+        
         navigationController.view.translatesAutoresizingMaskIntoConstraints = false
         let backButton = UIBarButtonItem()
         backButton.title = ""
@@ -25,14 +25,23 @@ final class StatisticsPageViewController: UIViewController {
         navigationItem.rightBarButtonItem = menuButton
         let model = StatisticsPageModel()
         viewModel = StatisticsPageViewModel(model: model)
-        viewModel.onChange = updateTable
+        viewModel.onChange = { [weak self] in
+            self?.updateTable()
+        }
+        viewModel.onError = { [weak self] error, retryAction in
+            let alert = UIAlertController(title: "Ошибка при загрузке пользователей", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Попробовать снова", style: .default, handler: { _ in
+                retryAction()
+            }))
+            self?.present(alert, animated: true, completion: nil)
+        }
         viewModel.getUsers(showLoader: showLoader)
     }
-
+    
     func updateTable() {
         tableView.reloadData()
     }
-
+    
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(UserViewCell.self, forCellReuseIdentifier: "cell")
@@ -44,10 +53,10 @@ final class StatisticsPageViewController: UIViewController {
         table.backgroundColor = .asset(.white)
         return table
     }()
-
+    
     private lazy var menuButton: UIBarButtonItem = {
         let menuButton = UIBarButtonItem(
-            image: UIImage(named: "menu"),
+            image: .asset(.sort),
             style: .plain,
             target: self,
             action: #selector(openMenu)
@@ -55,29 +64,29 @@ final class StatisticsPageViewController: UIViewController {
         menuButton.tintColor = .asset(.black)
         return menuButton
     }()
-
+    
     // добавление трекера
     @objc
     private func openMenu() {
         showAlert()
     }
-
+    
     func showAlert() {
         let alert = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
-
+        
         alert.addAction(UIAlertAction(title: "По имени", style: .default, handler: { (_)in
             self.viewModel.setSortedByName()
         }))
-
+        
         alert.addAction(UIAlertAction(title: "По количеству токенов", style: .default, handler: { (_)in
             self.viewModel.setSortedByCount()
         }))
-
+        
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
-
+        
         self.present(alert, animated: true)
     }
-
+    
     func showLoader(isShow: Bool) {
         DispatchQueue.main.async {
             if isShow {
@@ -94,9 +103,9 @@ final class StatisticsPageViewController: UIViewController {
 // делегат
 extension StatisticsPageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         let user = viewModel.users[indexPath.row]
-
+        
         let viewController = StatisticsUserPageViewController(userId: user.id)
         viewController.modalPresentationStyle = .fullScreen
         viewController.hidesBottomBarWhenPushed = true
@@ -109,25 +118,20 @@ extension StatisticsPageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.users.count
     }
-
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "cell", for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
         guard let userCell = cell as? UserViewCell else {
             assertionFailure("Can't get cell for statisticsPage")
-            return .init()
+            return UITableViewCell()
         }
-
+        
         let user = viewModel.users[indexPath.row]
-
-        userCell.configure(
-            index: String(indexPath.row + 1),
-            label: user.name,
-            count: String(user.nfts.count),
-            url: user.avatar
-        )
-
+        let cellViewModel = UserViewCellViewModel(user: user, cellIndex: indexPath.row)
+        userCell.configure(with: cellViewModel)
+        
         return userCell
     }
 }

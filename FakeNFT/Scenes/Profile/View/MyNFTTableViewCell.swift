@@ -6,7 +6,7 @@
 import UIKit
 import Kingfisher
 
-final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
+final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying, RatingStringMaker {
 
     private lazy var cellStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [nftImageView, nftDataStackView, nftPriceStackView])
@@ -42,24 +42,16 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
-        imageView.addSubview(likeButton)
         imageView.kf.indicatorType = .activity
         imageView.contentMode = .scaleAspectFill
         return imageView
-    }()
-
-    private lazy var likeButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 79, y: 12, width: 18, height: 16))
-        button.setImage(UIImage(systemName: "heart.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.contentMode = .center
-        return button
     }()
 
     private lazy var nftNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.textColor = .asset(.black)
+        label.textColor = .textColorBlack
         return label
     }()
 
@@ -72,9 +64,9 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
     private lazy var nftAuthorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.attributedText = NSMutableAttributedString(string: NSLocalizedString("fromAuthor", comment: ""),
+        label.attributedText = NSMutableAttributedString(string: L10n.fromAuthorString,
                                                          attributes: [.font: UIFont.systemFont(ofSize: 15)])
-        label.textColor = .asset(.black)
+        label.textColor = .textColorBlack
         return label
     }()
 
@@ -82,8 +74,8 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = .asset(.black)
-        label.text = NSLocalizedString("priceTitle", comment: "Price label title text")
+        label.textColor = .textColorBlack
+        label.text = L10n.priceTitle
         return label
     }()
 
@@ -91,7 +83,7 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.textColor = .asset(.black)
+        label.textColor = .textColorBlack
         return label
     }()
 
@@ -120,25 +112,9 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         ])
     }
 
-    private func makeRatingString(from rating: Int) -> NSAttributedString {
-        let fullString = NSMutableAttributedString(string: "")
-        for count in 1...5 {
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.bounds = CGRect(origin: .zero, size: CGSize(width: 14, height: 13))
-            if count <= rating && rating != 0 {
-                imageAttachment.image = UIImage(systemName: "star.fill")?.withTintColor(.asset(.yellow))
-                fullString.append(NSAttributedString(attachment: imageAttachment))
-            } else {
-                imageAttachment.image = UIImage(systemName: "star.fill")?.withTintColor(.asset(.gray))
-                fullString.append(NSAttributedString(attachment: imageAttachment))
-            }
-        }
-        return fullString
-    }
-
     func makeAttributedAuthorString(from authorString: String) -> NSAttributedString {
         let attributedAuthorString = NSMutableAttributedString()
-        attributedAuthorString.append(NSAttributedString(string: NSLocalizedString("fromAuthor", comment: ""),
+        attributedAuthorString.append(NSAttributedString(string: L10n.fromAuthorString,
                                                          attributes: [.font: UIFont.systemFont(ofSize: 15)]))
         attributedAuthorString.append(NSAttributedString(string: NSLocalizedString(authorString, comment: ""),
                                                          attributes: [.font: UIFont.systemFont(ofSize: 13)]))
@@ -151,6 +127,5 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         nftRatingLabel.attributedText = makeRatingString(from: nftViewModel.rating)
         nftAuthorLabel.attributedText = makeAttributedAuthorString(from: nftViewModel.author)
         nftPriceValueLabel.text = nftViewModel.price
-        backgroundColor = .asset(.white)
     }
 }

@@ -143,7 +143,7 @@ class PaymentViewController: UIViewController {
     }
 
     func setupViewModel() {
-        viewModel.updateLoadingStatus = {
+        viewModel.updateLoadingStatus = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.viewModel.isLoading ?? false
 
@@ -157,7 +157,7 @@ class PaymentViewController: UIViewController {
             }
         }
 
-        viewModel.showAlertClosure = {
+        viewModel.showAlertClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 
@@ -171,13 +171,13 @@ class PaymentViewController: UIViewController {
             }
         }
 
-        viewModel.reloadCollectionViewClosure = {
+        viewModel.reloadCollectionViewClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentMethodsCollection.reloadData()
             }
         }
 
-        viewModel.methodNotSelectedClosure = {
+        viewModel.methodNotSelectedClosure = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 let alertController = UIAlertController(
                     title: "Так не пойдет 🤨",
@@ -190,7 +190,7 @@ class PaymentViewController: UIViewController {
             }
         }
 
-        viewModel.checkedPayStatusClosure = { paymentStatus in
+        viewModel.checkedPayStatusClosure = { [weak self] paymentStatus in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
 

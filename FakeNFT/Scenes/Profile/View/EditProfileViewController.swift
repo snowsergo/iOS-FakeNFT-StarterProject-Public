@@ -10,7 +10,8 @@ import ProgressHUD
 final class EditProfileViewController: UIViewController {
 
     private let profileViewModel: ProfileViewModelProtocol
-    private let notificationCenter = NotificationCenter.default
+    private let errorAlertPresenter: ErrorAlertPresenter
+    private let notificationCenter: NotificationCenter
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -29,8 +30,8 @@ final class EditProfileViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 17, weight: .semibold)
         let buttonImage = UIImage(systemName: "xmark", withConfiguration: imageConfig)
-        button.setImage(buttonImage?.withTintColor(.asset(.black), renderingMode: .alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(closeButtonAction), for: .touchUpInside)
+        button.setImage(buttonImage?.withTintColor(.textColorBlack, renderingMode: .alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(submitChanges), for: .touchUpInside)
         return button
     }()
 
@@ -39,15 +40,15 @@ final class EditProfileViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 35
         button.layer.masksToBounds = true
-        let processor = OverlayImageProcessor(overlay: .asset(.black), fraction: 0.6)
-        button.kf.setBackgroundImage(with: profileViewModel.avatarURLObservable.wrappedValue,
+        let processor = OverlayImageProcessor(overlay: .textColorBlack, fraction: 0.6)
+        button.kf.setBackgroundImage(with: profileViewModel.mainAvatarURLObservable.wrappedValue,
                                      for: .normal,
                                      placeholder: UIImage(named: Constants.avatarPlaceholder),
                                      options: [.processor(processor)])
         button.layoutIfNeeded()
         button.subviews.first?.contentMode = .scaleAspectFill
         button.imageView?.contentMode = .scaleAspectFill
-        button.setTitle(Constants.changeAvatarButtonTitle, for: .normal)
+        button.setTitle(L10n.changeAvatarButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .medium)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.numberOfLines = 2
@@ -59,9 +60,9 @@ final class EditProfileViewController: UIViewController {
     private lazy var loadNewAvatarButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(Constants.loadNewAvatarButtonTitle, for: .normal)
+        button.setTitle(L10n.loadNewAvatarButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-        button.setTitleColor(.asset(.black), for: .normal)
+        button.setTitleColor(.textColorBlack, for: .normal)
         button.titleLabel?.textAlignment = .center
         button.isUserInteractionEnabled = false
         button.alpha = 0.0
@@ -69,17 +70,17 @@ final class EditProfileViewController: UIViewController {
         return button
     }()
 
-    private lazy var nameLabel = makeLabel(text: Constants.nameLabelText)
+    private lazy var nameLabel = makeLabel(text: L10n.nameLabelText)
     private lazy var nameTextField = makeTextField(text: profileViewModel.nameObservable.wrappedValue)
     private lazy var nameStackView = makeStackView(with: [nameLabel, nameTextField])
 
-    private lazy var descriptionLabel = makeLabel(text: Constants.descriptionLabelText)
+    private lazy var descriptionLabel = makeLabel(text: L10n.descriptionLabelText)
     private lazy var descriptionTextView = makeTextView(text: profileViewModel.descriptionObservable.wrappedValue)
     private lazy var descriptionStackView = makeStackView(with: [descriptionLabel, descriptionTextView])
 
-    private lazy var websiteLabel = makeLabel(text: Constants.websiteLabelText)
-    private lazy var websiteTextVField = makeTextField(text: profileViewModel.websiteObservable.wrappedValue)
-    private lazy var websiteStackView = makeStackView(with: [websiteLabel, websiteTextVField])
+    private lazy var websiteLabel = makeLabel(text: L10n.websiteLabelText)
+    private lazy var websiteTextField = makeTextField(text: profileViewModel.websiteObservable.wrappedValue)
+    private lazy var websiteStackView = makeStackView(with: [websiteLabel, websiteTextField])
 
     private lazy var mainStackView = makeStackView(with: [nameStackView, descriptionStackView, websiteStackView], spacing: 24)
 
@@ -87,6 +88,8 @@ final class EditProfileViewController: UIViewController {
 
     init(profileViewModel: ProfileViewModelProtocol) {
         self.profileViewModel = profileViewModel
+        self.errorAlertPresenter = ErrorAlertPresenter()
+        self.notificationCenter = NotificationCenter.default
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -96,9 +99,11 @@ final class EditProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .asset(.white)
+        errorAlertPresenter.viewController = self
+        setupController()
         setupConstraints()
         hideKeyboardByTap()
+        bind()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -115,17 +120,76 @@ final class EditProfileViewController: UIViewController {
 
     // MARK: - Pivate Funcs
 
+    private func bind() {
+        profileViewModel.shouldShowURLValidationAlertObservable.bind { [weak self] shouldShowAlert in
+            if shouldShowAlert {
+                self?.errorAlertPresenter.showAlert(title: L10n.validationAlertTitle,
+                                                    message: L10n.validationAlertMessage,
+                                                    firstActionTitle: L10n.validationAlertEditWebsiteTitle,
+                                                    secondActionTitle: L10n.validationAlertContinueTitle) {
+                    self?.profileViewModel.didTapEditWebsite()
+                } secondAction: {
+                    self?.profileViewModel.didTapContinue()
+                }
+            } else {
+                self?.submitChanges()
+            }
+        }
+        profileViewModel.isNeedEditingWebsiteObservable.bind { [weak self] isNeedEditingWebsite in
+            if isNeedEditingWebsite {
+                self?.websiteTextField.becomeFirstResponder()
+            }
+        }
+        profileViewModel.isAvatarUploadingAllowObservable.bind { [weak self] isAvatarUploadingAllow in
+            if isAvatarUploadingAllow {
+                self?.loadNewAvatarButton.isUserInteractionEnabled = true
+                UIView.animate(withDuration: 1) { self?.loadNewAvatarButton.alpha = 1.0 }
+            } else {
+                self?.loadNewAvatarButton.isUserInteractionEnabled = false
+                self?.changeAvatarButton.isUserInteractionEnabled = false
+                UIView.animate(withDuration: 1) { self?.loadNewAvatarButton.alpha = 0.0 }
+            }
+
+        }
+        profileViewModel.editedAvatarURLObservable.bind { [weak self] url in
+            self?.changeAvatarButton.kf.setImage(with: url, for: .normal,
+                                                 completionHandler:  { _ in self?.profileViewModel.didLoadAvatar() })
+        }
+        profileViewModel.isProfileUpdatingNowObservable.bind { isProfileUpdatingNow in
+            isProfileUpdatingNow ? UIBlockingProgressHUD.show() : UIBlockingProgressHUD.dismiss()
+        }
+        profileViewModel.shouldShowEmptyProfileAlertObservable.bind { [weak self] shouldShowAlert in
+            if shouldShowAlert {
+                self?.errorAlertPresenter.showAlert(title: L10n.validationAlertTitle,
+                                                    message: L10n.emptyProfileFieldAlertTitle,
+                                                    firstActionTitle: L10n.validationAlertEditProfileTitle,
+                                                    secondActionTitle: L10n.validationAlertContinueTitle) {
+                    self?.profileViewModel.didTapEditProfile()
+                } secondAction: {
+                    self?.profileViewModel.didTapContinue()
+                }
+            } else {
+                self?.submitChanges()
+            }
+        }
+        profileViewModel.isNeedEditingProfileFieldsObservable.bind { [weak self] isNeedEditingProfileFields in
+            if isNeedEditingProfileFields {
+                self?.nameTextField.becomeFirstResponder()
+            }
+        }
+    }
+
+    private func setupController() {
+        view.backgroundColor = .viewBackgroundColor
+        presentationController?.delegate = self
+    }
+
     @objc private func changeAvatarAction() {
-        loadNewAvatarButton.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 1) { self.loadNewAvatarButton.alpha = 1.0 }
+        profileViewModel.didTapChangeAvatarButton()
     }
 
     @objc private func fakeUploadAvatarAction() {
-        UIBlockingProgressHUD.show()
-        changeAvatarButton.kf.setImage(with: URL(string: Constants.mockAvatarImageURLString), for: .normal,
-                                       completionHandler:  { _ in UIBlockingProgressHUD.dismiss() })
-        loadNewAvatarButton.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 1) { self.loadNewAvatarButton.alpha = 0.0 }
+        profileViewModel.didFakeUploadingAvatar(urlString: Constants.mockAvatarImageURLString)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -140,16 +204,13 @@ final class EditProfileViewController: UIViewController {
         scrollView.verticalScrollIndicatorInsets = .zero
     }
 
-    @objc private func closeButtonAction() {
-        UIBlockingProgressHUD.show()
+    @objc private func submitChanges() {
         profileViewModel.didChangeProfile(name: nameTextField.text,
                                           description: descriptionTextView.text,
-                                          website: websiteTextVField.text,
-                                          avatar: Constants.mockAvatarImageURLString,
+                                          website: websiteTextField.text,
                                           likes: nil) { [weak self] in
-            self?.dismiss(animated: true)
-            UIBlockingProgressHUD.dismiss()
-        }
+            self?.dismiss(animated: true) { self?.profileViewModel.didSelect(.mainProfile) }
+        } childViewModelCompletion: {   }
     }
 
     private func makeLabel(text: String) -> UILabel {
@@ -157,7 +218,7 @@ final class EditProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = text
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        label.textColor = .asset(.black)
+        label.textColor = .textColorBlack
         return label
     }
 
@@ -166,8 +227,8 @@ final class EditProfileViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = text
         textField.font = UIFont.systemFont(ofSize: 17)
-        textField.textColor = .asset(.black)
-        textField.backgroundColor = .asset(.lightGray)
+        textField.textColor = .textColorBlack
+        textField.backgroundColor = .lightGreyBackground
         textField.layer.cornerRadius = 12
         textField.layer.masksToBounds = true
         textField.clearButtonMode = .whileEditing
@@ -183,8 +244,8 @@ final class EditProfileViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.text = text
         textView.font = UIFont.systemFont(ofSize: 17)
-        textView.textColor = .asset(.black)
-        textView.backgroundColor = .asset(.lightGray)
+        textView.textColor = .textColorBlack
+        textView.backgroundColor = .lightGreyBackground
         textView.isScrollEnabled = false
         textView.layer.cornerRadius = 12
         textView.layer.masksToBounds = true
@@ -234,7 +295,7 @@ final class EditProfileViewController: UIViewController {
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             nameTextField.heightAnchor.constraint(equalToConstant: 44),
-            websiteTextVField.heightAnchor.constraint(equalToConstant: 44)
+            websiteTextField.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 }
@@ -245,5 +306,19 @@ extension EditProfileViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return view.endEditing(true)
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension EditProfileViewController: UIAdaptivePresentationControllerDelegate {
+
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        submitChanges()
+        return false
+    }
+
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        profileViewModel.didSelect(.mainProfile)
     }
 }
