@@ -1,6 +1,6 @@
 import Foundation
 
-enum NFTCollectionsSortAttributes: String {
+enum SortAttribute {
     case name
     case nftCount
 }

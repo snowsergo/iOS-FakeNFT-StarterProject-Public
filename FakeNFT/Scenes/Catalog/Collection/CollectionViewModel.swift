@@ -10,7 +10,6 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     var errorMessage: String? {
         didSet {
             showAlertClosure?()
-            isLoading = false
         }
     }
     var updateLoadingStatus: (() -> Void)?
@@ -19,7 +18,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
             updateLoadingStatus?()
         }
     }
-    private(set) var allNFTItems: [Nft]? {
+    private(set) var allNFTItems: [NFTItem]? {
         didSet {
             generateNFTdata()
         }
@@ -35,16 +34,16 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    var networkClient: NetworkClient
+    var model: CollectionModelProtocol
     var nftCollectionId: Int
     var converter: CryptoConverterProtocol
     private(set) var nftCollection: NFTCollection?
-    private(set) var nftCollectionAuthor: User?
+    private(set) var nftCollectionAuthor: NFTCollectionAuthor?
     private(set) var nftCollectionItems: [NFTCollectionNFTItem]?
     private(set) var nftCollectionItemsCount: Int?
     
-    init(networkClient: NetworkClient, nftCollectionId: Int, converter: CryptoConverterProtocol) {
-        self.networkClient = networkClient
+    init(model: CollectionModelProtocol, nftCollectionId: Int, converter: CryptoConverterProtocol) {
+        self.model = model
         self.nftCollectionId = nftCollectionId
         self.converter = converter
         isLoading = false
@@ -52,7 +51,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     
     func getNFTCollectionInfo() {
         isLoading = true
-        networkClient.send(request: NFTCollectionRequest(id: nftCollectionId), type: NFTCollection.self)  { [weak self] result in
+        model.getData(url: "\(Config.baseUrl)/collections/\(nftCollectionId)", type: NFTCollection.self) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.nftCollection = data
@@ -62,9 +61,9 @@ final class CollectionViewModel: CollectionViewModelProtocol {
             }
         }
     }
-
+    
     func getNFTCollectionAuthor(id: Int) {
-        networkClient.send(request: UserRequest(id: id), type: User.self)  { [weak self] result in
+        model.getData(url: "\(Config.baseUrl)/users/\(id)", type: NFTCollectionAuthor.self) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.nftCollectionAuthor = data
@@ -111,8 +110,8 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    private func getAllNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
-        networkClient.send(request: AllNFTsRequest(), type: [Nft].self)  { result in
+    func getAllNFTs(completion: @escaping (Result<[NFTItem], Error>) -> Void) {
+        model.getData(url: "\(Config.baseUrl)/nft", type: [NFTItem].self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
@@ -122,8 +121,8 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    private func getLikedNFTs(completion: @escaping (Result<NFTLiked, Error>) -> Void) {
-        networkClient.send(request: ProfileRequest(), type: NFTLiked.self)  { result in
+    func getLikedNFTs(completion: @escaping (Result<NFTLiked, Error>) -> Void) {
+        model.getData(url: "\(Config.baseUrl)/profile/1", type: NFTLiked.self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
@@ -133,8 +132,8 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
     
-    private func getNFTsInCart(completion: @escaping (Result<NFTsInCart, Error>) -> Void) {
-        networkClient.send(request: OrderRequest(id: Strings.orderNumber), type: NFTsInCart.self)  { result in
+    func getNFTsInCart(completion: @escaping (Result<NFTsInCart, Error>) -> Void) {
+        model.getData(url: "\(Config.baseUrl)/orders/1", type: NFTsInCart.self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
@@ -142,33 +141,16 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 completion(.failure(error))
             }
         }
-    }
-    
-    private func toggleArrayItem<E: Equatable>(array: [E], item: E) -> [E] {
-        var newArray = array
-        if let index = array.firstIndex(where: { $0 == item }) {
-            newArray.remove(at: index)
-        } else {
-            newArray.append(item)
-        }
-        return newArray
     }
     
     func toggleCart(id: Int) {
         isLoading = true
-        networkClient.send(request: OrderRequest(id: Strings.orderNumber), type: NFTsInCart.self)  { [weak self] result in
+        model.toggleNFTItemInCart(id: id) { [weak self] result in
+            self?.isLoading = false
             switch result {
             case .success(let data):
-                let newOrder = Order(nfts: self?.toggleArrayItem(array: data.nfts, item: id) ?? [], id: Strings.orderNumber)
-                self?.networkClient.send(request: UpdateOrderRequest(order: newOrder), type: Order.self) { result in
-                    switch result {
-                    case .success(let data):
-                        self?.nftsInCart = NFTsInCart(nfts: data.nfts)
-                        self?.onNFTItemsUpdate?()
-                    case .failure(let error):
-                        self?.errorMessage = error.localizedDescription
-                    }
-                }
+                self?.nftsInCart = NFTsInCart(nfts: data.nfts)
+                self?.onNFTItemsUpdate?()
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
             }
@@ -177,20 +159,12 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     
     func toggleLike(id: Int) {
         isLoading = true
-        networkClient.send(request: ProfileRequest(), type: NFTLiked.self)  { [weak self] result in
+        model.toggleNFTLikeInProfile(id: id) { [weak self] result in
+            self?.isLoading = false
             switch result {
             case .success(let data):
-                let newLikesInProfile = NFTLiked(likes: self?.toggleArrayItem(array: data.likes, item: id) ?? [])
-                self?.networkClient.send(request: UpdateProfileLikesRequest(id: 1, likes: newLikesInProfile), type: NFTLiked.self) { result in
-                    switch result {
-                    case .success(let data):
-                        self?.nftsLiked = NFTLiked(likes: data.likes)
-                        self?.onNFTItemsUpdate?()
-                    case .failure(let error):
-                        self?.errorMessage = error.localizedDescription
-                    }
-                }
-                
+                self?.nftsLiked = NFTLiked(likes: data.likes)
+                self?.onNFTItemsUpdate?()
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
             }
