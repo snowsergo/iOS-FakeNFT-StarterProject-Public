@@ -10,7 +10,7 @@ protocol CollectionViewModelProtocol {
     var updateLoadingStatus: (() -> Void)? { get set }
     var isLoading: Bool { get set }
     var nftCollection: NFTCollection? { get }
-    var nftCollectionAuthor: NFTCollectionAuthor? { get }
+    var nftCollectionAuthor: User? { get }
     var nftCollectionItems: [NFTCollectionNFTItem]? { get }
     var nftCollectionItemsCount: Int? { get }
     var converter: CryptoConverterProtocol { get }
