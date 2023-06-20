@@ -56,7 +56,7 @@ final class StatisticsPageViewController: UIViewController {
     
     private lazy var menuButton: UIBarButtonItem = {
         let menuButton = UIBarButtonItem(
-            image: UIImage(named: "menu"),
+            image: .asset(.sort),
             style: .plain,
             target: self,
             action: #selector(openMenu)
