@@ -3,13 +3,8 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController {
     var viewModel: CatalogViewModelProtocol
+    private let navBar = UINavigationBar()
     private let collectionsTableView = ContentSizedTableView()
-    
-    lazy private var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(loadNFTCollections), for: .valueChanged)
-        return refreshControl
-    }()
     
     init(viewModel: CatalogViewModelProtocol) {
         self.viewModel = viewModel
@@ -26,12 +21,12 @@ final class CatalogViewController: UIViewController {
         configureTable()
         setupConstraints()
         bind()
-        loadNFTCollections()
+        viewModel.getNFTCollections()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        refreshControl.endRefreshing()
+        viewModel.getNFTCollections()
     }
     
     lazy private var sortButton: UIBarButtonItem = {
@@ -53,9 +48,8 @@ final class CatalogViewController: UIViewController {
         ProgressHUD.colorAnimation = .asset(.black)
 
         collectionsTableView.backgroundColor = .asset(.white)
-        collectionsTableView.refreshControl = refreshControl
         view.backgroundColor = .asset(.white)
-        navigationController?.navigationBar.tintColor = .asset(.black)
+        view.addSubview(navBar)
         view.addSubview(collectionsTableView)
     }
     
@@ -82,7 +76,6 @@ final class CatalogViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async { [weak self] in
                 self?.collectionsTableView.reloadData()
-                self?.refreshControl.endRefreshing()
             }
         }
         
@@ -95,17 +88,19 @@ final class CatalogViewController: UIViewController {
         
         viewModel.showAlertClosure = {
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
 
+                let titleText = "Упс! У нас ошибка."
+                let messageText = self.viewModel.errorMessage ?? "Unknown error"
+                
                 let alert = RepeatAlertMaker.make(
-                    title: Strings.errorMessageTitle,
-                    message: self.viewModel.errorMessage ?? Strings.unknownError,
+                    title: titleText,
+                    message: messageText,
                     repeatHandle: { [weak self] in
                         self?.viewModel.getNFTCollections()
                         
                     }, cancelHandle: { [weak self] in
                         self?.viewModel.isLoading = false
-                        self?.refreshControl.endRefreshing()
                     }
                 )
                 
@@ -115,33 +110,27 @@ final class CatalogViewController: UIViewController {
     }
     
     @objc private func showSortingMenu() {
-        let sortMenu = UIAlertController(title: Strings.sorting, message: nil, preferredStyle: .actionSheet)
+        let sortMenu = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
-        sortMenu.addAction(UIAlertAction(title: Strings.sortByName, style: .default , handler:{ [weak self] (UIAlertAction) in
+        sortMenu.addAction(UIAlertAction(title: "По названию", style: .default , handler:{ [weak self] (UIAlertAction) in
             self?.viewModel.sortNFTCollections(by: .name)
             }))
-        sortMenu.addAction(UIAlertAction(title: Strings.sortByNFTCount, style: .default , handler:{ [weak self] (UIAlertAction) in
+        sortMenu.addAction(UIAlertAction(title: "По количеству NFT", style: .default , handler:{ [weak self] (UIAlertAction) in
             self?.viewModel.sortNFTCollections(by: .nftCount)
             }))
-        sortMenu.addAction(UIAlertAction(title: Strings.close, style: .cancel))
+        sortMenu.addAction(UIAlertAction(title: "Закрыть", style: .cancel))
 
         present(sortMenu, animated: true)
     }
     
     private func defaultShowLoading(_ isLoading: Bool) {
-        DispatchQueue.main.async {
-            if isLoading {
-                ProgressHUD.show()
-            } else {
-                ProgressHUD.dismiss()
-            }
+        if isLoading {
+            ProgressHUD.show()
+        } else {
+            ProgressHUD.dismiss()
         }
 
         view.isUserInteractionEnabled = !isLoading
-    }
-    
-    @objc private func loadNFTCollections() {
-        viewModel.getNFTCollections()
     }
 }
 
@@ -172,9 +161,11 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.tintColor = .asset(.white)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
+            
         let collectionViewModel = CollectionViewModel(
-            networkClient: viewModel.networkClient,
+            model: CollectionModel(
+                networkClient: viewModel.model.networkClient
+            ),
             nftCollectionId: collectionId,
             converter: FakeConvertService()
         )

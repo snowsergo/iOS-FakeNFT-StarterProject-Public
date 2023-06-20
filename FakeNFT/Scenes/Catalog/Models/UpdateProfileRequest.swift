@@ -6,7 +6,7 @@ struct UpdateProfileRequest: NetworkRequest {
     var endpoint: URL?
 
     init(profile: ProfileModel) {
-        guard let endpoint = URL(string: "\(Config.baseUrl)/profile/\(profile.id)") else { return }
+        guard let endpoint = URL(string: "\(Config.baseUrl)/profile/1") else { return }
         self.endpoint = endpoint
 
         let encoder = JSONEncoder()
