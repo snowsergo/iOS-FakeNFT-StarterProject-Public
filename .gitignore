@@ -1,0 +1,8 @@
+.DS_Store
+.build
+Packages
+DerivedData/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.idea
+*.xcuserdatad
+.pbxproj
