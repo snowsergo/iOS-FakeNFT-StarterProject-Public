@@ -35,6 +35,8 @@ final class CartViewModel: NetworkViewModel {
         return IndexPath(row: row!, section: 0)
     }
 
+    // TODO: Сортировку лучше вынести отдельно, но пора сдавать
+
     func sort(by: CartSortType) {
         cellViewModels.sort { (lhs: Nft, rhs: Nft) -> Bool in
             switch by {
@@ -43,8 +45,22 @@ final class CartViewModel: NetworkViewModel {
             case .rating: return lhs.rating < rhs.rating
             }
         }
+    }
 
+    func sortAndReload(by: CartSortType) {
+        UserDefaults.standard.set(by.rawValue, forKey: Config.cartSortKey)
+        sort(by: by)
         reloadTableViewClosure?()
+    }
+    
+    func sortByStore() {
+        guard let sortByDefault = UserDefaults.standard.string(forKey: Config.cartSortKey),
+              let by = CartSortType(rawValue: sortByDefault)
+        else {
+            return sort(by: CartSortType.rating)
+        }
+
+        return sort(by: by)
     }
 
     func removeCellViewModel(at indexPath: IndexPath) {
@@ -77,13 +93,12 @@ final class CartViewModel: NetworkViewModel {
                         }
                     }
 
-                    dispatchGroup.notify(queue: .main) {
-                        cells.sort { nft, nft2 in
-                            nft.id < nft2.id
-                        }
+                    dispatchGroup.notify(queue: .main) { [weak self] in
+                        guard let self else { return }
 
                         self.cellViewModels = cells
                         self.isLoading = false
+                        self.sortByStore()
                         self.reloadTableViewClosure?()
                     }
                 } else {

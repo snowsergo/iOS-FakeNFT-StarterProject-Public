@@ -12,7 +12,7 @@
         <!--Каталог-->
         <scene sceneID="XQZ-g0-L4M">
             <objects>
-                <viewController id="lvU-bz-Vrw" sceneMemberID="viewController">
+                <viewController id="lvU-bz-Vrw" customClass="CatalogNavigationViewController" customModule="FakeNFT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gVa-0O-Hf2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -44,7 +44,7 @@
         <!--Профиль-->
         <scene sceneID="L5w-BP-CgG">
             <objects>
-                <viewController id="6i5-Qt-ukh" sceneMemberID="viewController">
+                <viewController id="6i5-Qt-ukh" customClass="ProfileNavigationController" customModule="FakeNFT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Sqy-bH-JOA">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

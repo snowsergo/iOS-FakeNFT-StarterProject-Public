@@ -7,10 +7,11 @@
 import Foundation
 
 struct Config {
-    static let mockOrderId = "2"
+    static let mockOrderId = "1"
     static let baseUrl = "https://64611c69491f9402f49ecce1.mockapi.io/api/v1"
     static let userAgreementUrl = "https://yandex.ru/legal/practicum_termsofuse"
-    static let usersSortTypeKey = "usersSortTypeKey"
+    static let usersSortTypeKey = "usersSor
+    static let cartSortKey = "cart:sortKey"
 }
 
 // swiftlint:enable convenience_type
