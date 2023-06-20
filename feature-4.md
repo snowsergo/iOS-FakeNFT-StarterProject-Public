@@ -27,4 +27,4 @@
 - ✅ Правки архитектуры **[5 часов]**
 
 # Ссылка на демонстрационное видео
-https://www.loom.com/share/37a4df04fce04ddcbd7fd62c8c811235)https://www.loom.com/share/37a4df04fce04ddcbd7fd62c8c811235
+https://www.loom.com/share/37a4df04fce04ddcbd7fd62c8c811235
