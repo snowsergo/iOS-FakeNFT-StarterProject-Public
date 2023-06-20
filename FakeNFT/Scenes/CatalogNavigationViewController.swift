@@ -5,6 +5,14 @@ final class CatalogNavigationViewController: UINavigationController {
         super.viewDidLoad()
         view.backgroundColor = .asset(.white)
         navigationBar.tintColor = .asset(.black)
-        pushViewController(CatalogViewController(viewModel: CatalogViewModel(model: CatalogModel(networkClient: DefaultNetworkClient()))), animated: false)
+        pushViewController(
+            CatalogViewController(
+                viewModel:
+                    CatalogViewModel(
+                        networkClient: DefaultNetworkClient()
+                    )
+            ),
+            animated: false
+        )
     }
 }
