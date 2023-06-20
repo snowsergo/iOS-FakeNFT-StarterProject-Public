@@ -71,5 +71,6 @@ final class CatalogCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         collectionImage.kf.cancelDownloadTask()
+        collectionImage.image = nil
     }
 }
